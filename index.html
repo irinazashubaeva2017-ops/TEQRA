@@ -5,17 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TEQRA</title>
 
-  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet">
 
   <style>
     :root {
       --bg-main: #0E1116;
-      --bg-card: #141922;
       --text-main: #E6EAF0;
       --text-secondary: #9AA3B2;
       --accent: #1ED3FF;
-      --accent-hover: #5FE3FF;
     }
 
     * {
@@ -25,7 +22,7 @@
     }
 
     body {
-      background-color: var(--bg-main);
+      background: radial-gradient(circle at top, #121826, #0E1116);
       color: var(--text-main);
       font-family: 'Inter', sans-serif;
       height: 100vh;
@@ -47,24 +44,29 @@
       font-size: 44px;
       font-weight: 600;
       letter-spacing: 4px;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
     }
 
     .q-power {
       position: relative;
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+      margin: 0 4px;
       color: var(--accent);
     }
 
     .q-power::before {
       content: '';
       position: absolute;
-      top: -6px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 3px;
-      height: 12px;
-      background-color: var(--accent);
+      top: -8px;
+      width: 2px;
+      height: 14px;
+      background: var(--accent);
       border-radius: 2px;
     }
 
@@ -82,22 +84,17 @@
       width: 240px;
       height: 58px;
       border-radius: 30px;
-      background-color: var(--accent);
+      background: linear-gradient(180deg, #1ED3FF, #12BFEA);
       color: #0E1116;
       font-size: 16px;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s ease;
       text-decoration: none;
-    }
-
-    .power-btn:hover {
-      background-color: var(--accent-hover);
-      transform: translateY(-1px);
+      transition: transform 0.15s ease;
     }
 
     .power-btn:active {
-      transform: scale(0.97);
+      transform: scale(0.96);
     }
 
     .footer {
@@ -109,7 +106,7 @@
     @keyframes fadeIn {
       from {
         opacity: 0;
-        transform: translateY(8px);
+        transform: translateY(10px);
       }
       to {
         opacity: 1;
