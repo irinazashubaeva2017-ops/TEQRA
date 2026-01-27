@@ -1,210 +1,212 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TEQRA</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TEQRA</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet">
 
-  <style>
-    :root {
-      --bg: #0B0F14;
-      --bg-soft: #121826;
-      --text: #E6EAF0;
-      --muted: #9AA3B2;
-      --accent: #1ED3FF;
-    }
+<style>
+:root{
+  --bg:#04070D;
+  --bg2:#0A1020;
+  --accent:#1ED3FF;
+  --text:#E6EAF0;
+  --muted:#7C879C;
+}
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+*{margin:0;padding:0;box-sizing:border-box;}
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Inter', sans-serif;
-      height: 100vh;
-      overflow: hidden;
-    }
+body{
+  background:radial-gradient(circle at center, var(--bg2), var(--bg));
+  font-family:'Inter',sans-serif;
+  color:var(--text);
+  height:100vh;
+  overflow:hidden;
+}
 
-    /* COMMON */
-    .screen {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      transition: opacity 0.8s ease, transform 0.8s ease;
-    }
+/* SCREENS */
+.screen{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  transition:opacity .8s ease, transform .8s ease;
+}
 
-    .hidden {
-      opacity: 0;
-      pointer-events: none;
-      transform: scale(1.05);
-    }
+.hidden{
+  opacity:0;
+  pointer-events:none;
+  transform:scale(1.12);
+}
 
-    /* BOOT SCREEN */
-    #boot-screen {
-      background: radial-gradient(circle at top, var(--bg-soft), var(--bg));
-    }
+/* LOGO */
+.logo{
+  display:flex;
+  align-items:center;
+  font-family:'Space Grotesk',sans-serif;
+  font-size:52px;
+  letter-spacing:8px;
+  margin-bottom:26px;
+}
 
-    .logo {
-      display: flex;
-      align-items: center;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 44px;
-      letter-spacing: 4px;
-      margin-bottom: 20px;
-    }
+.core{
+  width:52px;
+  height:52px;
+  border:2px solid var(--accent);
+  border-radius:50%;
+  margin:0 10px;
+  position:relative;
+  box-shadow:0 0 0 rgba(30,211,255,0);
+}
 
-    .power-q {
-      width: 42px;
-      height: 42px;
-      border: 2px solid var(--accent);
-      border-radius: 50%;
-      margin: 0 6px;
-      position: relative;
-      box-shadow: 0 0 0 rgba(30,211,255,0);
-      transition: box-shadow 0.6s ease;
-    }
+.core::before{
+  content:'';
+  position:absolute;
+  top:-9px;
+  left:50%;
+  transform:translateX(-50%);
+  width:2px;
+  height:16px;
+  background:var(--accent);
+}
 
-    .power-q::before {
-      content: '';
-      position: absolute;
-      top: -7px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 2px;
-      height: 14px;
-      background: var(--accent);
-    }
+/* BOOT ENERGY */
+.booting .core{
+  animation:coreCharge 1.6s ease forwards;
+}
 
-    .boot-active .power-q {
-      box-shadow: 0 0 24px rgba(30,211,255,0.9);
-    }
+@keyframes coreCharge{
+  0%{box-shadow:0 0 0 rgba(30,211,255,0);}
+  40%{box-shadow:0 0 22px rgba(30,211,255,.6);}
+  70%{box-shadow:0 0 42px rgba(30,211,255,1);}
+  100%{box-shadow:0 0 60px rgba(30,211,255,.9);}
+}
 
-    .subtitle {
-      color: var(--muted);
-      margin-bottom: 40px;
-    }
+/* SUBTITLE */
+.subtitle{
+  color:var(--muted);
+  margin-bottom:48px;
+  font-size:15px;
+}
 
-    .start-btn {
-      padding: 16px 36px;
-      border-radius: 32px;
-      background: linear-gradient(180deg, #1ED3FF, #12BFEA);
-      color: #081018;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-      transition: transform .2s ease;
-    }
+/* START BUTTON */
+.start{
+  padding:18px 56px;
+  border-radius:44px;
+  background:linear-gradient(180deg,#1ED3FF,#11B6E3);
+  border:none;
+  color:#02060B;
+  font-weight:700;
+  letter-spacing:2px;
+  cursor:pointer;
+  transition:transform .15s ease, box-shadow .15s ease;
+}
 
-    .start-btn:active {
-      transform: scale(0.94);
-    }
+.start:active{
+  transform:scale(.9);
+  box-shadow:0 0 36px rgba(30,211,255,.9);
+}
 
-    /* LOADING */
-    .loading {
-      margin-top: 30px;
-      font-size: 14px;
-      color: var(--muted);
-      opacity: 0;
-      transition: opacity .4s ease;
-    }
+/* LOADER RING */
+.loader{
+  margin-top:40px;
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  border:2px solid rgba(30,211,255,.2);
+  border-top-color:var(--accent);
+  animation:spin 1.2s linear infinite;
+  opacity:0;
+}
 
-    .boot-active .loading {
-      opacity: 1;
-    }
+.booting .loader{
+  opacity:1;
+}
 
-    /* HOME SCREEN */
-    #home-screen {
-      background: linear-gradient(180deg, #0E131B, #090C11);
-      opacity: 0;
-      pointer-events: none;
-    }
+@keyframes spin{
+  to{transform:rotate(360deg);}
+}
 
-    #home-screen.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
+/* HOME */
+#home{
+  opacity:0;
+  pointer-events:none;
+  background:linear-gradient(180deg,#060A12,#02040A);
+}
 
-    .home-title {
-      font-size: 22px;
-      margin-bottom: 30px;
-    }
+#home.active{
+  opacity:1;
+  pointer-events:auto;
+}
 
-    .cards {
-      display: grid;
-      gap: 16px;
-      width: 100%;
-      max-width: 320px;
-    }
+.menu-title{
+  font-size:22px;
+  margin-bottom:32px;
+  letter-spacing:2px;
+}
 
-    .card {
-      background: #141922;
-      padding: 20px;
-      border-radius: 16px;
-      text-align: center;
-      cursor: pointer;
-      transition: background .2s ease;
-    }
+.menu{
+  display:grid;
+  gap:20px;
+  width:100%;
+  max-width:320px;
+}
 
-    .card:hover {
-      background: #1B2230;
-    }
+.card{
+  background:#0E1424;
+  padding:24px;
+  border-radius:20px;
+  text-align:center;
+  transition:transform .2s ease, background .2s ease;
+}
 
-    .card span {
-      color: var(--muted);
-      font-size: 14px;
-    }
-  </style>
+.card:hover{
+  background:#162048;
+  transform:translateY(-4px);
+}
+
+.card span{
+  font-size:14px;
+  color:var(--muted);
+}
+</style>
 </head>
 
 <body>
 
 <!-- BOOT -->
-<div id="boot-screen" class="screen">
-  <div class="logo">
-    TE <div class="power-q"></div> RA
-  </div>
-
-  <div class="subtitle">
-    Ноутбуки та звук. Без зайвого.
-  </div>
-
-  <button class="start-btn" onclick="startSystem()">
-    Активувати систему
-  </button>
-
-  <div class="loading">Запуск системи…</div>
+<div id="boot" class="screen">
+  <div class="logo">TE<div class="core"></div>RA</div>
+  <div class="subtitle">Ноутбуки та звук. Без зайвого.</div>
+  <button class="start" onclick="startSystem()">START SYSTEM</button>
+  <div class="loader"></div>
 </div>
 
 <!-- HOME -->
-<div id="home-screen" class="screen">
-  <div class="home-title">Головна</div>
-
-  <div class="cards">
-    <div class="card">
-      💻<br><strong>Ноутбуки</strong><br>
-      <span>Для роботи та навчання</span>
-    </div>
-
-    <div class="card">
-      🎧<br><strong>Навушники</strong><br>
-      <span>Для концентрації</span>
-    </div>
+<div id="home" class="screen">
+  <div class="menu-title">SYSTEM ONLINE</div>
+  <div class="menu">
+    <div class="card">💻<br><strong>Ноутбуки</strong><br><span>Робота • Навчання</span></div>
+    <div class="card">🎧<br><strong>Навушники</strong><br><span>Фокус • Звук</span></div>
   </div>
 </div>
 
 <script>
-  function startSystem() {
-    document.getElementById('boot-screen').classList.add('boot-active');
+function startSystem(){
+  const boot=document.getElementById('boot');
+  const home=document.getElementById('home');
 
-    setTimeout(() => {
-      document.getElementById('boot-screen').classList.add('hidden');
-      document.getElementById('home-screen').classList.add('active');
-    }, 1800);
-  }
+  boot.classList.add('booting');
+
+  setTimeout(()=>{
+    boot.classList.add('hidden');
+    home.classList.add('active');
+  },1800);
+}
 </script>
 
 </body>
