@@ -9,23 +9,21 @@
 
 <style>
 :root{
-  --bg:#03060C;
-  --bg2:#0A1020;
+  --bg:#05070C;
+  --bg-deep:#020409;
   --accent:#1ED3FF;
-  --accent-soft:#7CE8FF;
   --text:#E6EAF0;
-  --muted:#7A859B;
+  --muted:#7E889D;
 }
 
 *{margin:0;padding:0;box-sizing:border-box;}
 
 body{
-  background:radial-gradient(circle at center, var(--bg2), var(--bg));
+  background:radial-gradient(circle at top, #0B1222, var(--bg-deep));
   font-family:'Inter',sans-serif;
   color:var(--text);
   height:100vh;
   overflow:hidden;
-  transition:background 2s ease;
 }
 
 /* SCREENS */
@@ -33,16 +31,16 @@ body{
   position:absolute;
   inset:0;
   display:flex;
+  flex-direction:column;
   align-items:center;
   justify-content:center;
-  flex-direction:column;
-  transition:opacity 1.4s ease, transform 1.4s ease;
+  transition:opacity 1.2s ease, transform 1.2s ease;
 }
 
 .hidden{
   opacity:0;
   pointer-events:none;
-  transform:scale(1.25);
+  transform:scale(1.15);
 }
 
 /* LOGO */
@@ -50,26 +48,25 @@ body{
   display:flex;
   align-items:center;
   font-family:'Space Grotesk',sans-serif;
-  font-size:56px;
+  font-size:54px;
   letter-spacing:10px;
-  margin-bottom:28px;
+  margin-bottom:20px;
 }
 
 .core{
-  width:56px;
-  height:56px;
-  border-radius:50%;
+  width:54px;
+  height:54px;
   border:2px solid var(--accent);
+  border-radius:50%;
   margin:0 12px;
   position:relative;
   box-shadow:0 0 0 rgba(30,211,255,0);
-  overflow:hidden;
 }
 
 .core::before{
   content:'';
   position:absolute;
-  top:-10px;
+  top:-9px;
   left:50%;
   transform:translateX(-50%);
   width:2px;
@@ -77,84 +74,68 @@ body{
   background:var(--accent);
 }
 
-/* ENERGY WAVES */
-.core::after{
-  content:'';
-  position:absolute;
-  inset:-20px;
-  border-radius:50%;
-  background:radial-gradient(circle, rgba(30,211,255,.35), transparent 70%);
-  opacity:0;
+/* BOOT TEXT */
+.title{
+  font-size:18px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  margin-bottom:10px;
 }
 
-.booting .core{
-  animation:coreCharge 2.6s ease forwards;
-}
-
-.booting .core::after{
-  animation:energyPulse 2.6s ease forwards;
-}
-
-@keyframes coreCharge{
-  0%{box-shadow:0 0 0 rgba(30,211,255,0);}
-  30%{box-shadow:0 0 20px rgba(30,211,255,.4);}
-  60%{box-shadow:0 0 60px rgba(30,211,255,.9);}
-  100%{box-shadow:0 0 90px rgba(30,211,255,1);}
-}
-
-@keyframes energyPulse{
-  0%{opacity:0;transform:scale(.4);}
-  50%{opacity:.6;transform:scale(1);}
-  100%{opacity:0;transform:scale(1.6);}
-}
-
-/* TEXT */
 .subtitle{
-  color:var(--muted);
+  font-size:13px;
+  letter-spacing:1.5px;
+  opacity:.7;
   margin-bottom:56px;
-  font-size:16px;
-  letter-spacing:1px;
 }
 
 /* BUTTON */
 .start{
-  padding:20px 64px;
-  border-radius:50px;
+  padding:18px 60px;
+  border-radius:44px;
   background:linear-gradient(180deg,#1ED3FF,#0FB3E0);
   border:none;
   color:#02060B;
-  font-weight:700;
-  letter-spacing:3px;
+  font-weight:600;
+  letter-spacing:2px;
   cursor:pointer;
   transition:transform .2s ease, box-shadow .2s ease;
 }
 
 .start:active{
-  transform:scale(.88);
-  box-shadow:0 0 60px rgba(30,211,255,1);
+  transform:scale(.9);
+  box-shadow:0 0 40px rgba(30,211,255,.9);
 }
 
-/* LOADER RING */
-.loader{
-  margin-top:48px;
-  width:110px;
-  height:110px;
-  border-radius:50%;
-  border:2px solid rgba(30,211,255,.15);
-  border-top-color:var(--accent);
-  animation:spin 1.4s linear infinite;
+/* STATUS */
+.status{
+  margin-top:26px;
+  font-size:12px;
+  letter-spacing:1px;
   opacity:0;
 }
 
-.booting .loader{
-  opacity:1;
+/* ENERGY */
+.booting .core{
+  animation:charge 2.4s ease forwards;
+}
+
+.booting .status{
+  opacity:.6;
+}
+
+@keyframes charge{
+  0%{box-shadow:0 0 0 rgba(30,211,255,0);}
+  40%{box-shadow:0 0 24px rgba(30,211,255,.5);}
+  70%{box-shadow:0 0 56px rgba(30,211,255,.9);}
+  100%{box-shadow:0 0 80px rgba(30,211,255,1);}
 }
 
 /* HOME */
 #home{
   opacity:0;
   pointer-events:none;
-  background:linear-gradient(180deg,#05080F,#02040A);
+  background:linear-gradient(180deg,#05080F,#020409);
 }
 
 #home.active{
@@ -163,9 +144,9 @@ body{
 }
 
 .menu-title{
-  font-size:24px;
+  font-size:22px;
   letter-spacing:3px;
-  margin-bottom:36px;
+  margin-bottom:34px;
 }
 
 .menu{
@@ -176,7 +157,7 @@ body{
 }
 
 .card{
-  background:#0D1324;
+  background:#0E1424;
   padding:28px;
   border-radius:22px;
   text-align:center;
@@ -192,34 +173,37 @@ body{
   font-size:14px;
   color:var(--muted);
 }
-
-@keyframes spin{
-  to{transform:rotate(360deg);}
-}
 </style>
 </head>
 
 <body>
 
-<!-- AUDIO -->
-<audio id="bootSound" preload="auto">
-  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_5fdd7b65a5.mp3" type="audio/mpeg">
-</audio>
-
-<!-- BOOT -->
+<!-- BOOT SCREEN -->
 <div id="boot" class="screen">
   <div class="logo">TE<div class="core"></div>RA</div>
-  <div class="subtitle">SYSTEM INITIALIZATION</div>
-  <button class="start" onclick="startSystem()">START SYSTEM</button>
-  <div class="loader"></div>
+
+  <div class="title">Пробудження системи</div>
+  <div class="subtitle">Технології. Звук. Контроль.</div>
+
+  <button class="start" onclick="startSystem()">Увійти в TEQRA</button>
+
+  <div class="status">Ініціація ядра…</div>
 </div>
 
-<!-- HOME -->
+<!-- HOME SCREEN -->
 <div id="home" class="screen">
-  <div class="menu-title">SYSTEM ONLINE</div>
+  <div class="menu-title">TEQRA активна</div>
+
   <div class="menu">
-    <div class="card">💻<br><strong>Ноутбуки</strong><br><span>Робота • Навчання</span></div>
-    <div class="card">🎧<br><strong>Навушники</strong><br><span>Фокус • Звук</span></div>
+    <div class="card">
+      💻<br><strong>Ноутбуки</strong><br>
+      <span>Інструменти для роботи</span>
+    </div>
+
+    <div class="card">
+      🎧<br><strong>Навушники</strong><br>
+      <span>Чистий звук без шуму</span>
+    </div>
   </div>
 </div>
 
@@ -227,10 +211,6 @@ body{
 function startSystem(){
   const boot=document.getElementById('boot');
   const home=document.getElementById('home');
-  const sound=document.getElementById('bootSound');
-
-  sound.currentTime=0;
-  sound.play();
 
   boot.classList.add('booting');
 
