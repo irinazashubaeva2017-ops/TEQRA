@@ -1,204 +1,291 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TEQRA</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>TEQRA | Premium Boot</title>
 
 <style>
-:root{
-  --bg:#02040A;
-  --accent:#4FC3FF;
+:root {
+  --bg: #03070f;
+  --accent: #4FC3FF;
+  --accent-glow: rgba(79, 195, 255, 0.4);
+  --glass: rgba(255, 255, 255, 0.03);
 }
 
-*{margin:0;padding:0;box-sizing:border-box;}
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-body{
-  height:100vh;
-  background:radial-gradient(circle at center,#060B18,var(--bg));
-  overflow:hidden;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-family:system-ui;
+body {
+  height: 100vh;
+  background-color: var(--bg);
+  background-image: 
+    radial-gradient(circle at center, #0a162b 0%, var(--bg) 70%),
+    linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+    linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+  background-size: 100% 100%, 100% 2px, 3px 100%; /* CRT/Tech screen effect */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* PARTICLES */
-.particles{
-  position:fixed;
-  inset:0;
-  pointer-events:none;
+/* FLOATING DEPTH PARTICLES */
+.particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
 }
 
-.particles span{
-  position:absolute;
-  width:2px;
-  height:2px;
-  background:rgba(120,200,255,.8);
-  border-radius:50%;
-  animation:float linear infinite;
+.particles span {
+  position: absolute;
+  background: #fff;
+  border-radius: 50%;
+  opacity: 0.3;
+  filter: blur(1px);
+  animation: float linear infinite;
 }
 
-@keyframes float{
-  from{transform:translateY(110vh);opacity:0;}
-  10%{opacity:1;}
-  to{transform:translateY(-10vh);opacity:0;}
+@keyframes float {
+  from { transform: translateY(110vh) scale(1); opacity: 0; }
+  20% { opacity: 0.4; }
+  80% { opacity: 0.4; }
+  to { transform: translateY(-10vh) scale(1.2); opacity: 0; }
 }
 
-/* SCREENS */
-.screen{
-  position:absolute;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  transition:opacity .9s ease;
+/* SCREEN WRAPPERS */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s ease;
 }
 
-#home{
-  opacity:0;
-  pointer-events:none;
+#home {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(1.1);
 }
 
-/* POWER BUTTON */
-.power{
-  width:220px;
-  height:220px;
-  position:relative;
-  border-radius:50%;
-  cursor:pointer;
-  animation:breath 3s ease-in-out infinite;
+/* THE POWER HUB */
+.power-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
 }
 
-/* GLOW */
-.energy-glow{
-  position:absolute;
-  inset:-40px;
-  border-radius:50%;
-  background:radial-gradient(circle,
-    rgba(120,200,255,.6),
-    rgba(120,200,255,.2),
-    transparent 70%);
-  filter:blur(12px);
-  animation:pulse 3s ease-in-out infinite;
+.power-btn {
+  width: 180px;
+  height: 180px;
+  position: relative;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
 }
 
-/* OUTER RING */
-.energy-ring{
-  position:absolute;
-  inset:0;
-  border-radius:50%;
-  border:16px solid transparent;
-  border-top-color:#8adcff;
-  border-left-color:#4FC3FF;
-  transform:rotate(35deg);
-  animation:spin 4s linear infinite;
+.power-btn:active {
+  transform: scale(0.94);
 }
 
-/* INNER LINE */
-.energy-core{
-  position:absolute;
-  width:10px;
-  height:90px;
-  background:linear-gradient(180deg,#b7ecff,#4FC3FF);
-  top:24px;
-  left:50%;
-  transform:translateX(-50%) rotate(20deg);
-  border-radius:6px;
-  box-shadow:0 0 30px rgba(79,195,255,.9);
+/* LAYERED RING */
+.ring-outer {
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  border: 2px solid rgba(79, 195, 255, 0.1);
 }
 
-/* ANIMATIONS */
-@keyframes spin{
-  to{transform:rotate(395deg);}
+.ring-segmented {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  padding: 12px; /* Ring thickness */
+  background: conic-gradient(
+    from 45deg,
+    var(--accent) 0deg 40deg,
+    transparent 40deg 50deg,
+    var(--accent) 50deg 130deg,
+    transparent 130deg 140deg,
+    var(--accent) 140deg 220deg,
+    transparent 220deg 230deg,
+    var(--accent) 230deg 310deg,
+    transparent 310deg 320deg,
+    var(--accent) 320deg 360deg
+  );
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 12px), #fff calc(100% - 11px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 12px), #fff calc(100% - 11px));
+  opacity: 0.8;
+  animation: rotate 8s linear infinite;
 }
 
-@keyframes breath{
-  0%,100%{transform:scale(1);}
-  50%{transform:scale(1.05);}
+/* CORE SYMBOL */
+.power-symbol {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  border: 6px solid var(--accent);
+  border-radius: 50%;
+  border-top-color: transparent;
+  box-shadow: 0 0 20px var(--accent-glow), inset 0 0 10px var(--accent-glow);
 }
 
-@keyframes pulse{
-  0%,100%{opacity:.5;}
-  50%{opacity:1;}
+.power-symbol::after {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 30px;
+  background: var(--accent);
+  border-radius: 3px;
+  box-shadow: 0 0 20px var(--accent-glow);
 }
 
-/* ENTER EFFECT */
-.power.enter{
-  animation:enter 1.2s ease forwards;
+/* GLOW EFFECTS */
+.ambient-glow {
+  position: absolute;
+  inset: -50px;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(20px);
+  animation: pulse 4s ease-in-out infinite;
+  pointer-events: none;
 }
 
-@keyframes enter{
-  to{
-    transform:scale(3);
-    opacity:0;
-    filter:blur(30px);
-  }
+/* STATUS TEXT */
+.status {
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  font-size: 12px;
+  font-weight: 300;
+  opacity: 0.6;
+  animation: blink 2s infinite;
 }
 
-/* HOME */
-.menu{
-  display:grid;
-  gap:20px;
-  text-align:center;
+/* KEYFRAMES */
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
-.card{
-  padding:26px 40px;
-  border-radius:20px;
-  background:#0E1428;
-  color:white;
-  font-size:20px;
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.1); }
 }
+
+@keyframes blink {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.7; }
+}
+
+/* TRANSITION STATES */
+.booting .power-btn {
+  animation: launch 1s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards;
+}
+
+.booting .status { opacity: 0; }
+
+@keyframes launch {
+  0% { transform: scale(1); filter: brightness(1) blur(0); }
+  30% { transform: scale(0.9); filter: brightness(2); }
+  100% { transform: scale(10); filter: brightness(5) blur(20px); opacity: 0; }
+}
+
+/* HOME CONTENT */
+.menu {
+  display: grid;
+  gap: 15px;
+  width: 90%;
+  max-width: 400px;
+}
+
+.card {
+  padding: 20px;
+  background: linear-gradient(135deg, #0e1a33 0%, #070d1a 100%);
+  border: 1px solid rgba(79, 195, 255, 0.1);
+  border-radius: 12px;
+  color: white;
+  text-align: center;
+  font-weight: 500;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
 </style>
 </head>
 
 <body>
 
-<!-- PARTICLES -->
 <div class="particles" id="particles"></div>
 
-<!-- BOOT -->
-<div class="screen" id="boot">
-  <div class="power" id="power">
-    <div class="energy-glow"></div>
-    <div class="energy-ring"></div>
-    <div class="energy-core"></div>
+<div class="screen" id="boot-screen">
+  <div class="power-container" id="container">
+    <div class="ambient-glow"></div>
+    <div class="power-btn" id="activate-btn">
+      <div class="ring-outer"></div>
+      <div class="ring-segmented"></div>
+      <div class="power-symbol"></div>
+    </div>
+    <div class="status">System Ready</div>
   </div>
 </div>
 
-<!-- HOME -->
 <div class="screen" id="home">
   <div class="menu">
-    <div class="card">💻 Ноутбуки</div>
-    <div class="card">🎧 Навушники</div>
+    <div class="card">TEQRA OS v1.0</div>
+    <div class="card">💻 Laptops & Hardware</div>
+    <div class="card">🎧 Pro Audio</div>
+    <div class="card">⚙️ System Settings</div>
   </div>
 </div>
 
 <script>
-/* PARTICLES */
-const p=document.getElementById('particles');
-for(let i=0;i<70;i++){
-  const s=document.createElement('span');
-  s.style.left=Math.random()*100+'%';
-  s.style.animationDuration=10+Math.random()*15+'s';
-  s.style.animationDelay=Math.random()*-20+'s';
-  p.appendChild(s);
+/* GENERATE PARTICLES */
+const pContainer = document.getElementById('particles');
+for(let i=0; i<50; i++) {
+  const span = document.createElement('span');
+  const size = Math.random() * 3 + 1;
+  span.style.width = size + 'px';
+  span.style.height = size + 'px';
+  span.style.left = Math.random() * 100 + '%';
+  span.style.animationDuration = (Math.random() * 10 + 10) + 's';
+  span.style.animationDelay = (Math.random() * -20) + 's';
+  pContainer.appendChild(span);
 }
 
-/* ENTER */
-const power=document.getElementById('power');
-const boot=document.getElementById('boot');
-const home=document.getElementById('home');
+/* BOOT LOGIC */
+const btn = document.getElementById('activate-btn');
+const container = document.getElementById('container');
+const bootScreen = document.getElementById('boot-screen');
+const homeScreen = document.getElementById('home');
 
-power.onclick=()=>{
-  power.classList.add('enter');
-  setTimeout(()=>{
-    boot.style.opacity=0;
-    home.style.opacity=1;
-    home.style.pointerEvents='auto';
-  },900);
-};
+btn.addEventListener('click', () => {
+  // Add launch class
+  container.classList.add('booting');
+  
+  // High-end feel: Slight delay before switching screens
+  setTimeout(() => {
+    bootScreen.style.opacity = '0';
+    bootScreen.style.transform = 'scale(1.2)';
+    
+    setTimeout(() => {
+      bootScreen.style.display = 'none';
+      homeScreen.style.opacity = '1';
+      homeScreen.style.transform = 'scale(1)';
+      homeScreen.style.pointerEvents = 'auto';
+    }, 400);
+    
+  }, 600);
+});
 </script>
 
 </body>
