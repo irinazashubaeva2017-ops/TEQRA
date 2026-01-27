@@ -5,25 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TEQRA</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet">
-
 <style>
 :root{
   --bg:#02040A;
-  --bg2:#070B18;
   --accent:#4FC3FF;
-  --accent2:#7A8CFF;
-  --text:#E6EAF0;
 }
 
 *{margin:0;padding:0;box-sizing:border-box;}
 
 body{
   height:100vh;
-  background:radial-gradient(circle at center, var(--bg2), var(--bg));
-  font-family:'Space Grotesk',sans-serif;
+  background:radial-gradient(circle at center,#060B18,var(--bg));
   overflow:hidden;
-  color:var(--text);
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
 /* PARTICLES */
@@ -31,7 +27,6 @@ body{
   position:fixed;
   inset:0;
   pointer-events:none;
-  z-index:0;
 }
 
 .particles span{
@@ -44,145 +39,64 @@ body{
 }
 
 @keyframes float{
-  from{transform:translateY(100vh);opacity:0;}
+  from{transform:translateY(110vh);opacity:0;}
   10%{opacity:1;}
   to{transform:translateY(-10vh);opacity:0;}
 }
 
-.screen{
-  position:absolute;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:1;
-}
-
-/* LOGO */
-.logo{
-  display:flex;
-  align-items:center;
-  font-size:64px;
-  letter-spacing:12px;
-}
-
-.letter{
-  opacity:0;
-  transform:translateY(10px);
-  transition:all .6s ease;
-}
-
-.letter.active{
-  opacity:.85;
-  transform:translateY(0);
-  filter:drop-shadow(0 0 10px rgba(79,195,255,.35));
-}
-
-/* CORE (WIDER) */
-.core{
-  width:110px; /* ШИРЕ */
-  height:70px;
-  margin:0 20px;
+/* POWER BUTTON */
+.power{
+  width:140px;
+  height:140px;
+  border-radius:50%;
+  border:4px solid rgba(79,195,255,.4);
   position:relative;
   cursor:pointer;
+  animation:breath 3s ease-in-out infinite;
 }
 
-.core-ring{
+.power::before{
+  content:'';
   position:absolute;
-  inset:0;
-  border-radius:40px;
-  border:3px solid transparent;
-  border-top-color:var(--accent);
-  border-right-color:var(--accent2);
+  inset:18px;
+  border-radius:50%;
+  border-top:5px solid var(--accent);
+  border-right:5px solid var(--accent);
   animation:spin 4s linear infinite;
+}
+
+.power::after{
+  content:'';
+  position:absolute;
+  top:14px;
+  left:50%;
+  transform:translateX(-50%);
+  width:6px;
+  height:36px;
+  background:var(--accent);
+  border-radius:3px;
 }
 
 @keyframes spin{
   to{transform:rotate(360deg);}
 }
 
-.core-line{
-  position:absolute;
-  top:-14px;
-  left:50%;
-  transform:translateX(-50%);
-  width:4px;
-  height:26px;
-  background:linear-gradient(180deg,var(--accent),var(--accent2));
-  border-radius:3px;
+@keyframes breath{
+  0%,100%{box-shadow:0 0 25px rgba(79,195,255,.4);}
+  50%{box-shadow:0 0 55px rgba(79,195,255,.9);}
 }
 
-.core-glow{
-  position:absolute;
-  inset:-24px;
-  border-radius:50px;
-  background:radial-gradient(circle, rgba(79,195,255,.45), transparent 70%);
-  animation:pulse 3s ease-in-out infinite;
+/* ENTER */
+.enter{
+  animation:enter 1.2s ease forwards;
 }
 
-@keyframes pulse{
-  0%,100%{opacity:.4;}
-  50%{opacity:.9;}
-}
-
-/* TELEPORT */
-.teleport{
-  animation:warp 1.2s ease forwards;
-}
-
-@keyframes warp{
+@keyframes enter{
   to{
-    transform:scale(.25);
-    filter:blur(16px);
+    transform:scale(3);
     opacity:0;
+    filter:blur(20px);
   }
-}
-
-.teleport .letter{
-  opacity:0;
-}
-
-/* FLASH */
-.flash{
-  position:absolute;
-  inset:0;
-  background:radial-gradient(circle, rgba(255,255,255,.3), transparent 60%);
-  opacity:0;
-  pointer-events:none;
-}
-
-.flash.active{
-  animation:flash .4s ease;
-}
-
-@keyframes flash{
-  0%{opacity:0;}
-  50%{opacity:1;}
-  100%{opacity:0;}
-}
-
-/* HOME */
-#home{
-  opacity:0;
-  pointer-events:none;
-  background:radial-gradient(circle at top, #0A1024, #02040A);
-}
-
-#home.active{
-  opacity:1;
-  pointer-events:auto;
-}
-
-.menu{
-  display:grid;
-  gap:22px;
-  text-align:center;
-}
-
-.card{
-  padding:28px;
-  border-radius:22px;
-  background:#0E1428;
 }
 </style>
 </head>
@@ -190,40 +104,12 @@ body{
 <body>
 
 <div class="particles" id="particles"></div>
-
-<div id="boot" class="screen">
-  <div class="logo" id="logo">
-    <span class="letter">T</span>
-    <span class="letter">E</span>
-
-    <div class="core" id="core">
-      <div class="core-glow"></div>
-      <div class="core-ring"></div>
-      <div class="core-line"></div>
-    </div>
-
-    <span class="letter">R</span>
-    <span class="letter">A</span>
-  </div>
-  <div class="flash" id="flash"></div>
-</div>
-
-<div id="home" class="screen">
-  <div class="menu">
-    <div class="card">💻 Ноутбуки</div>
-    <div class="card">🎧 Навушники</div>
-  </div>
-</div>
+<div class="power" id="power"></div>
 
 <script>
-/* letters */
-document.querySelectorAll('.letter').forEach((l,i)=>{
-  setTimeout(()=>l.classList.add('active'),300+i*120);
-});
-
 /* particles */
 const p=document.getElementById('particles');
-for(let i=0;i<40;i++){
+for(let i=0;i<50;i++){
   const s=document.createElement('span');
   s.style.left=Math.random()*100+'%';
   s.style.animationDuration=8+Math.random()*10+'s';
@@ -232,15 +118,8 @@ for(let i=0;i<40;i++){
 }
 
 /* click */
-const core=document.getElementById('core');
-const logo=document.getElementById('logo');
-const home=document.getElementById('home');
-const flash=document.getElementById('flash');
-
-core.onclick=()=>{
-  logo.classList.add('teleport');
-  flash.classList.add('active');
-  setTimeout(()=>home.classList.add('active'),1100);
+document.getElementById('power').onclick=()=>{
+  document.getElementById('power').classList.add('enter');
 };
 </script>
 
