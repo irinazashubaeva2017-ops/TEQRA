@@ -10,8 +10,9 @@
 <style>
 :root{
   --bg:#02040A;
-  --bg2:#0A1020;
-  --accent:#1ED3FF;
+  --bg2:#070B18;
+  --accent:#4FC3FF;
+  --accent2:#7A8CFF;
   --text:#E6EAF0;
 }
 
@@ -22,6 +23,7 @@ body{
   height:100vh;
   overflow:hidden;
   font-family:'Space Grotesk',sans-serif;
+  color:var(--text);
 }
 
 .screen{
@@ -38,88 +40,110 @@ body{
   align-items:center;
   font-size:64px;
   letter-spacing:12px;
+  z-index:2;
 }
 
-/* LETTERS */
 .letter{
-  opacity:0;
-  transform:translateY(24px) scale(.95);
-  animation:letterIn .6s ease forwards;
+  opacity:0.25;
 }
 
-.letter:nth-child(1){animation-delay:.2s}
-.letter:nth-child(2){animation-delay:.4s}
-.letter:nth-child(3){animation-delay:.6s}
-.letter:nth-child(4){animation-delay:.8s}
-.letter:nth-child(5){animation-delay:1s}
-
-@keyframes letterIn{
-  to{
-    opacity:1;
-    transform:translateY(0) scale(1);
-  }
-}
-
-/* POWER Q */
-.power{
-  width:62px;
-  height:62px;
-  margin:0 14px;
+/* POWER CORE (Q) */
+.core{
+  width:70px;
+  height:70px;
+  margin:0 16px;
   border-radius:50%;
-  border:2px solid var(--accent);
   position:relative;
-  opacity:0;
-  transform:scale(.8);
-}
-
-.power::before{
-  content:'';
-  position:absolute;
-  top:-10px;
-  left:50%;
-  transform:translateX(-50%);
-  width:2px;
-  height:20px;
-  background:var(--accent);
-}
-
-/* ACTIVATE POWER */
-.awake .power{
-  opacity:1;
-  transform:scale(1);
-  animation:pulse 2.4s ease-in-out infinite;
   cursor:pointer;
 }
 
+.core-ring{
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  border:2px solid transparent;
+  border-top-color:var(--accent);
+  border-right-color:var(--accent2);
+  animation:idleSpin 4s linear infinite;
+}
+
+.core-line{
+  position:absolute;
+  top:-12px;
+  left:50%;
+  transform:translateX(-50%);
+  width:3px;
+  height:22px;
+  background:linear-gradient(180deg,var(--accent),var(--accent2));
+  border-radius:2px;
+}
+
+.core-glow{
+  position:absolute;
+  inset:-18px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(79,195,255,0.35), transparent 70%);
+  animation:pulse 3s ease-in-out infinite;
+}
+
+@keyframes idleSpin{
+  to{transform:rotate(360deg);}
+}
+
 @keyframes pulse{
-  0%{box-shadow:0 0 0 rgba(30,211,255,0);}
-  50%{box-shadow:0 0 28px rgba(30,211,255,.7);}
-  100%{box-shadow:0 0 0 rgba(30,211,255,0);}
+  0%,100%{opacity:.4;}
+  50%{opacity:.8;}
 }
 
-/* PRESS */
-.power:active{
-  transform:scale(.85);
-  box-shadow:0 0 60px rgba(30,211,255,1);
+/* TELEPORT */
+.teleport .core-ring{
+  animation:spinFast .8s linear infinite;
 }
 
-/* TRANSITION */
-.transition{
-  animation:warp 1.6s ease forwards;
+@keyframes spinFast{
+  to{transform:rotate(720deg);}
+}
+
+.teleport .core-glow{
+  animation:burst .8s ease forwards;
+}
+
+@keyframes burst{
+  to{transform:scale(2.2);opacity:0;}
+}
+
+.teleport{
+  animation:warp 1.4s ease forwards;
 }
 
 @keyframes warp{
   to{
-    transform:scale(1.4);
+    transform:scale(1.6);
     opacity:0;
   }
+}
+
+/* PORTAL OVERLAY */
+.portal{
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle at center,
+    rgba(79,195,255,0.25),
+    rgba(10,14,30,0.95) 70%);
+  opacity:0;
+  transition:opacity .6s ease;
+  z-index:1;
+}
+
+.portal.active{
+  opacity:1;
 }
 
 /* HOME */
 #home{
   opacity:0;
   pointer-events:none;
-  color:var(--text);
+  background:radial-gradient(circle at top, #0A1024, #02040A);
 }
 
 #home.active{
@@ -136,7 +160,7 @@ body{
 .card{
   padding:28px;
   border-radius:22px;
-  background:#0E1424;
+  background:#0E1428;
 }
 </style>
 </head>
@@ -145,13 +169,21 @@ body{
 
 <!-- BOOT -->
 <div id="boot" class="screen">
-  <div id="logo" class="logo">
+  <div class="logo" id="logo">
     <span class="letter">T</span>
     <span class="letter">E</span>
-    <div id="power" class="power letter"></div>
+
+    <div class="core" id="core">
+      <div class="core-glow"></div>
+      <div class="core-ring"></div>
+      <div class="core-line"></div>
+    </div>
+
     <span class="letter">R</span>
     <span class="letter">A</span>
   </div>
+
+  <div class="portal" id="portal"></div>
 </div>
 
 <!-- HOME -->
@@ -163,16 +195,14 @@ body{
 </div>
 
 <script>
+const core=document.getElementById('core');
 const logo=document.getElementById('logo');
-const power=document.getElementById('power');
+const portal=document.getElementById('portal');
 const home=document.getElementById('home');
 
-setTimeout(()=>{
-  logo.classList.add('awake');
-},1400);
-
-power.addEventListener('click',()=>{
-  logo.classList.add('transition');
+core.addEventListener('click',()=>{
+  logo.classList.add('teleport');
+  portal.classList.add('active');
 
   setTimeout(()=>{
     home.classList.add('active');
