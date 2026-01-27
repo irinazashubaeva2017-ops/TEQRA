@@ -39,29 +39,49 @@
       max-width: 420px;
       width: 100%;
       padding: 24px;
+      animation: fadeIn 0.6s ease-out;
     }
 
     .logo {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 40px;
+      font-size: 44px;
       font-weight: 600;
-      letter-spacing: 2px;
-      margin-bottom: 12px;
+      letter-spacing: 4px;
+      margin-bottom: 16px;
+    }
+
+    .q-power {
+      position: relative;
+      display: inline-block;
+      color: var(--accent);
+    }
+
+    .q-power::before {
+      content: '';
+      position: absolute;
+      top: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 3px;
+      height: 12px;
+      background-color: var(--accent);
+      border-radius: 2px;
     }
 
     .subtitle {
-      font-size: 16px;
+      font-size: 15px;
       color: var(--text-secondary);
-      margin-bottom: 40px;
+      margin-bottom: 48px;
+      line-height: 1.6;
     }
 
     .power-btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 220px;
-      height: 56px;
-      border-radius: 28px;
+      width: 240px;
+      height: 58px;
+      border-radius: 30px;
       background-color: var(--accent);
       color: #0E1116;
       font-size: 16px;
@@ -76,17 +96,34 @@
       transform: translateY(-1px);
     }
 
+    .power-btn:active {
+      transform: scale(0.97);
+    }
+
     .footer {
-      margin-top: 32px;
+      margin-top: 36px;
       font-size: 13px;
-      color: var(--text-secondary);
+      color: #7F8898;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   </style>
 </head>
 
 <body>
   <div class="container">
-    <div class="logo">TEQRA</div>
+    <div class="logo">
+      TE<span class="q-power">Q</span>RA
+    </div>
 
     <div class="subtitle">
       Ноутбуки та звук. Без зайвого.
