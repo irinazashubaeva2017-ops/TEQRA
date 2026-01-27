@@ -9,9 +9,10 @@
 :root{
   --bg:#020408;
   --accent:#4FC3FF;
-  --accent2:#6A7CFF;
-  --glass:rgba(79,195,255,0.08);
-  --border:rgba(79,195,255,0.25);
+  --accent2:#7B8CFF;
+  --glow:rgba(79,195,255,.55);
+  --glass:rgba(79,195,255,.08);
+  --border:rgba(79,195,255,.25);
 }
 
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -25,17 +26,12 @@ body{
 }
 
 /* ===== PARTICLES ===== */
-.particles{
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  z-index:1;
-}
+.particles{position:fixed;inset:0;pointer-events:none;z-index:1}
 .particle{
   position:absolute;
   background:white;
   border-radius:50%;
-  opacity:.15;
+  opacity:.12;
   animation:float linear infinite;
 }
 @keyframes float{
@@ -66,16 +62,20 @@ body{
   display:flex;
   flex-direction:column;
   align-items:center;
-  gap:28px;
+  gap:26px;
 }
 
 .power-btn{
-  width:240px;
-  height:240px;
+  width:260px;
+  height:260px;
   position:relative;
   border-radius:50%;
   cursor:pointer;
   transform-style:preserve-3d;
+  transition:transform .2s ease;
+}
+.power-btn:active{
+  transform:scale(.96) rotateX(8deg);
 }
 
 .ring{
@@ -86,30 +86,41 @@ body{
 
 .ring.outer{
   border:2px solid var(--border);
-  box-shadow:0 0 30px rgba(79,195,255,.3);
-  animation:spin 14s linear infinite;
+  box-shadow:0 0 40px rgba(79,195,255,.25);
+  animation:spin 16s linear infinite;
 }
 
 .ring.dashed{
   inset:18px;
   border:3px dashed var(--accent);
-  opacity:.6;
-  animation:spin 9s linear infinite reverse;
+  opacity:.55;
+  animation:spin 10s linear infinite reverse;
 }
 
 .ring.inner{
-  inset:42px;
+  inset:44px;
   border:3px solid var(--accent2);
   border-left-color:transparent;
   border-right-color:transparent;
-  animation:spin 4s ease-in-out infinite;
+  animation:spin 4.5s ease-in-out infinite;
+}
+
+.metal{
+  position:absolute;
+  inset:70px;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at top,#1a2a44,#020408 70%);
+  box-shadow:
+    inset 0 0 25px rgba(0,0,0,.8),
+    inset 0 0 8px rgba(255,255,255,.08);
 }
 
 .core{
   position:absolute;
-  inset:70px;
-  background:radial-gradient(circle,#fff 0%,var(--accent) 45%,transparent 70%);
+  inset:88px;
   border-radius:50%;
+  background:radial-gradient(circle,#fff 0%,var(--accent) 45%,transparent 70%);
   filter:blur(6px);
   animation:pulse 3s ease-in-out infinite;
 }
@@ -122,31 +133,23 @@ body{
   justify-content:center;
   z-index:3;
 }
-
 .power-icon svg{
-  width:64px;
-  height:64px;
+  width:66px;
+  height:66px;
   fill:white;
-  filter:drop-shadow(0 0 15px var(--accent));
+  filter:drop-shadow(0 0 18px var(--accent));
 }
 
 .status{
   letter-spacing:4px;
   font-size:12px;
-  opacity:.6;
+  opacity:.65;
   color:var(--accent);
 }
 
 /* ===== HOME ===== */
-.os-header{
-  margin-bottom:36px;
-  text-align:center;
-}
-.os-title{
-  font-size:11px;
-  letter-spacing:6px;
-  color:var(--accent);
-}
+.os-header{margin-bottom:36px;text-align:center}
+.os-title{font-size:11px;letter-spacing:6px;color:var(--accent)}
 
 .menu{
   width:90%;
@@ -166,10 +169,7 @@ body{
   border:1px solid var(--border);
   transition:.2s;
 }
-.card:active{
-  transform:scale(.97);
-  background:rgba(79,195,255,.14);
-}
+.card:active{transform:scale(.97);background:rgba(79,195,255,.14)}
 
 .icon{
   width:44px;
@@ -182,16 +182,13 @@ body{
   color:var(--accent);
 }
 
-.label{
-  font-size:16px;
-  letter-spacing:1px;
-}
+.label{font-size:16px;letter-spacing:1px}
 
 /* ===== ANIMATIONS ===== */
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes pulse{
   0%,100%{transform:scale(1);opacity:.8}
-  50%{transform:scale(1.15);opacity:1}
+  50%{transform:scale(1.18);opacity:1}
 }
 
 /* ===== LAUNCH ===== */
@@ -199,9 +196,9 @@ body{
 .launch .dashed{transform:scale(2.2);opacity:0}
 .launch .inner{transform:scale(3);opacity:0}
 .launch .core{
-  transform:scale(30);
+  transform:scale(32);
   background:#fff;
-  filter:blur(2px);
+  filter:blur(1px);
 }
 </style>
 </head>
@@ -217,6 +214,7 @@ body{
       <div class="ring outer"></div>
       <div class="ring dashed"></div>
       <div class="ring inner"></div>
+      <div class="metal"></div>
       <div class="core"></div>
       <div class="power-icon">
         <svg viewBox="0 0 24 24">
@@ -234,20 +232,10 @@ body{
     <div class="os-header">
       <div class="os-title">TEQRA OS v1.0</div>
     </div>
-
     <div class="menu">
-      <div class="card">
-        <div class="icon">▢</div>
-        <div class="label">Ноутбуки та залізо</div>
-      </div>
-      <div class="card">
-        <div class="icon">≋</div>
-        <div class="label">Професійний звук</div>
-      </div>
-      <div class="card">
-        <div class="icon">⚙</div>
-        <div class="label">Налаштування системи</div>
-      </div>
+      <div class="card"><div class="icon">▢</div><div class="label">Ноутбуки та залізо</div></div>
+      <div class="card"><div class="icon">≋</div><div class="label">Професійний звук</div></div>
+      <div class="card"><div class="icon">⚙</div><div class="label">Налаштування системи</div></div>
     </div>
   </div>
 </div>
@@ -255,48 +243,62 @@ body{
 <script>
 /* ===== PARTICLES ===== */
 const pc=document.getElementById('particles');
-for(let i=0;i<70;i++){
+for(let i=0;i<80;i++){
   const d=document.createElement('div');
   d.className='particle';
   const s=Math.random()*3+1;
   d.style.width=s+'px';
   d.style.height=s+'px';
   d.style.left=Math.random()*100+'%';
-  d.style.animationDuration=15+Math.random()*25+'s';
-  d.style.animationDelay=Math.random()*-30+'s';
+  d.style.animationDuration=18+Math.random()*30+'s';
+  d.style.animationDelay=Math.random()*-40+'s';
   pc.appendChild(d);
 }
 
-/* ===== AUDIO ===== */
-let audioCtx;
-function playBootSound(){
-  audioCtx ||= new (window.AudioContext||window.webkitAudioContext)();
-  const t=audioCtx.currentTime;
+/* ===== PREMIUM BOOT SOUND ===== */
+let ctx;
+function bootSound(){
+  ctx ||= new (window.AudioContext||window.webkitAudioContext)();
+  const t=ctx.currentTime;
 
-  const osc=audioCtx.createOscillator();
-  const gain=audioCtx.createGain();
-  osc.type='sine';
-  osc.frequency.setValueAtTime(90,t);
-  osc.frequency.exponentialRampToValueAtTime(220,t+1.2);
-  gain.gain.setValueAtTime(0.001,t);
-  gain.gain.exponentialRampToValueAtTime(0.25,t+0.4);
-  gain.gain.exponentialRampToValueAtTime(0.0001,t+1.5);
-  osc.connect(gain).connect(audioCtx.destination);
-  osc.start();
-  osc.stop(t+1.6);
+  // deep hum
+  const hum=ctx.createOscillator();
+  const hg=ctx.createGain();
+  hum.type='sawtooth';
+  hum.frequency.setValueAtTime(55,t);
+  hg.gain.setValueAtTime(0.001,t);
+  hg.gain.exponentialRampToValueAtTime(0.15,t+0.6);
+  hg.gain.exponentialRampToValueAtTime(0.0001,t+2.2);
+  hum.connect(hg).connect(ctx.destination);
+  hum.start();
+  hum.stop(t+2.3);
 
-  const buf=audioCtx.createBuffer(1,audioCtx.sampleRate*1.1,audioCtx.sampleRate);
+  // rising energy
+  const rise=ctx.createOscillator();
+  const rg=ctx.createGain();
+  rise.type='sine';
+  rise.frequency.setValueAtTime(120,t+0.2);
+  rise.frequency.exponentialRampToValueAtTime(900,t+1.6);
+  rg.gain.setValueAtTime(0.001,t+0.2);
+  rg.gain.exponentialRampToValueAtTime(0.18,t+0.9);
+  rg.gain.exponentialRampToValueAtTime(0.0001,t+1.8);
+  rise.connect(rg).connect(ctx.destination);
+  rise.start(t+0.2);
+  rise.stop(t+1.9);
+
+  // whoosh
+  const buf=ctx.createBuffer(1,ctx.sampleRate*1.2,ctx.sampleRate);
   const data=buf.getChannelData(0);
   for(let i=0;i<data.length;i++){data[i]=(Math.random()*2-1)*(1-i/data.length);}
-  const noise=audioCtx.createBufferSource();
+  const noise=ctx.createBufferSource();
   noise.buffer=buf;
-  const ng=audioCtx.createGain();
-  ng.gain.setValueAtTime(0.001,t+0.6);
-  ng.gain.exponentialRampToValueAtTime(0.18,t+0.9);
-  ng.gain.exponentialRampToValueAtTime(0.0001,t+1.4);
-  noise.connect(ng).connect(audioCtx.destination);
-  noise.start(t+0.6);
-  noise.stop(t+1.5);
+  const ng=ctx.createGain();
+  ng.gain.setValueAtTime(0.001,t+0.9);
+  ng.gain.exponentialRampToValueAtTime(0.2,t+1.2);
+  ng.gain.exponentialRampToValueAtTime(0.0001,t+2);
+  noise.connect(ng).connect(ctx.destination);
+  noise.start(t+0.9);
+  noise.stop(t+2.1);
 }
 
 /* ===== LAUNCH ===== */
@@ -306,7 +308,7 @@ const boot=document.getElementById('boot');
 const home=document.getElementById('home');
 
 btn.onclick=()=>{
-  playBootSound();
+  bootSound();
   power.classList.add('launch');
   setTimeout(()=>{
     boot.style.opacity=0;
@@ -317,8 +319,8 @@ btn.onclick=()=>{
       home.style.pointerEvents='auto';
       home.style.transform='scale(1)';
       home.style.filter='blur(0)';
-    },600);
-  },800);
+    },650);
+  },900);
 };
 </script>
 
