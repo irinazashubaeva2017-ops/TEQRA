@@ -26,12 +26,36 @@ body{
   color:var(--text);
 }
 
+/* PARTICLES */
+.particles{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+}
+
+.particles span{
+  position:absolute;
+  width:2px;
+  height:2px;
+  background:rgba(120,200,255,.8);
+  border-radius:50%;
+  animation:float linear infinite;
+}
+
+@keyframes float{
+  from{transform:translateY(100vh);opacity:0;}
+  10%{opacity:1;}
+  to{transform:translateY(-10vh);opacity:0;}
+}
+
 .screen{
   position:absolute;
   inset:0;
   display:flex;
   align-items:center;
   justify-content:center;
+  z-index:1;
 }
 
 /* LOGO */
@@ -51,29 +75,23 @@ body{
 .letter.active{
   opacity:.85;
   transform:translateY(0);
-  filter:drop-shadow(0 0 8px rgba(79,195,255,.35));
+  filter:drop-shadow(0 0 10px rgba(79,195,255,.35));
 }
 
-/* CORE */
+/* CORE (WIDER) */
 .core{
-  width:72px;
-  height:72px;
-  margin:0 18px;
+  width:110px; /* ШИРЕ */
+  height:70px;
+  margin:0 20px;
   position:relative;
   cursor:pointer;
-  animation:float 6s ease-in-out infinite;
-}
-
-@keyframes float{
-  0%,100%{transform:translateY(0);}
-  50%{transform:translateY(-4px);}
 }
 
 .core-ring{
   position:absolute;
   inset:0;
-  border-radius:50%;
-  border:2px solid transparent;
+  border-radius:40px;
+  border:3px solid transparent;
   border-top-color:var(--accent);
   border-right-color:var(--accent2);
   animation:spin 4s linear infinite;
@@ -85,20 +103,20 @@ body{
 
 .core-line{
   position:absolute;
-  top:-12px;
+  top:-14px;
   left:50%;
   transform:translateX(-50%);
-  width:3px;
-  height:22px;
+  width:4px;
+  height:26px;
   background:linear-gradient(180deg,var(--accent),var(--accent2));
-  border-radius:2px;
+  border-radius:3px;
 }
 
 .core-glow{
   position:absolute;
-  inset:-18px;
-  border-radius:50%;
-  background:radial-gradient(circle, rgba(79,195,255,.35), transparent 70%);
+  inset:-24px;
+  border-radius:50px;
+  background:radial-gradient(circle, rgba(79,195,255,.45), transparent 70%);
   animation:pulse 3s ease-in-out infinite;
 }
 
@@ -108,36 +126,27 @@ body{
 }
 
 /* TELEPORT */
-.teleport .core-ring{
-  animation:spinFast .6s linear infinite;
-}
-
-@keyframes spinFast{
-  to{transform:rotate(720deg);}
-}
-
 .teleport{
   animation:warp 1.2s ease forwards;
 }
 
 @keyframes warp{
   to{
-    transform:scale(.2);
-    filter:blur(14px);
+    transform:scale(.25);
+    filter:blur(16px);
     opacity:0;
   }
 }
 
 .teleport .letter{
   opacity:0;
-  transform:translateY(-10px) scale(.9);
 }
 
 /* FLASH */
 .flash{
   position:absolute;
   inset:0;
-  background:radial-gradient(circle, rgba(255,255,255,.25), transparent 60%);
+  background:radial-gradient(circle, rgba(255,255,255,.3), transparent 60%);
   opacity:0;
   pointer-events:none;
 }
@@ -180,6 +189,8 @@ body{
 
 <body>
 
+<div class="particles" id="particles"></div>
+
 <div id="boot" class="screen">
   <div class="logo" id="logo">
     <span class="letter">T</span>
@@ -205,11 +216,22 @@ body{
 </div>
 
 <script>
-const letters=document.querySelectorAll('.letter');
-letters.forEach((l,i)=>{
+/* letters */
+document.querySelectorAll('.letter').forEach((l,i)=>{
   setTimeout(()=>l.classList.add('active'),300+i*120);
 });
 
+/* particles */
+const p=document.getElementById('particles');
+for(let i=0;i<40;i++){
+  const s=document.createElement('span');
+  s.style.left=Math.random()*100+'%';
+  s.style.animationDuration=8+Math.random()*10+'s';
+  s.style.animationDelay=Math.random()*-20+'s';
+  p.appendChild(s);
+}
+
+/* click */
 const core=document.getElementById('core');
 const logo=document.getElementById('logo');
 const home=document.getElementById('home');
