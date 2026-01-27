@@ -52,7 +52,7 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  transition:opacity .9s ease;
+  transition:opacity .8s ease;
 }
 
 #home{
@@ -62,69 +62,72 @@ body{
 
 /* POWER BUTTON */
 .power{
-  width:220px;
-  height:220px;
-  position:relative;
+  width:180px;
+  height:180px;
   border-radius:50%;
+  position:relative;
   cursor:pointer;
   animation:breath 3s ease-in-out infinite;
 }
 
-/* GLOW */
-.energy-glow{
-  position:absolute;
-  inset:-40px;
-  border-radius:50%;
-  background:radial-gradient(circle,
-    rgba(120,200,255,.6),
-    rgba(120,200,255,.2),
-    transparent 70%);
-  filter:blur(12px);
-  animation:pulse 3s ease-in-out infinite;
-}
-
 /* OUTER RING */
-.energy-ring{
+.power::before{
+  content:'';
   position:absolute;
   inset:0;
   border-radius:50%;
-  border:16px solid transparent;
-  border-top-color:#8adcff;
-  border-left-color:#4FC3FF;
-  transform:rotate(35deg);
-  animation:spin 4s linear infinite;
+  border:10px solid rgba(79,195,255,.25);
 }
 
-/* INNER LINE */
-.energy-core{
+/* ENERGY RING */
+.power::after{
+  content:'';
   position:absolute;
-  width:10px;
-  height:90px;
-  background:linear-gradient(180deg,#b7ecff,#4FC3FF);
-  top:24px;
-  left:50%;
-  transform:translateX(-50%) rotate(20deg);
-  border-radius:6px;
-  box-shadow:0 0 30px rgba(79,195,255,.9);
+  inset:16px;
+  border-radius:50%;
+  border:10px solid transparent;
+  border-top-color:var(--accent);
+  border-right-color:var(--accent);
+  animation:spin 3s linear infinite;
 }
 
-/* ANIMATIONS */
+/* LINE */
+.line{
+  position:absolute;
+  top:22px;
+  left:50%;
+  transform:translateX(-50%);
+  width:8px;
+  height:52px;
+  background:var(--accent);
+  border-radius:4px;
+}
+
+/* GLOW */
+.glow{
+  position:absolute;
+  inset:-30px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(79,195,255,.45), transparent 70%);
+  animation:pulse 3s ease-in-out infinite;
+}
+
 @keyframes spin{
-  to{transform:rotate(395deg);}
+  to{transform:rotate(360deg);}
 }
 
 @keyframes breath{
-  0%,100%{transform:scale(1);}
-  50%{transform:scale(1.05);}
+  0%,100%{box-shadow:0 0 40px rgba(79,195,255,.4);}
+  50%{box-shadow:0 0 90px rgba(79,195,255,.9);}
 }
 
 @keyframes pulse{
-  0%,100%{opacity:.5;}
-  50%{opacity:1;}
+  0%,100%{opacity:.4;}
+  50%{opacity:.9;}
 }
 
-/* ENTER EFFECT */
-.power.enter{
+/* ENTER */
+.enter{
   animation:enter 1.2s ease forwards;
 }
 
@@ -132,11 +135,11 @@ body{
   to{
     transform:scale(3);
     opacity:0;
-    filter:blur(30px);
+    filter:blur(25px);
   }
 }
 
-/* HOME */
+/* HOME UI */
 .menu{
   display:grid;
   gap:20px;
@@ -155,15 +158,13 @@ body{
 
 <body>
 
-<!-- PARTICLES -->
 <div class="particles" id="particles"></div>
 
 <!-- BOOT -->
 <div class="screen" id="boot">
   <div class="power" id="power">
-    <div class="energy-glow"></div>
-    <div class="energy-ring"></div>
-    <div class="energy-core"></div>
+    <div class="glow"></div>
+    <div class="line"></div>
   </div>
 </div>
 
@@ -176,17 +177,17 @@ body{
 </div>
 
 <script>
-/* PARTICLES */
+/* particles */
 const p=document.getElementById('particles');
-for(let i=0;i<70;i++){
+for(let i=0;i<60;i++){
   const s=document.createElement('span');
   s.style.left=Math.random()*100+'%';
-  s.style.animationDuration=10+Math.random()*15+'s';
+  s.style.animationDuration=8+Math.random()*12+'s';
   s.style.animationDelay=Math.random()*-20+'s';
   p.appendChild(s);
 }
 
-/* ENTER */
+/* enter */
 const power=document.getElementById('power');
 const boot=document.getElementById('boot');
 const home=document.getElementById('home');
