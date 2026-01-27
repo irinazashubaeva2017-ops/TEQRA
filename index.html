@@ -8,10 +8,10 @@
 <style>
 :root{
   --bg:#05080f;
-  --glass:rgba(255,255,255,.06);
-  --glass-border:rgba(255,255,255,.15);
-  --accent:#6fd0ff;
-  --accent-soft:rgba(111,208,255,.35);
+  --accent:#7dd3ff;
+  --accent-soft:rgba(125,211,255,.35);
+  --glass:rgba(255,255,255,.08);
+  --glass-border:rgba(255,255,255,.25);
 }
 
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -19,25 +19,19 @@
 body{
   height:100vh;
   background:
-    radial-gradient(circle at 50% 40%, #0b1d33, #05080f 70%);
+    radial-gradient(circle at 50% 35%, #0b1e34, #05080f 70%);
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,sans-serif;
   overflow:hidden;
   color:white;
 }
 
 /* ---------- PARTICLES ---------- */
-.particles{
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-}
+.particles{position:fixed;inset:0;pointer-events:none}
 .p{
   position:absolute;
-  width:2px;
-  height:2px;
-  background:white;
-  border-radius:50%;
-  opacity:.2;
+  width:2px;height:2px;
+  background:white;border-radius:50%;
+  opacity:.25;
   animation:float linear infinite;
 }
 @keyframes float{
@@ -52,16 +46,16 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  transition:1s cubic-bezier(.22,1,.36,1);
+  transition:1.2s cubic-bezier(.22,1,.36,1);
 }
 
 #home{
   opacity:0;
-  transform:scale(1.1);
+  transform:scale(1.2);
   pointer-events:none;
 }
 
-/* ---------- POWER BUTTON ---------- */
+/* ---------- GLASS POWER BUTTON ---------- */
 .power-wrap{
   display:flex;
   flex-direction:column;
@@ -70,36 +64,41 @@ body{
 }
 
 .power{
-  width:190px;
-  height:190px;
+  width:200px;
+  height:200px;
   border-radius:50%;
-  background:
-    radial-gradient(circle at 30% 30%, rgba(255,255,255,.25), transparent 60%),
-    var(--glass);
-  backdrop-filter:blur(18px);
-  border:1px solid var(--glass-border);
   position:relative;
   cursor:pointer;
+
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,.35), transparent 45%),
+    linear-gradient(145deg, rgba(255,255,255,.18), rgba(255,255,255,.02)),
+    var(--glass);
+
+  backdrop-filter:blur(25px) saturate(160%);
+  -webkit-backdrop-filter:blur(25px) saturate(160%);
+
+  border:1px solid var(--glass-border);
+
   box-shadow:
-    inset 0 0 40px rgba(255,255,255,.05),
-    0 0 60px rgba(111,208,255,.15);
-  transition:.3s;
+    inset 0 0 40px rgba(255,255,255,.12),
+    inset -20px -20px 40px rgba(0,0,0,.35),
+    0 0 80px rgba(125,211,255,.25);
+
+  transition:.25s;
+  overflow:hidden;
 }
 
-.power::before{
+.power::after{
   content:"";
   position:absolute;
-  inset:-20px;
-  border-radius:50%;
-  background:radial-gradient(circle,var(--accent-soft),transparent 70%);
-  opacity:.6;
-  transition:.4s;
+  inset:-30%;
+  background:radial-gradient(circle, var(--accent-soft), transparent 70%);
+  opacity:.45;
+  pointer-events:none;
 }
 
-.power:active{
-  transform:scale(.97);
-}
-
+/* ---------- SYMBOL ---------- */
 .symbol{
   position:absolute;
   inset:0;
@@ -108,28 +107,29 @@ body{
   justify-content:center;
   font-size:64px;
   color:white;
-  text-shadow:0 0 25px var(--accent);
+  text-shadow:0 0 30px var(--accent);
 }
 
-/* ---------- RIPPLE ---------- */
-.ripple{
+/* ---------- PULSE WAVE ---------- */
+.wave{
   position:absolute;
+  inset:0;
   border-radius:50%;
   border:2px solid var(--accent);
-  animation:ripple 1s ease-out forwards;
+  animation:wave 1.2s ease-out forwards;
 }
-@keyframes ripple{
-  from{transform:scale(.2);opacity:1}
-  to{transform:scale(2.2);opacity:0}
+@keyframes wave{
+  from{transform:scale(.7);opacity:1}
+  to{transform:scale(1.6);opacity:0}
 }
 
-/* ---------- LAUNCH ---------- */
+/* ---------- LAUNCH EFFECT ---------- */
 .launch .power{
   box-shadow:
-    0 0 120px rgba(111,208,255,.8),
-    inset 0 0 80px rgba(255,255,255,.2);
+    0 0 160px rgba(125,211,255,.9),
+    inset 0 0 90px rgba(255,255,255,.25);
 }
-.launch .power::before{
+.launch .power::after{
   opacity:1;
   transform:scale(1.4);
 }
@@ -138,10 +138,10 @@ body{
   letter-spacing:4px;
   font-size:12px;
   color:var(--accent);
-  opacity:.8;
+  opacity:.85;
 }
 
-/* ---------- HOME UI ---------- */
+/* ---------- HOME ---------- */
 .menu{
   width:90%;
   max-width:380px;
@@ -154,9 +154,7 @@ body{
   background:var(--glass);
   backdrop-filter:blur(18px);
   border:1px solid var(--glass-border);
-  transition:.25s;
 }
-.card:active{transform:scale(.97)}
 .title{
   text-align:center;
   margin-bottom:26px;
@@ -194,41 +192,38 @@ body{
 <script>
 /* particles */
 const pc=document.getElementById("particles");
-for(let i=0;i<70;i++){
+for(let i=0;i<80;i++){
   const d=document.createElement("div");
   d.className="p";
   d.style.left=Math.random()*100+"%";
-  d.style.animationDuration=10+Math.random()*20+"s";
-  d.style.opacity=Math.random()*.5;
+  d.style.animationDuration=12+Math.random()*20+"s";
+  d.style.opacity=Math.random()*.4;
   pc.appendChild(d);
 }
 
-/* power logic */
+/* power */
 const power=document.getElementById("power");
 const boot=document.getElementById("boot");
 const home=document.getElementById("home");
 
-power.addEventListener("click",e=>{
+power.addEventListener("click",()=>{
   if(power.classList.contains("launch"))return;
   power.classList.add("launch");
 
-  const r=document.createElement("div");
-  r.className="ripple";
-  r.style.left=e.offsetX+"px";
-  r.style.top=e.offsetY+"px";
-  r.style.width=r.style.height="20px";
-  power.appendChild(r);
+  const w=document.createElement("div");
+  w.className="wave";
+  power.appendChild(w);
 
   setTimeout(()=>{
     boot.style.opacity=0;
-    boot.style.transform="scale(1.4)";
+    boot.style.transform="scale(1.6)";
     setTimeout(()=>{
       boot.style.display="none";
       home.style.opacity=1;
       home.style.transform="scale(1)";
       home.style.pointerEvents="auto";
     },600);
-  },800);
+  },900);
 });
 </script>
 
