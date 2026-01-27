@@ -20,6 +20,7 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
+  font-family:system-ui;
 }
 
 /* PARTICLES */
@@ -44,37 +45,71 @@ body{
   to{transform:translateY(-10vh);opacity:0;}
 }
 
+/* SCREENS */
+.screen{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:opacity .8s ease;
+}
+
+#home{
+  opacity:0;
+  pointer-events:none;
+}
+
 /* POWER BUTTON */
 .power{
-  width:140px;
-  height:140px;
+  width:180px;
+  height:180px;
   border-radius:50%;
-  border:4px solid rgba(79,195,255,.4);
   position:relative;
   cursor:pointer;
   animation:breath 3s ease-in-out infinite;
 }
 
+/* OUTER RING */
 .power::before{
   content:'';
   position:absolute;
-  inset:18px;
+  inset:0;
   border-radius:50%;
-  border-top:5px solid var(--accent);
-  border-right:5px solid var(--accent);
-  animation:spin 4s linear infinite;
+  border:10px solid rgba(79,195,255,.25);
 }
 
+/* ENERGY RING */
 .power::after{
   content:'';
   position:absolute;
-  top:14px;
+  inset:16px;
+  border-radius:50%;
+  border:10px solid transparent;
+  border-top-color:var(--accent);
+  border-right-color:var(--accent);
+  animation:spin 3s linear infinite;
+}
+
+/* LINE */
+.line{
+  position:absolute;
+  top:22px;
   left:50%;
   transform:translateX(-50%);
-  width:6px;
-  height:36px;
+  width:8px;
+  height:52px;
   background:var(--accent);
-  border-radius:3px;
+  border-radius:4px;
+}
+
+/* GLOW */
+.glow{
+  position:absolute;
+  inset:-30px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(79,195,255,.45), transparent 70%);
+  animation:pulse 3s ease-in-out infinite;
 }
 
 @keyframes spin{
@@ -82,8 +117,13 @@ body{
 }
 
 @keyframes breath{
-  0%,100%{box-shadow:0 0 25px rgba(79,195,255,.4);}
-  50%{box-shadow:0 0 55px rgba(79,195,255,.9);}
+  0%,100%{box-shadow:0 0 40px rgba(79,195,255,.4);}
+  50%{box-shadow:0 0 90px rgba(79,195,255,.9);}
+}
+
+@keyframes pulse{
+  0%,100%{opacity:.4;}
+  50%{opacity:.9;}
 }
 
 /* ENTER */
@@ -95,8 +135,23 @@ body{
   to{
     transform:scale(3);
     opacity:0;
-    filter:blur(20px);
+    filter:blur(25px);
   }
+}
+
+/* HOME UI */
+.menu{
+  display:grid;
+  gap:20px;
+  text-align:center;
+}
+
+.card{
+  padding:26px 40px;
+  border-radius:20px;
+  background:#0E1428;
+  color:white;
+  font-size:20px;
 }
 </style>
 </head>
@@ -104,22 +159,46 @@ body{
 <body>
 
 <div class="particles" id="particles"></div>
-<div class="power" id="power"></div>
+
+<!-- BOOT -->
+<div class="screen" id="boot">
+  <div class="power" id="power">
+    <div class="glow"></div>
+    <div class="line"></div>
+  </div>
+</div>
+
+<!-- HOME -->
+<div class="screen" id="home">
+  <div class="menu">
+    <div class="card">💻 Ноутбуки</div>
+    <div class="card">🎧 Навушники</div>
+  </div>
+</div>
 
 <script>
 /* particles */
 const p=document.getElementById('particles');
-for(let i=0;i<50;i++){
+for(let i=0;i<60;i++){
   const s=document.createElement('span');
   s.style.left=Math.random()*100+'%';
-  s.style.animationDuration=8+Math.random()*10+'s';
+  s.style.animationDuration=8+Math.random()*12+'s';
   s.style.animationDelay=Math.random()*-20+'s';
   p.appendChild(s);
 }
 
-/* click */
-document.getElementById('power').onclick=()=>{
-  document.getElementById('power').classList.add('enter');
+/* enter */
+const power=document.getElementById('power');
+const boot=document.getElementById('boot');
+const home=document.getElementById('home');
+
+power.onclick=()=>{
+  power.classList.add('enter');
+  setTimeout(()=>{
+    boot.style.opacity=0;
+    home.style.opacity=1;
+    home.style.pointerEvents='auto';
+  },900);
 };
 </script>
 
