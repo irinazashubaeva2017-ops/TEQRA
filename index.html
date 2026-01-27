@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TEQRA</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet">
 
 <style>
 :root{
@@ -13,24 +13,21 @@
   --bg2:#0A1020;
   --accent:#1ED3FF;
   --text:#E6EAF0;
-  --muted:#7C879C;
 }
 
 *{margin:0;padding:0;box-sizing:border-box;}
 
 body{
   background:radial-gradient(circle at center, var(--bg2), var(--bg));
-  font-family:'Inter',sans-serif;
-  color:var(--text);
   height:100vh;
   overflow:hidden;
+  font-family:'Space Grotesk',sans-serif;
 }
 
 .screen{
   position:absolute;
   inset:0;
   display:flex;
-  flex-direction:column;
   align-items:center;
   justify-content:center;
 }
@@ -39,15 +36,14 @@ body{
 .logo{
   display:flex;
   align-items:center;
-  font-family:'Space Grotesk',sans-serif;
-  font-size:56px;
-  letter-spacing:10px;
-  margin-bottom:24px;
+  font-size:64px;
+  letter-spacing:12px;
 }
 
+/* LETTERS */
 .letter{
   opacity:0;
-  transform:translateY(20px) scale(.95);
+  transform:translateY(24px) scale(.95);
   animation:letterIn .6s ease forwards;
 }
 
@@ -66,81 +62,64 @@ body{
 
 /* POWER Q */
 .power{
-  width:54px;
-  height:54px;
-  border:2px solid var(--accent);
+  width:62px;
+  height:62px;
+  margin:0 14px;
   border-radius:50%;
-  margin:0 12px;
+  border:2px solid var(--accent);
   position:relative;
-  box-shadow:0 0 0 rgba(30,211,255,0);
-  animation:pulse 2.2s ease infinite;
+  opacity:0;
+  transform:scale(.8);
 }
 
 .power::before{
   content:'';
   position:absolute;
-  top:-9px;
+  top:-10px;
   left:50%;
   transform:translateX(-50%);
   width:2px;
-  height:18px;
+  height:20px;
   background:var(--accent);
+}
+
+/* ACTIVATE POWER */
+.awake .power{
+  opacity:1;
+  transform:scale(1);
+  animation:pulse 2.4s ease-in-out infinite;
+  cursor:pointer;
 }
 
 @keyframes pulse{
   0%{box-shadow:0 0 0 rgba(30,211,255,0);}
-  50%{box-shadow:0 0 22px rgba(30,211,255,.7);}
+  50%{box-shadow:0 0 28px rgba(30,211,255,.7);}
   100%{box-shadow:0 0 0 rgba(30,211,255,0);}
 }
 
-/* TEXT */
-.title{
-  font-size:16px;
-  letter-spacing:2px;
-  opacity:.7;
-  margin-bottom:48px;
+/* PRESS */
+.power:active{
+  transform:scale(.85);
+  box-shadow:0 0 60px rgba(30,211,255,1);
 }
 
-/* BUTTON = REAL POWER BUTTON */
-.start{
-  width:220px;
-  height:56px;
-  border-radius:32px;
-  background:linear-gradient(180deg,#1ED3FF,#0FB3E0);
-  border:none;
-  color:#02060B;
-  font-weight:600;
-  letter-spacing:2px;
-  cursor:pointer;
-  transition:transform .12s ease, box-shadow .12s ease;
+/* TRANSITION */
+.transition{
+  animation:warp 1.6s ease forwards;
 }
 
-.start:active{
-  transform:scale(.92);
-  box-shadow:0 0 36px rgba(30,211,255,.9);
-}
-
-/* BOOT STATE */
-.booting .letter{
-  animation:none;
-  opacity:1;
-  transform:none;
-}
-
-.booting .logo{
-  animation:logoGlow 2s ease forwards;
-}
-
-@keyframes logoGlow{
-  0%{}
-  60%{text-shadow:0 0 20px rgba(30,211,255,.6);}
-  100%{text-shadow:0 0 40px rgba(30,211,255,.9);}
+@keyframes warp{
+  to{
+    transform:scale(1.4);
+    opacity:0;
+  }
 }
 
 /* HOME */
 #home{
   opacity:0;
   pointer-events:none;
+  color:var(--text);
 }
 
 #home.active{
@@ -148,29 +127,16 @@ body{
   pointer-events:auto;
 }
 
-.menu-title{
-  font-size:22px;
-  letter-spacing:3px;
-  margin-bottom:32px;
-}
-
 .menu{
   display:grid;
-  gap:20px;
-  width:100%;
-  max-width:320px;
+  gap:22px;
+  text-align:center;
 }
 
 .card{
+  padding:28px;
+  border-radius:22px;
   background:#0E1424;
-  padding:26px;
-  border-radius:20px;
-  text-align:center;
-  transition:transform .2s ease;
-}
-
-.card:hover{
-  transform:translateY(-4px);
 }
 </style>
 </head>
@@ -179,22 +145,17 @@ body{
 
 <!-- BOOT -->
 <div id="boot" class="screen">
-  <div class="logo">
+  <div id="logo" class="logo">
     <span class="letter">T</span>
     <span class="letter">E</span>
-    <div class="power letter"></div>
+    <div id="power" class="power letter"></div>
     <span class="letter">R</span>
     <span class="letter">A</span>
   </div>
-
-  <div class="title">Пробудження системи</div>
-
-  <button class="start" onclick="startSystem()">Увійти в TEQRA</button>
 </div>
 
 <!-- HOME -->
 <div id="home" class="screen">
-  <div class="menu-title">TEQRA активна</div>
   <div class="menu">
     <div class="card">💻 Ноутбуки</div>
     <div class="card">🎧 Навушники</div>
@@ -202,17 +163,21 @@ body{
 </div>
 
 <script>
-function startSystem(){
-  const boot=document.getElementById('boot');
-  const home=document.getElementById('home');
+const logo=document.getElementById('logo');
+const power=document.getElementById('power');
+const home=document.getElementById('home');
 
-  boot.classList.add('booting');
+setTimeout(()=>{
+  logo.classList.add('awake');
+},1400);
+
+power.addEventListener('click',()=>{
+  logo.classList.add('transition');
 
   setTimeout(()=>{
-    boot.style.opacity='0';
     home.classList.add('active');
-  },1800);
-}
+  },1200);
+});
 </script>
 
 </body>
