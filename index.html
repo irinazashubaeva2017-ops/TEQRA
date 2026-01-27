@@ -5,26 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TEQRA</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet">
 
 <style>
 :root{
-  --bg:#02030A;
-  --bg2:#060B1C;
-  --metal:#E6EBF2;
-  --dim:#3A4050;
-  --energy:#4FC3FF;
-  --energy2:#7A5CFF;
+  --bg:#02040A;
+  --bg2:#070B18;
+  --accent:#4FC3FF;
+  --accent2:#7A8CFF;
+  --text:#E6EAF0;
 }
 
 *{margin:0;padding:0;box-sizing:border-box;}
 
 body{
-  height:100vh;
   background:radial-gradient(circle at center, var(--bg2), var(--bg));
+  height:100vh;
   overflow:hidden;
-  font-family:'Orbitron',sans-serif;
-  color:var(--metal);
+  font-family:'Space Grotesk',sans-serif;
+  color:var(--text);
 }
 
 .screen{
@@ -35,164 +34,116 @@ body{
   justify-content:center;
 }
 
-/* ===== LOGO ===== */
+/* LOGO */
 .logo{
   display:flex;
   align-items:center;
-  font-size:68px;
-  letter-spacing:14px;
-  position:relative;
+  font-size:64px;
+  letter-spacing:12px;
+  z-index:2;
 }
 
 .letter{
-  opacity:.35;
-  text-shadow:0 0 2px rgba(255,255,255,.15);
+  opacity:0.25;
 }
 
-/* ===== ENERGY CORE (Q) ===== */
+/* POWER CORE (Q) */
 .core{
-  width:86px;
-  height:86px;
-  margin:0 18px;
+  width:70px;
+  height:70px;
+  margin:0 16px;
+  border-radius:50%;
   position:relative;
   cursor:pointer;
 }
 
-/* segmented ring */
 .core-ring{
   position:absolute;
   inset:0;
   border-radius:50%;
-  border:3px solid transparent;
-  border-top-color:var(--energy);
-  border-left-color:var(--energy2);
-  transform:rotate(20deg);
-  animation:slowRotate 6s linear infinite;
+  border:2px solid transparent;
+  border-top-color:var(--accent);
+  border-right-color:var(--accent2);
+  animation:idleSpin 4s linear infinite;
 }
 
-/* diagonal cut like your logo */
-.core-cut{
-  position:absolute;
-  width:6px;
-  height:48px;
-  background:linear-gradient(180deg,var(--energy),var(--energy2));
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%) rotate(45deg);
-  border-radius:3px;
-}
-
-/* power line */
 .core-line{
   position:absolute;
-  top:-14px;
+  top:-12px;
   left:50%;
   transform:translateX(-50%);
-  width:4px;
-  height:26px;
-  background:linear-gradient(180deg,var(--energy),var(--energy2));
-  border-radius:4px;
+  width:3px;
+  height:22px;
+  background:linear-gradient(180deg,var(--accent),var(--accent2));
+  border-radius:2px;
 }
 
-/* glow */
 .core-glow{
   position:absolute;
-  inset:-26px;
+  inset:-18px;
   border-radius:50%;
-  background:radial-gradient(circle, rgba(79,195,255,.45), transparent 70%);
-  animation:corePulse 2.2s ease-in-out infinite;
+  background:radial-gradient(circle, rgba(79,195,255,0.35), transparent 70%);
+  animation:pulse 3s ease-in-out infinite;
 }
 
-/* micro shake */
-.core{
-  animation:shake 3.5s infinite;
+@keyframes idleSpin{
+  to{transform:rotate(360deg);}
 }
 
-@keyframes shake{
-  0%,100%{transform:translate(0,0);}
-  48%{transform:translate(0,0);}
-  50%{transform:translate(-1px,1px);}
-  52%{transform:translate(1px,-1px);}
-  54%{transform:translate(0,0);}
+@keyframes pulse{
+  0%,100%{opacity:.4;}
+  50%{opacity:.8;}
 }
 
-@keyframes slowRotate{
-  to{transform:rotate(380deg);}
-}
-
-@keyframes corePulse{
-  0%,100%{opacity:.35;}
-  50%{opacity:.85;}
-}
-
-/* ===== LIGHTNING ===== */
-.lightning{
-  position:absolute;
-  width:2px;
-  height:80px;
-  background:linear-gradient(180deg,transparent,var(--energy),transparent);
-  opacity:0;
-  animation:zap 4s infinite;
-}
-
-@keyframes zap{
-  0%,85%{opacity:0;}
-  88%{opacity:1;transform:rotate(20deg);}
-  90%{opacity:0;}
-}
-
-/* ===== TELEPORT ===== */
+/* TELEPORT */
 .teleport .core-ring{
-  animation:fastSpin .6s linear infinite;
+  animation:spinFast .8s linear infinite;
 }
 
-@keyframes fastSpin{
+@keyframes spinFast{
   to{transform:rotate(720deg);}
 }
 
 .teleport .core-glow{
-  animation:burst .6s ease forwards;
+  animation:burst .8s ease forwards;
 }
 
 @keyframes burst{
-  to{transform:scale(3);opacity:0;}
+  to{transform:scale(2.2);opacity:0;}
 }
 
 .teleport{
-  animation:collapse 1.2s ease forwards;
+  animation:warp 1.4s ease forwards;
 }
 
-@keyframes collapse{
+@keyframes warp{
   to{
-    transform:scale(.2);
+    transform:scale(1.6);
     opacity:0;
   }
 }
 
-/* ===== FLASH ===== */
-.flash{
+/* PORTAL OVERLAY */
+.portal{
   position:absolute;
   inset:0;
-  background:white;
+  background:radial-gradient(circle at center,
+    rgba(79,195,255,0.25),
+    rgba(10,14,30,0.95) 70%);
   opacity:0;
-  pointer-events:none;
+  transition:opacity .6s ease;
+  z-index:1;
 }
 
-.flash.active{
-  animation:flash .4s ease forwards;
+.portal.active{
+  opacity:1;
 }
 
-@keyframes flash{
-  0%{opacity:0;}
-  50%{opacity:1;}
-  100%{opacity:0;}
-}
-
-/* ===== HOME ===== */
+/* HOME */
 #home{
   opacity:0;
   pointer-events:none;
-  background:radial-gradient(circle at top, #0A1028, #02030A);
+  background:radial-gradient(circle at top, #0A1024, #02040A);
 }
 
 #home.active{
@@ -202,13 +153,14 @@ body{
 
 .menu{
   display:grid;
-  gap:24px;
+  gap:22px;
+  text-align:center;
 }
 
 .card{
-  padding:30px;
+  padding:28px;
   border-radius:22px;
-  background:#0E142A;
+  background:#0E1428;
 }
 </style>
 </head>
@@ -217,25 +169,21 @@ body{
 
 <!-- BOOT -->
 <div id="boot" class="screen">
-  <div id="logo" class="logo">
+  <div class="logo" id="logo">
     <span class="letter">T</span>
     <span class="letter">E</span>
 
     <div class="core" id="core">
       <div class="core-glow"></div>
       <div class="core-ring"></div>
-      <div class="core-cut"></div>
       <div class="core-line"></div>
-
-      <div class="lightning" style="top:-90px;left:40px;"></div>
-      <div class="lightning" style="top:90px;left:46px;"></div>
     </div>
 
     <span class="letter">R</span>
     <span class="letter">A</span>
   </div>
 
-  <div class="flash" id="flash"></div>
+  <div class="portal" id="portal"></div>
 </div>
 
 <!-- HOME -->
@@ -249,16 +197,16 @@ body{
 <script>
 const core=document.getElementById('core');
 const logo=document.getElementById('logo');
-const flash=document.getElementById('flash');
+const portal=document.getElementById('portal');
 const home=document.getElementById('home');
 
 core.addEventListener('click',()=>{
   logo.classList.add('teleport');
-  flash.classList.add('active');
+  portal.classList.add('active');
 
   setTimeout(()=>{
     home.classList.add('active');
-  },900);
+  },1200);
 });
 </script>
 
