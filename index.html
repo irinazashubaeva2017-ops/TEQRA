@@ -2,125 +2,167 @@
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>TEQRA OS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TEQRA</title>
 
 <style>
 :root{
-  --bg:#02040A;
-  --accent:#4FC3FF;
-  --accent2:#7A8CFF;
+  --bg:#05080f;
+  --glass:rgba(255,255,255,.06);
+  --glass-border:rgba(255,255,255,.15);
+  --accent:#6fd0ff;
+  --accent-soft:rgba(111,208,255,.35);
 }
 
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 
 body{
   height:100vh;
-  background:radial-gradient(circle at center,#0A1B33,var(--bg));
-  font-family:system-ui,-apple-system,Segoe UI;
+  background:
+    radial-gradient(circle at 50% 40%, #0b1d33, #05080f 70%);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,sans-serif;
   overflow:hidden;
   color:white;
 }
 
-/* particles */
-.particles{position:fixed;inset:0;pointer-events:none;}
-.particle{
+/* ---------- PARTICLES ---------- */
+.particles{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+}
+.p{
   position:absolute;
-  width:2px;height:2px;
+  width:2px;
+  height:2px;
   background:white;
   border-radius:50%;
-  opacity:.3;
+  opacity:.2;
   animation:float linear infinite;
 }
 @keyframes float{
-  from{transform:translateY(110vh);}
-  to{transform:translateY(-10vh);}
+  from{transform:translateY(110vh)}
+  to{transform:translateY(-10vh)}
 }
 
-/* screens */
+/* ---------- SCREENS ---------- */
 .screen{
   position:absolute;
   inset:0;
   display:flex;
-  flex-direction:column;
   align-items:center;
   justify-content:center;
-  transition:1s ease;
+  transition:1s cubic-bezier(.22,1,.36,1);
 }
-#home{opacity:0;pointer-events:none;transform:scale(1.1);}
 
-/* power button */
+#home{
+  opacity:0;
+  transform:scale(1.1);
+  pointer-events:none;
+}
+
+/* ---------- POWER BUTTON ---------- */
+.power-wrap{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:26px;
+}
+
 .power{
-  width:220px;height:220px;
+  width:190px;
+  height:190px;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,.25), transparent 60%),
+    var(--glass);
+  backdrop-filter:blur(18px);
+  border:1px solid var(--glass-border);
   position:relative;
   cursor:pointer;
+  box-shadow:
+    inset 0 0 40px rgba(255,255,255,.05),
+    0 0 60px rgba(111,208,255,.15);
+  transition:.3s;
 }
-.ring{
+
+.power::before{
+  content:"";
+  position:absolute;
+  inset:-20px;
+  border-radius:50%;
+  background:radial-gradient(circle,var(--accent-soft),transparent 70%);
+  opacity:.6;
+  transition:.4s;
+}
+
+.power:active{
+  transform:scale(.97);
+}
+
+.symbol{
   position:absolute;
   inset:0;
-  border-radius:50%;
-  border:2px solid transparent;
-  border-top-color:var(--accent);
-  border-right-color:var(--accent2);
-  animation:spin 8s linear infinite;
-}
-.dash{
-  position:absolute;
-  inset:16px;
-  border-radius:50%;
-  border:2px dashed var(--accent);
-  opacity:.5;
-  animation:spinReverse 6s linear infinite;
-}
-.core{
-  position:absolute;
-  inset:55px;
-  border-radius:50%;
-  background:radial-gradient(circle,#fff,var(--accent));
-  box-shadow:0 0 40px var(--accent);
   display:flex;
   align-items:center;
   justify-content:center;
+  font-size:64px;
+  color:white;
+  text-shadow:0 0 25px var(--accent);
 }
-.core svg{
-  width:50px;height:50px;
-  fill:white;
+
+/* ---------- RIPPLE ---------- */
+.ripple{
+  position:absolute;
+  border-radius:50%;
+  border:2px solid var(--accent);
+  animation:ripple 1s ease-out forwards;
+}
+@keyframes ripple{
+  from{transform:scale(.2);opacity:1}
+  to{transform:scale(2.2);opacity:0}
+}
+
+/* ---------- LAUNCH ---------- */
+.launch .power{
+  box-shadow:
+    0 0 120px rgba(111,208,255,.8),
+    inset 0 0 80px rgba(255,255,255,.2);
+}
+.launch .power::before{
+  opacity:1;
+  transform:scale(1.4);
 }
 
 .status{
-  margin-top:24px;
   letter-spacing:4px;
   font-size:12px;
-  opacity:.6;
+  color:var(--accent);
+  opacity:.8;
 }
 
-/* animations */
-@keyframes spin{to{transform:rotate(360deg);}}
-@keyframes spinReverse{to{transform:rotate(-360deg);}}
-
-.launch .ring{animation:spin .5s linear infinite;}
-.launch .dash{opacity:0;}
-.launch .core{transform:scale(20);transition:.9s ease;}
-
-/* home */
+/* ---------- HOME UI ---------- */
 .menu{
   width:90%;
-  max-width:360px;
+  max-width:380px;
   display:grid;
   gap:16px;
 }
 .card{
   padding:22px;
   border-radius:18px;
-  background:rgba(79,195,255,.06);
-  border:1px solid rgba(79,195,255,.25);
-  backdrop-filter:blur(10px);
+  background:var(--glass);
+  backdrop-filter:blur(18px);
+  border:1px solid var(--glass-border);
+  transition:.25s;
 }
+.card:active{transform:scale(.97)}
 .title{
-  color:var(--accent);
+  text-align:center;
+  margin-bottom:26px;
   letter-spacing:6px;
-  font-size:11px;
-  margin-bottom:30px;
+  font-size:12px;
+  color:var(--accent);
 }
 </style>
 </head>
@@ -131,22 +173,18 @@ body{
 
 <!-- BOOT -->
 <div class="screen" id="boot">
-  <div class="power" id="power">
-    <div class="ring"></div>
-    <div class="dash"></div>
-    <div class="core">
-      <svg viewBox="0 0 24 24">
-        <path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/>
-      </svg>
+  <div class="power-wrap">
+    <div class="power" id="power">
+      <div class="symbol">⏻</div>
     </div>
+    <div class="status">СИСТЕМА ГОТОВА</div>
   </div>
-  <div class="status">СИСТЕМА ГОТОВА</div>
 </div>
 
 <!-- HOME -->
 <div class="screen" id="home">
-  <div class="title">TEQRA OS v1.0</div>
   <div class="menu">
+    <div class="title">TEQRA OS v1.0</div>
     <div class="card">Ноутбуки та залізо</div>
     <div class="card">Професійний звук</div>
     <div class="card">Налаштування системи</div>
@@ -155,45 +193,43 @@ body{
 
 <script>
 /* particles */
-const p=document.getElementById('particles');
+const pc=document.getElementById("particles");
 for(let i=0;i<70;i++){
-  const d=document.createElement('div');
-  d.className='particle';
-  d.style.left=Math.random()*100+'%';
-  d.style.animationDuration=10+Math.random()*20+'s';
+  const d=document.createElement("div");
+  d.className="p";
+  d.style.left=Math.random()*100+"%";
+  d.style.animationDuration=10+Math.random()*20+"s";
   d.style.opacity=Math.random()*.5;
-  p.appendChild(d);
+  pc.appendChild(d);
 }
 
-/* sound */
-let ctx;
-function sound(){
-  ctx||=new AudioContext();
-  const t=ctx.currentTime;
+/* power logic */
+const power=document.getElementById("power");
+const boot=document.getElementById("boot");
+const home=document.getElementById("home");
 
-  const o=ctx.createOscillator();
-  const g=ctx.createGain();
-  o.type='sine';
-  o.frequency.setValueAtTime(60,t);
-  g.gain.setValueAtTime(.0001,t);
-  g.gain.exponentialRampToValueAtTime(.15,t+.6);
-  g.gain.exponentialRampToValueAtTime(.0001,t+2);
-  o.connect(g).connect(ctx.destination);
-  o.start();
-  o.stop(t+2);
-}
+power.addEventListener("click",e=>{
+  if(power.classList.contains("launch"))return;
+  power.classList.add("launch");
 
-/* launch */
-const power=document.getElementById('power');
-power.onclick=()=>{
-  sound();
-  power.classList.add('launch');
+  const r=document.createElement("div");
+  r.className="ripple";
+  r.style.left=e.offsetX+"px";
+  r.style.top=e.offsetY+"px";
+  r.style.width=r.style.height="20px";
+  power.appendChild(r);
+
   setTimeout(()=>{
-    document.getElementById('boot').style.opacity=0;
-    document.getElementById('home').style.opacity=1;
-    document.getElementById('home').style.pointerEvents='auto';
-  },900);
-};
+    boot.style.opacity=0;
+    boot.style.transform="scale(1.4)";
+    setTimeout(()=>{
+      boot.style.display="none";
+      home.style.opacity=1;
+      home.style.transform="scale(1)";
+      home.style.pointerEvents="auto";
+    },600);
+  },800);
+});
 </script>
 
 </body>
