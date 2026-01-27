@@ -19,10 +19,10 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 
 body{
-  background:radial-gradient(circle at center, var(--bg2), var(--bg));
   height:100vh;
-  overflow:hidden;
+  background:radial-gradient(circle at center, var(--bg2), var(--bg));
   font-family:'Space Grotesk',sans-serif;
+  overflow:hidden;
   color:var(--text);
 }
 
@@ -40,21 +40,33 @@ body{
   align-items:center;
   font-size:64px;
   letter-spacing:12px;
-  z-index:2;
 }
 
 .letter{
-  opacity:0.25;
+  opacity:0;
+  transform:translateY(10px);
+  transition:all .6s ease;
 }
 
-/* POWER CORE (Q) */
+.letter.active{
+  opacity:.85;
+  transform:translateY(0);
+  filter:drop-shadow(0 0 8px rgba(79,195,255,.35));
+}
+
+/* CORE */
 .core{
-  width:70px;
-  height:70px;
-  margin:0 16px;
-  border-radius:50%;
+  width:72px;
+  height:72px;
+  margin:0 18px;
   position:relative;
   cursor:pointer;
+  animation:float 6s ease-in-out infinite;
+}
+
+@keyframes float{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-4px);}
 }
 
 .core-ring{
@@ -64,7 +76,11 @@ body{
   border:2px solid transparent;
   border-top-color:var(--accent);
   border-right-color:var(--accent2);
-  animation:idleSpin 4s linear infinite;
+  animation:spin 4s linear infinite;
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg);}
 }
 
 .core-line{
@@ -82,61 +98,58 @@ body{
   position:absolute;
   inset:-18px;
   border-radius:50%;
-  background:radial-gradient(circle, rgba(79,195,255,0.35), transparent 70%);
+  background:radial-gradient(circle, rgba(79,195,255,.35), transparent 70%);
   animation:pulse 3s ease-in-out infinite;
-}
-
-@keyframes idleSpin{
-  to{transform:rotate(360deg);}
 }
 
 @keyframes pulse{
   0%,100%{opacity:.4;}
-  50%{opacity:.8;}
+  50%{opacity:.9;}
 }
 
 /* TELEPORT */
 .teleport .core-ring{
-  animation:spinFast .8s linear infinite;
+  animation:spinFast .6s linear infinite;
 }
 
 @keyframes spinFast{
   to{transform:rotate(720deg);}
 }
 
-.teleport .core-glow{
-  animation:burst .8s ease forwards;
-}
-
-@keyframes burst{
-  to{transform:scale(2.2);opacity:0;}
-}
-
 .teleport{
-  animation:warp 1.4s ease forwards;
+  animation:warp 1.2s ease forwards;
 }
 
 @keyframes warp{
   to{
-    transform:scale(1.6);
+    transform:scale(.2);
+    filter:blur(14px);
     opacity:0;
   }
 }
 
-/* PORTAL OVERLAY */
-.portal{
-  position:absolute;
-  inset:0;
-  background:radial-gradient(circle at center,
-    rgba(79,195,255,0.25),
-    rgba(10,14,30,0.95) 70%);
+.teleport .letter{
   opacity:0;
-  transition:opacity .6s ease;
-  z-index:1;
+  transform:translateY(-10px) scale(.9);
 }
 
-.portal.active{
-  opacity:1;
+/* FLASH */
+.flash{
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle, rgba(255,255,255,.25), transparent 60%);
+  opacity:0;
+  pointer-events:none;
+}
+
+.flash.active{
+  animation:flash .4s ease;
+}
+
+@keyframes flash{
+  0%{opacity:0;}
+  50%{opacity:1;}
+  100%{opacity:0;}
 }
 
 /* HOME */
@@ -167,7 +180,6 @@ body{
 
 <body>
 
-<!-- BOOT -->
 <div id="boot" class="screen">
   <div class="logo" id="logo">
     <span class="letter">T</span>
@@ -182,11 +194,9 @@ body{
     <span class="letter">R</span>
     <span class="letter">A</span>
   </div>
-
-  <div class="portal" id="portal"></div>
+  <div class="flash" id="flash"></div>
 </div>
 
-<!-- HOME -->
 <div id="home" class="screen">
   <div class="menu">
     <div class="card">💻 Ноутбуки</div>
@@ -195,19 +205,21 @@ body{
 </div>
 
 <script>
+const letters=document.querySelectorAll('.letter');
+letters.forEach((l,i)=>{
+  setTimeout(()=>l.classList.add('active'),300+i*120);
+});
+
 const core=document.getElementById('core');
 const logo=document.getElementById('logo');
-const portal=document.getElementById('portal');
 const home=document.getElementById('home');
+const flash=document.getElementById('flash');
 
-core.addEventListener('click',()=>{
+core.onclick=()=>{
   logo.classList.add('teleport');
-  portal.classList.add('active');
-
-  setTimeout(()=>{
-    home.classList.add('active');
-  },1200);
-});
+  flash.classList.add('active');
+  setTimeout(()=>home.classList.add('active'),1100);
+};
 </script>
 
 </body>
