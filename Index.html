@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TEQRA</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-main: #0E1116;
+      --bg-card: #141922;
+      --text-main: #E6EAF0;
+      --text-secondary: #9AA3B2;
+      --accent: #1ED3FF;
+      --accent-hover: #5FE3FF;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      text-align: center;
+      max-width: 420px;
+      width: 100%;
+      padding: 24px;
+    }
+
+    .logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 40px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: var(--text-secondary);
+      margin-bottom: 40px;
+    }
+
+    .power-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 220px;
+      height: 56px;
+      border-radius: 28px;
+      background-color: var(--accent);
+      color: #0E1116;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .power-btn:hover {
+      background-color: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+
+    .footer {
+      margin-top: 32px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="logo">TEQRA</div>
+
+    <div class="subtitle">
+      Ноутбуки та звук. Без зайвого.
+    </div>
+
+    <a href="#" class="power-btn">
+      Увімкнути TEQRA
+    </a>
+
+    <div class="footer">
+      Обери. Підключись. Працюй.
+    </div>
+  </div>
+</body>
+</html>
