@@ -4,15 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>TEQRA | Premium OS</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
 :root {
-  --bg: #020408;
+  --bg: #010205;
   --accent: #4FC3FF;
-  --accent-glow: rgba(79, 195, 255, 0.5);
-  --accent-dark: #003a5c;
-  --glass: rgba(79, 195, 255, 0.05);
-  --glass-border: rgba(79, 195, 255, 0.2);
+  --accent-glow: rgba(79, 195, 255, 0.4);
+  --glass: rgba(79, 195, 255, 0.03);
+  --glass-border: rgba(79, 195, 255, 0.15);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -20,12 +20,12 @@
 body {
   height: 100vh;
   background-color: var(--bg);
-  background-image: radial-gradient(circle at center, #0a1b33 0%, var(--bg) 80%);
+  background-image: radial-gradient(circle at center, #0a1b33 0%, var(--bg) 85%);
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  font-family: 'Inter', -apple-system, sans-serif;
   color: white;
 }
 
@@ -34,30 +34,28 @@ body {
 .particle { position: absolute; background: #fff; border-radius: 50%; opacity: 0; animation: float linear infinite; }
 
 @keyframes float {
-  0% { transform: translateY(100vh) scale(0); opacity: 0; }
-  10% { opacity: 0.5; }
-  90% { opacity: 0.5; }
+  0% { transform: translateY(110vh) scale(0); opacity: 0; }
+  10% { opacity: 0.4; }
+  90% { opacity: 0.4; }
   100% { transform: translateY(-10vh) scale(1); opacity: 0; }
 }
 
-/* --- TERMINAL OVERLAY --- */
+/* --- TERMINAL --- */
 #terminal {
   position: fixed;
   inset: 20px;
   z-index: 100;
   pointer-events: none;
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 10px;
+  font-family: 'Courier New', monospace;
+  font-size: 9px;
   color: var(--accent);
-  text-transform: uppercase;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   opacity: 0;
+  transition: opacity 0.5s;
 }
-
-.term-line { margin-top: 2px; text-shadow: 0 0 5px var(--accent-dark); }
 
 /* --- SCREENS --- */
 .screen {
@@ -67,53 +65,59 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: all 1s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: all 1.2s cubic-bezier(0.19, 1, 0.22, 1);
   z-index: 10;
 }
 
-#home { opacity: 0; pointer-events: none; transform: scale(1.1) translateY(20px); filter: blur(10px); }
+#home { opacity: 0; pointer-events: none; transform: scale(1.1) translateY(30px); filter: blur(15px); }
 
-/* --- THE ENERGY CORE --- */
-.power-container { display: flex; flex-direction: column; align-items: center; gap: 40px; perspective: 1000px; }
-.power-btn { width: 220px; height: 220px; position: relative; cursor: pointer; display: flex; align-items: center; justify-content: center; transform-style: preserve-3d; }
-
-.ring { position: absolute; border-radius: 50%; border: 2px solid transparent; transition: all 0.5s ease; }
-.ring-1 { inset: 0; border: 1px solid var(--accent-glow); box-shadow: 0 0 20px var(--accent-dark); animation: rotate 12s linear infinite; }
-.ring-2 { inset: 15px; border: 3px dashed var(--accent); opacity: 0.6; animation: rotate 8s linear infinite reverse; }
-.ring-3 { inset: 35px; border: 2px solid var(--accent); border-top-color: transparent; border-bottom-color: transparent; animation: rotate 4s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
-.core-plasma { position: absolute; width: 80px; height: 80px; background: radial-gradient(circle, #fff 0%, var(--accent) 40%, transparent 70%); border-radius: 50%; filter: blur(8px); animation: breathe 3s ease-in-out infinite; }
-
-.power-symbol-svg { position: relative; z-index: 5; width: 50px; height: 50px; fill: white; filter: drop-shadow(0 0 10px var(--accent)); }
-
-/* --- HOME SCREEN UI --- */
-.os-header { margin-bottom: 40px; text-align: center; }
-.os-title { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5em; color: var(--accent); margin-bottom: 8px; }
-
-.menu { display: grid; gap: 16px; width: 90%; max-width: 380px; }
-.card {
+/* --- THE POWER CORE --- */
+.power-btn {
+  width: 240px;
+  height: 240px;
   position: relative;
-  padding: 24px;
-  background: var(--glass);
-  backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-  border: 1px solid var(--glass-border);
-  border-radius: 16px;
+  cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 20px;
-  overflow: hidden;
-  transition: transform 0.2s;
+  justify-content: center;
 }
-.card:active { transform: scale(0.97); background: rgba(79, 195, 255, 0.1); }
-.icon-box { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: rgba(79, 195, 255, 0.1); border-radius: 8px; color: var(--accent); }
-.label { font-size: 16px; font-weight: 300; letter-spacing: 1px; }
+
+.ring { position: absolute; border-radius: 50%; border: 1px solid var(--accent-glow); transition: all 0.6s ease; }
+.ring-1 { inset: 0; animation: rotate 15s linear infinite; }
+.ring-2 { inset: 20px; border: 2px dashed var(--accent); opacity: 0.4; animation: rotate 10s linear infinite reverse; }
+.ring-3 { inset: 45px; border: 2px solid var(--accent); border-top-color: transparent; animation: rotate 3s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+.core-plasma { 
+  position: absolute; width: 90px; height: 90px; 
+  background: radial-gradient(circle, #fff 0%, var(--accent) 50%, transparent 70%); 
+  border-radius: 50%; filter: blur(10px); animation: breathe 4s ease-in-out infinite; 
+}
+
+.power-symbol-svg { position: relative; z-index: 5; width: 60px; height: 60px; fill: white; filter: drop-shadow(0 0 15px var(--accent)); }
+
+/* --- HOME UI --- */
+.menu { display: grid; gap: 14px; width: 92%; max-width: 380px; }
+.card {
+  padding: 22px;
+  background: var(--glass);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  transition: all 0.3s;
+}
+.card:active { transform: scale(0.96); background: rgba(79, 195, 255, 0.08); }
+.icon-box { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: rgba(79, 195, 255, 0.08); border-radius: 10px; color: var(--accent); }
+.label { font-size: 15px; font-weight: 400; letter-spacing: 0.5px; }
 
 /* --- ANIMATIONS --- */
 @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-@keyframes breathe { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.15); opacity: 1; } }
+@keyframes breathe { 0%, 100% { transform: scale(1); opacity: 0.7; } 50% { transform: scale(1.1); opacity: 1; } }
 
-.launching .ring-1 { transform: scale(1.5); opacity: 0; }
-.launching .ring-2 { transform: scale(2); opacity: 0; transition: 0.5s; }
-.launching .core-plasma { transform: scale(25); filter: blur(2px); background: #fff; transition: 0.8s ease-in; }
+.launching .ring-1 { transform: scale(1.8); opacity: 0; }
+.launching .ring-2 { transform: scale(2.2); opacity: 0; }
+.launching .core-plasma { transform: scale(30); filter: blur(2px); background: #fff; transition: 1s ease-in; }
 .launching .power-symbol-svg { opacity: 0; }
 </style>
 </head>
@@ -133,14 +137,13 @@ body {
         <path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/>
       </svg>
     </div>
-    <div class="status-text" style="color: var(--accent); letter-spacing: 3px; font-size: 12px; margin-top: 10px; opacity: 0.6;">SYSTEM READY</div>
   </div>
 </div>
 
 <div class="screen" id="home">
-  <div class="os-header">
-    <div class="os-title">TEQRA OS v1.0</div>
-    <div style="width: 40px; height: 1px; background: var(--accent); margin: 0 auto; opacity: 0.5;"></div>
+  <div style="text-align: center; margin-bottom: 40px;">
+    <div style="font-size: 10px; color: var(--accent); letter-spacing: 6px; margin-bottom: 5px;">TEQRA OS v1.0</div>
+    <div style="width: 30px; height: 2px; background: var(--accent); margin: 0 auto; border-radius: 2px;"></div>
   </div>
 
   <div class="menu">
@@ -160,67 +163,98 @@ body {
 </div>
 
 <script>
+/* Procedural Audio Engine */
+let audioCtx;
+const initAudio = () => {
+  if (audioCtx) return;
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  
+  // Create Idle Hum
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(55, audioCtx.currentTime); 
+  gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.start();
+  return { osc, gain };
+};
+
+const playSurge = (idle) => {
+  const surgeOsc = audioCtx.createOscillator();
+  const surgeGain = audioCtx.createGain();
+  
+  surgeOsc.frequency.setValueAtTime(55, audioCtx.currentTime);
+  surgeOsc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 1.2);
+  
+  surgeGain.gain.setValueAtTime(0.02, audioCtx.currentTime);
+  surgeGain.gain.linearRampToValueAtTime(0.2, audioCtx.currentTime + 0.5);
+  surgeGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1.2);
+  
+  surgeOsc.connect(surgeGain);
+  surgeGain.connect(audioCtx.destination);
+  surgeOsc.start();
+  surgeOsc.stop(audioCtx.currentTime + 1.2);
+  
+  if(idle) idle.gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.2);
+};
+
+/* Logic */
 const terminal = document.getElementById('terminal');
 const bootContainer = document.getElementById('boot-container');
 const bootScreen = document.getElementById('boot-screen');
 const homeScreen = document.getElementById('home');
-const logs = [
-  "Initializing TEQRA Kernel...", "Loading neural modules...", "Checking hardware integrity...", 
-  "CPU: Hexa-core 3.8GHz [OK]", "Memory: 32GB Holographic [OK]", "Network: 6G Satellite [CONNECTED]", 
-  "GPU: Quantum Render Engine [OK]", "Loading Ukrainian Language Pack...", "Establishing Secure Environment...",
-  "OS-v1.0 Ready.", "Executing Startup Protocol..."
-];
+let idleAudio;
 
-function runTerminal() {
-  terminal.style.opacity = "1";
-  let i = 0;
-  const interval = setInterval(() => {
-    if (i >= logs.length) {
-      clearInterval(interval);
-      setTimeout(() => { terminal.style.opacity = "0"; }, 500);
-      return;
-    }
-    const line = document.createElement('div');
-    line.className = 'term-line';
-    line.textContent = `> ${logs[i]}`;
-    terminal.appendChild(line);
-    i++;
-  }, 80);
-}
-
+// Interaction starts here
 document.getElementById('activate-btn').addEventListener('click', () => {
+  if (!audioCtx) idleAudio = initAudio();
+  
+  if (window.Telegram && Telegram.WebApp.HapticFeedback) {
+    Telegram.WebApp.HapticFeedback.notificationOccurred('success');
+  }
+
+  playSurge(idleAudio);
   bootContainer.classList.add('launching');
   
   setTimeout(() => {
-    runTerminal();
+    terminal.style.opacity = "1";
+    const logs = ["SYS_INIT", "CORE_SYNC...", "MEM_LOAD_80%", "UKR_LANG_PK", "AUTH_TOKEN_OK", "READY"];
+    logs.forEach((text, i) => {
+      setTimeout(() => {
+        const d = document.createElement('div');
+        d.textContent = `> ${text}`;
+        terminal.appendChild(d);
+      }, i * 100);
+    });
+
     setTimeout(() => {
       bootScreen.style.opacity = '0';
-      bootScreen.style.transform = 'scale(1.5)';
+      bootScreen.style.transform = 'scale(2)';
+      terminal.style.opacity = "0";
       setTimeout(() => {
         bootScreen.style.display = 'none';
         homeScreen.style.opacity = '1';
         homeScreen.style.transform = 'scale(1) translateY(0)';
         homeScreen.style.filter = 'blur(0)';
         homeScreen.style.pointerEvents = 'auto';
-      }, 600);
-    }, 1200);
+      }, 800);
+    }, 1000);
   }, 400);
 });
 
-/* BACKGROUND PARTICLES */
+/* Particles */
 const pContainer = document.getElementById('particles');
 for(let i=0; i<60; i++) {
   const p = document.createElement('div');
   p.className = 'particle';
-  const size = Math.random() * 3 + 1;
-  const depth = Math.random();
-  p.style.width = size + 'px';
-  p.style.height = size + 'px';
+  const size = Math.random() * 2 + 1;
+  p.style.width = size + 'px'; p.style.height = size + 'px';
   p.style.left = Math.random() * 100 + '%';
-  p.style.animationDuration = (15 + (depth * 20)) + 's';
-  p.style.filter = `blur(${depth * 2}px)`;
-  p.style.opacity = 0.2 + (Math.random() * 0.4);
-  p.style.animationDelay = (Math.random() * -30) + 's';
+  p.style.animationDuration = (10 + Math.random() * 20) + 's';
+  p.style.opacity = Math.random() * 0.5;
+  p.style.animationDelay = (Math.random() * -20) + 's';
   pContainer.appendChild(p);
 }
 </script>
