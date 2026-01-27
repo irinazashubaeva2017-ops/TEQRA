@@ -1,6 +1,260 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>TEQRA OS</title>
+
+<style>
+:root{
+  --bg:#020408;
+  --accent:#4FC3FF;
+  --accent2:#6A7CFF;
+  --glass:rgba(79,195,255,0.08);
+  --border:rgba(79,195,255,0.25);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+
+body{
+  height:100vh;
+  background:radial-gradient(circle at center,#0b1c35 0%,#020408 75%);
+  font-family:system-ui,-apple-system,Segoe UI,Inter,sans-serif;
+  color:#fff;
+  overflow:hidden;
+}
+
+/* ===== PARTICLES ===== */
+.particles{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:1;
+}
+.particle{
+  position:absolute;
+  background:white;
+  border-radius:50%;
+  opacity:.15;
+  animation:float linear infinite;
+}
+@keyframes float{
+  from{transform:translateY(110vh)}
+  to{transform:translateY(-20vh)}
+}
+
+/* ===== SCREENS ===== */
+.screen{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:1s cubic-bezier(.23,1,.32,1);
+  z-index:5;
+}
+
+#home{
+  opacity:0;
+  pointer-events:none;
+  transform:scale(1.2);
+  filter:blur(20px);
+}
+
+/* ===== POWER CORE ===== */
+.power-wrap{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:28px;
+}
+
+.power-btn{
+  width:240px;
+  height:240px;
+  position:relative;
+  border-radius:50%;
+  cursor:pointer;
+  transform-style:preserve-3d;
+}
+
+.ring{
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+}
+
+.ring.outer{
+  border:2px solid var(--border);
+  box-shadow:0 0 30px rgba(79,195,255,.3);
+  animation:spin 14s linear infinite;
+}
+
+.ring.dashed{
+  inset:18px;
+  border:3px dashed var(--accent);
+  opacity:.6;
+  animation:spin 9s linear infinite reverse;
+}
+
+.ring.inner{
+  inset:42px;
+  border:3px solid var(--accent2);
+  border-left-color:transparent;
+  border-right-color:transparent;
+  animation:spin 4s ease-in-out infinite;
+}
+
+.core{
+  position:absolute;
+  inset:70px;
+  background:radial-gradient(circle,#fff 0%,var(--accent) 45%,transparent 70%);
+  border-radius:50%;
+  filter:blur(6px);
+  animation:pulse 3s ease-in-out infinite;
+}
+
+.power-icon{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:3;
+}
+
+.power-icon svg{
+  width:64px;
+  height:64px;
+  fill:white;
+  filter:drop-shadow(0 0 15px var(--accent));
+}
+
+.status{
+  letter-spacing:4px;
+  font-size:12px;
+  opacity:.6;
+  color:var(--accent);
+}
+
+/* ===== HOME ===== */
+.os-header{
+  margin-bottom:36px;
+  text-align:center;
+}
+.os-title{
+  font-size:11px;
+  letter-spacing:6px;
+  color:var(--accent);
+}
+
+.menu{
+  width:90%;
+  max-width:380px;
+  display:grid;
+  gap:16px;
+}
+
+.card{
+  display:flex;
+  align-items:center;
+  gap:18px;
+  padding:22px;
+  border-radius:18px;
+  background:var(--glass);
+  backdrop-filter:blur(16px);
+  border:1px solid var(--border);
+  transition:.2s;
+}
+.card:active{
+  transform:scale(.97);
+  background:rgba(79,195,255,.14);
+}
+
+.icon{
+  width:44px;
+  height:44px;
+  border-radius:10px;
+  background:rgba(79,195,255,.15);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--accent);
+}
+
+.label{
+  font-size:16px;
+  letter-spacing:1px;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{
+  0%,100%{transform:scale(1);opacity:.8}
+  50%{transform:scale(1.15);opacity:1}
+}
+
+/* ===== LAUNCH ===== */
+.launch .outer{transform:scale(1.6);opacity:0}
+.launch .dashed{transform:scale(2.2);opacity:0}
+.launch .inner{transform:scale(3);opacity:0}
+.launch .core{
+  transform:scale(30);
+  background:#fff;
+  filter:blur(2px);
+}
+</style>
+</head>
+
+<body>
+
+<div class="particles" id="particles"></div>
+
+<!-- BOOT -->
+<div class="screen" id="boot">
+  <div class="power-wrap" id="power">
+    <div class="power-btn" id="activate">
+      <div class="ring outer"></div>
+      <div class="ring dashed"></div>
+      <div class="ring inner"></div>
+      <div class="core"></div>
+      <div class="power-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M13 3h-2v10h2V3zm4.83 2.17-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/>
+        </svg>
+      </div>
+    </div>
+    <div class="status">СИСТЕМА ГОТОВА</div>
+  </div>
+</div>
+
+<!-- HOME -->
+<div class="screen" id="home">
+  <div>
+    <div class="os-header">
+      <div class="os-title">TEQRA OS v1.0</div>
+    </div>
+
+    <div class="menu">
+      <div class="card">
+        <div class="icon">▢</div>
+        <div class="label">Ноутбуки та залізо</div>
+      </div>
+      <div class="card">
+        <div class="icon">≋</div>
+        <div class="label">Професійний звук</div>
+      </div>
+      <div class="card">
+        <div class="icon">⚙</div>
+        <div class="label">Налаштування системи</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 /* ===== PARTICLES ===== */
-const p=document.getElementById('particles');
+const pc=document.getElementById('particles');
 for(let i=0;i<70;i++){
   const d=document.createElement('div');
   d.className='particle';
@@ -10,64 +264,50 @@ for(let i=0;i<70;i++){
   d.style.left=Math.random()*100+'%';
   d.style.animationDuration=15+Math.random()*25+'s';
   d.style.animationDelay=Math.random()*-30+'s';
-  p.appendChild(d);
+  pc.appendChild(d);
 }
 
-/* ===== AUDIO SYSTEM ===== */
+/* ===== AUDIO ===== */
 let audioCtx;
-
 function playBootSound(){
-  if(!audioCtx){
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  }
+  audioCtx ||= new (window.AudioContext||window.webkitAudioContext)();
+  const t=audioCtx.currentTime;
 
-  const now = audioCtx.currentTime;
-
-  // MAIN HUM
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-  osc.type = "sine";
-  osc.frequency.setValueAtTime(90, now);
-  osc.frequency.exponentialRampToValueAtTime(220, now + 1.2);
-
-  gain.gain.setValueAtTime(0.001, now);
-  gain.gain.exponentialRampToValueAtTime(0.25, now + 0.4);
-  gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.5);
-
+  const osc=audioCtx.createOscillator();
+  const gain=audioCtx.createGain();
+  osc.type='sine';
+  osc.frequency.setValueAtTime(90,t);
+  osc.frequency.exponentialRampToValueAtTime(220,t+1.2);
+  gain.gain.setValueAtTime(0.001,t);
+  gain.gain.exponentialRampToValueAtTime(0.25,t+0.4);
+  gain.gain.exponentialRampToValueAtTime(0.0001,t+1.5);
   osc.connect(gain).connect(audioCtx.destination);
-  osc.start(now);
-  osc.stop(now + 1.6);
+  osc.start();
+  osc.stop(t+1.6);
 
-  // WHOOSH
-  const noise = audioCtx.createBufferSource();
-  const buffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 1.2, audioCtx.sampleRate);
-  const data = buffer.getChannelData(0);
-  for(let i=0;i<data.length;i++){
-    data[i]=(Math.random()*2-1)*(1-i/data.length);
-  }
-  noise.buffer = buffer;
-
-  const noiseGain = audioCtx.createGain();
-  noiseGain.gain.setValueAtTime(0.0001, now + 0.8);
-  noiseGain.gain.exponentialRampToValueAtTime(0.15, now + 1);
-  noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + 1.4);
-
-  noise.connect(noiseGain).connect(audioCtx.destination);
-  noise.start(now + 0.7);
-  noise.stop(now + 1.5);
+  const buf=audioCtx.createBuffer(1,audioCtx.sampleRate*1.1,audioCtx.sampleRate);
+  const data=buf.getChannelData(0);
+  for(let i=0;i<data.length;i++){data[i]=(Math.random()*2-1)*(1-i/data.length);}
+  const noise=audioCtx.createBufferSource();
+  noise.buffer=buf;
+  const ng=audioCtx.createGain();
+  ng.gain.setValueAtTime(0.001,t+0.6);
+  ng.gain.exponentialRampToValueAtTime(0.18,t+0.9);
+  ng.gain.exponentialRampToValueAtTime(0.0001,t+1.4);
+  noise.connect(ng).connect(audioCtx.destination);
+  noise.start(t+0.6);
+  noise.stop(t+1.5);
 }
 
 /* ===== LAUNCH ===== */
-const btn=document.getElementById('btn');
+const btn=document.getElementById('activate');
+const power=document.getElementById('power');
 const boot=document.getElementById('boot');
 const home=document.getElementById('home');
-const power=document.getElementById('power');
 
 btn.onclick=()=>{
   playBootSound();
-
   power.classList.add('launch');
-
   setTimeout(()=>{
     boot.style.opacity=0;
     boot.style.transform='scale(1.6)';
@@ -81,3 +321,6 @@ btn.onclick=()=>{
   },800);
 };
 </script>
+
+</body>
+</html>
