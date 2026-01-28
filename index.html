@@ -3,196 +3,210 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>TEQRA Core</title>
+<title>TEQRA</title>
 
 <style>
 :root{
-  --bg:#02040a;
-  --glass:rgba(255,255,255,.08);
-  --glass-border:rgba(255,255,255,.25);
-  --accent:#7dd3ff;
-  --accent-soft:rgba(125,211,255,.25);
-  --text-dim:rgba(255,255,255,.45);
-  --ease:cubic-bezier(.22,.61,.36,1);
+  --bg:#05070c;
+  --accent:#8fd3ff;
+  --glass:rgba(255,255,255,0.06);
+  --rim:rgba(255,255,255,0.18);
+  --ease:cubic-bezier(.22,1,.36,1);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter",sans-serif;
 }
 
 *{margin:0;padding:0;box-sizing:border-box}
 body{
   height:100vh;
-  background:
-    radial-gradient(circle at 50% 40%, #0b1b2f 0%, #02040a 70%);
+  background:radial-gradient(circle at 50% 40%, #0b1422 0%, var(--bg) 70%);
   overflow:hidden;
-  font-family:-apple-system,Inter,system-ui,sans-serif;
+  color:#fff;
+}
+
+/* ---- SPACE DUST ---- */
+.dust{position:absolute;width:2px;height:2px;background:#fff;opacity:.12;border-radius:50%}
+
+/* ---- SCREENS ---- */
+.screen{
+  position:fixed;
+  inset:0;
   display:flex;
   align-items:center;
   justify-content:center;
-  color:white;
+  transition:opacity 1.2s var(--ease), transform 1.2s var(--ease), filter 1.2s var(--ease);
 }
 
-/* ===== SPACE DUST ===== */
-.dust{
-  position:absolute;
-  width:2px;height:2px;
-  background:white;
-  border-radius:50%;
-  opacity:.15;
-  animation:float 30s linear infinite;
-}
-@keyframes float{
-  from{transform:translateY(100vh)}
-  to{transform:translateY(-120vh)}
+#home{
+  opacity:0;
+  pointer-events:none;
+  transform:scale(1.05);
+  filter:blur(20px);
 }
 
-/* ===== CORE ===== */
-.stage{
+/* ---- CORE ---- */
+.core-wrap{
   display:flex;
   flex-direction:column;
   align-items:center;
-  gap:64px;
-  transition:opacity 1.6s var(--ease), filter 1.6s var(--ease);
+  gap:32px;
 }
 
 .core{
-  width:300px;
-  height:300px;
-  position:relative;
+  width:260px;
+  height:260px;
   border-radius:50%;
+  position:relative;
   cursor:pointer;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,.18), transparent 60%),
+    var(--glass);
+  backdrop-filter:blur(40px) saturate(140%);
+  -webkit-backdrop-filter:blur(40px) saturate(140%);
+  border:1px solid var(--rim);
+  box-shadow:
+    0 40px 120px rgba(0,0,0,.9),
+    inset 0 0 40px rgba(255,255,255,.05);
+  transition:transform .6s var(--ease), box-shadow .6s var(--ease);
+  overflow:hidden;
 }
 
-/* glass body */
 .core::before{
   content:"";
   position:absolute;
-  inset:0;
-  border-radius:50%;
-  background:
-    radial-gradient(circle at 30% 30%, rgba(255,255,255,.35), transparent 40%),
-    radial-gradient(circle at 70% 70%, rgba(0,0,0,.4), transparent 50%),
-    var(--glass);
-  backdrop-filter:blur(30px) saturate(160%);
-  border:1px solid var(--glass-border);
-  box-shadow:
-    0 40px 120px rgba(0,0,0,.85),
-    inset 0 0 40px rgba(255,255,255,.12);
-  transition:all 1.2s var(--ease);
+  inset:-40%;
+  background:conic-gradient(from 0deg, transparent, rgba(143,211,255,.25), transparent);
+  animation:spin 14s linear infinite;
 }
 
-/* inner glow */
 .core::after{
   content:"";
   position:absolute;
   inset:25%;
-  border-radius:50%;
   background:radial-gradient(circle, var(--accent), transparent 70%);
-  opacity:.25;
-  filter:blur(25px);
+  filter:blur(40px);
+  opacity:.4;
   animation:breathe 6s ease-in-out infinite;
 }
 
+@keyframes spin{to{transform:rotate(360deg)}}
 @keyframes breathe{
-  0%,100%{transform:scale(1)}
-  50%{transform:scale(1.15)}
+  0%,100%{transform:scale(1);opacity:.35}
+  50%{transform:scale(1.4);opacity:.65}
 }
 
-/* wave */
-.wave{
+/* ---- RIPPLE INSIDE ---- */
+.ripple{
   position:absolute;
-  inset:0;
+  inset:20%;
   border-radius:50%;
-  background:radial-gradient(circle, rgba(255,255,255,.45), transparent 60%);
-  opacity:0;
-  animation:wave 1.4s var(--ease) forwards;
+  background:radial-gradient(circle, rgba(255,255,255,.4), transparent 70%);
+  animation:ripple 1.2s var(--ease) forwards;
 }
-@keyframes wave{
-  0%{transform:scale(.6);opacity:.6}
-  100%{transform:scale(1.6);opacity:0}
-}
-
-/* labels */
-.meta{
-  text-align:center;
-}
-.meta h1{
-  font-size:11px;
-  letter-spacing:.6em;
-  color:var(--text-dim);
-  font-weight:300;
-}
-.meta p{
-  margin-top:10px;
-  font-size:13px;
-  letter-spacing:.25em;
-  opacity:.7;
+@keyframes ripple{
+  from{transform:scale(.6);opacity:.8}
+  to{transform:scale(2);opacity:0}
 }
 
-/* teleport */
-.teleport{
-  filter:blur(30px) brightness(2);
-  opacity:0;
+/* ---- TEXT ---- */
+.label-top{
+  font-size:10px;
+  letter-spacing:.5em;
+  opacity:.5;
+}
+.label-bottom{
+  font-size:12px;
+  letter-spacing:.3em;
+  opacity:.75;
 }
 
-/* ===== FLOATING DUST ===== */
-for-dust{}
+/* ---- HOME ---- */
+.home-wrap{
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+  width:86%;
+  max-width:380px;
+}
+
+.card{
+  padding:22px;
+  border-radius:18px;
+  background:rgba(255,255,255,.05);
+  backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,.12);
+  font-size:16px;
+  transition:transform .3s var(--ease);
+}
+.card:active{transform:scale(.97)}
+
 </style>
 </head>
-
 <body>
 
-<script>
-for(let i=0;i<50;i++){
-  const d=document.createElement('div');
-  d.className='dust';
-  d.style.left=Math.random()*100+'vw';
-  d.style.animationDuration=20+Math.random()*30+'s';
-  d.style.opacity=.05+Math.random()*.2;
-  document.body.appendChild(d);
-}
-</script>
+<!-- CORE SCREEN -->
+<div class="screen" id="coreScreen">
+  <div class="core-wrap">
+    <div class="core" id="core"></div>
+    <div class="label-top">TEQRA ECOSYSTEM</div>
+    <div class="label-bottom">touch to synchronize</div>
+  </div>
+</div>
 
-<div class="stage" id="stage">
-  <div class="core" id="core"></div>
-  <div class="meta">
-    <h1>TEQRA ECOSYSTEM</h1>
-    <p id="label">touch to synchronize</p>
+<!-- HOME SCREEN -->
+<div class="screen" id="home">
+  <div class="home-wrap">
+    <div style="text-align:center;letter-spacing:.4em;opacity:.6;font-size:11px">
+      TEQRA OS v1.0
+    </div>
+    <div class="card">Ноутбуки та залізо</div>
+    <div class="card">Професійний звук</div>
+    <div class="card">Налаштування системи</div>
   </div>
 </div>
 
 <script>
-const core=document.getElementById('core');
-const stage=document.getElementById('stage');
-const label=document.getElementById('label');
-let active=false;
-
-/* soft system sound */
-function sound(){
-  const ctx=new (window.AudioContext||window.webkitAudioContext)();
-  const osc=ctx.createOscillator();
-  const gain=ctx.createGain();
-  osc.type='sine';
-  osc.frequency.value=220;
-  gain.gain.value=0;
-  osc.connect(gain);
-  gain.connect(ctx.destination);
-  osc.start();
-  gain.gain.linearRampToValueAtTime(.15,ctx.currentTime+.15);
-  gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+1.2);
-  osc.stop(ctx.currentTime+1.3);
+/* DUST */
+for(let i=0;i<70;i++){
+  const d=document.createElement("div");
+  d.className="dust";
+  d.style.left=Math.random()*100+"vw";
+  d.style.top=Math.random()*100+"vh";
+  document.body.appendChild(d);
 }
 
+/* SOUND */
+function sound(){
+  const ctx=new (window.AudioContext||webkitAudioContext)();
+  const o=ctx.createOscillator();
+  const g=ctx.createGain();
+  o.type="sine";
+  o.frequency.setValueAtTime(60,ctx.currentTime);
+  o.frequency.exponentialRampToValueAtTime(140,ctx.currentTime+.6);
+  g.gain.setValueAtTime(0,ctx.currentTime);
+  g.gain.linearRampToValueAtTime(.25,ctx.currentTime+.15);
+  g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+1);
+  o.connect(g);g.connect(ctx.destination);
+  o.start();o.stop(ctx.currentTime+1);
+}
+
+/* ACTIVATE */
+const core=document.getElementById("core");
 core.onclick=()=>{
-  if(active)return;
-  active=true;
   sound();
 
-  const w=document.createElement('div');
-  w.className='wave';
-  core.appendChild(w);
+  const r=document.createElement("div");
+  r.className="ripple";
+  core.appendChild(r);
 
-  label.style.opacity=0;
+  document.getElementById("coreScreen").style.opacity=0;
+  document.getElementById("coreScreen").style.transform="scale(1.4)";
+  document.getElementById("coreScreen").style.filter="blur(30px)";
 
   setTimeout(()=>{
-    stage.classList.add('teleport');
+    document.getElementById("home").style.opacity=1;
+    document.getElementById("home").style.pointerEvents="auto";
+    document.getElementById("home").style.transform="scale(1)";
+    document.getElementById("home").style.filter="blur(0)";
   },900);
 };
 </script>
