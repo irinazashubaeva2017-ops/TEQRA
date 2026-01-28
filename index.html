@@ -7,13 +7,18 @@
 
 <style>
 :root{
-  --bg:#02040a;
-  --accent:140,210,255;
-  --ease:cubic-bezier(.22,.61,.36,1);
+  --bg:#06080f;
+  --blue:#6fb6ff;
+  --ease:cubic-bezier(.25,.8,.25,1);
   font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter",sans-serif;
 }
 
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
 
 html,body{
   width:100%;
@@ -30,124 +35,112 @@ body{
 }
 
 /* BACKGROUND */
-.space{
+.bg{
   position:fixed;
   inset:0;
   background:
-    radial-gradient(circle at 50% 40%, #0b1524 0%, #02040a 70%);
-  z-index:-2;
-}
-
-/* STARS */
-.star{
-  position:absolute;
-  width:1px;
-  height:1px;
-  background:rgba(255,255,255,.35);
-  border-radius:50%;
-  animation:float 20s linear infinite;
-}
-
-@keyframes float{
-  from{transform:translateY(0)}
-  to{transform:translateY(-120vh)}
+    radial-gradient(circle at 50% 40%, #0f172a 0%, #06080f 70%);
+  z-index:-1;
 }
 
 /* CORE */
-.core-wrap{
+.wrapper{
   display:flex;
   flex-direction:column;
   align-items:center;
-  gap:28px;
+  gap:22px;
 }
 
 .core{
-  width:240px;
-  height:240px;
+  width:210px;
+  height:210px;
   border-radius:50%;
-  position:relative;
   display:flex;
   align-items:center;
   justify-content:center;
+  position:relative;
   cursor:pointer;
+
   background:
-    radial-gradient(circle at 28% 22%,
-      rgba(255,255,255,.45),
-      rgba(255,255,255,.18) 20%,
-      rgba(255,255,255,.06) 34%,
-      transparent 60%),
-    linear-gradient(180deg,
-      rgba(255,255,255,.08),
-      rgba(0,0,0,.55));
-  backdrop-filter:blur(30px) saturate(140%);
-  border:1px solid rgba(255,255,255,.18);
+    radial-gradient(circle at 30% 30%,
+      rgba(255,255,255,.35),
+      rgba(255,255,255,.12) 35%,
+      rgba(0,0,0,.6) 70%);
+
   box-shadow:
-    0 0 40px rgba(var(--accent),.25),
-    inset 0 0 30px rgba(255,255,255,.12);
-  transition:transform .6s var(--ease), box-shadow .6s var(--ease);
+    0 0 25px rgba(111,182,255,.35),
+    inset 0 0 18px rgba(255,255,255,.15);
+
+  animation:idlePulse 3.2s ease-in-out infinite;
 }
 
-/* IDLE BREATHING */
-.core::after{
+/* ЯВНО ВИДИМОЕ ДЫХАНИЕ */
+@keyframes idlePulse{
+  0%,100%{
+    box-shadow:
+      0 0 18px rgba(111,182,255,.25),
+      inset 0 0 14px rgba(255,255,255,.12);
+    transform:scale(1);
+  }
+  50%{
+    box-shadow:
+      0 0 40px rgba(111,182,255,.55),
+      inset 0 0 22px rgba(255,255,255,.2);
+    transform:scale(1.035);
+  }
+}
+
+/* ORBIT RING */
+.core::before{
   content:"";
   position:absolute;
-  inset:-18px;
+  inset:-12px;
   border-radius:50%;
-  background:radial-gradient(circle,
-    rgba(var(--accent),.35),
-    transparent 65%);
-  opacity:.35;
-  animation:breath 4.5s ease-in-out infinite;
+  border:1px solid rgba(111,182,255,.25);
+  animation:ring 6s linear infinite;
 }
 
-@keyframes breath{
-  0%,100%{transform:scale(.92);opacity:.25}
-  50%{transform:scale(1);opacity:.55}
+@keyframes ring{
+  from{transform:rotate(0deg)}
+  to{transform:rotate(360deg)}
 }
 
-/* POWER ICON */
+/* ICON */
 svg{
-  width:52px;
-  height:52px;
-  stroke:#fff;
+  width:50px;
+  height:50px;
+  stroke:white;
   stroke-width:2.2;
   fill:none;
-  filter:
-    drop-shadow(0 0 6px rgba(var(--accent),.6))
-    drop-shadow(0 0 18px rgba(var(--accent),.35));
 }
 
 /* TEXT */
 .title{
   font-size:11px;
-  letter-spacing:.45em;
+  letter-spacing:.42em;
   opacity:.45;
 }
 
 .sub{
   font-size:13px;
   letter-spacing:.18em;
-  opacity:.8;
+  opacity:.85;
 }
 
 /* PRESS */
 .core:active{
-  transform:scale(.94);
-  box-shadow:
-    0 0 90px rgba(var(--accent),.55),
-    inset 0 0 40px rgba(255,255,255,.18);
+  transform:scale(.92);
 }
 
-/* TELEPORT */
-.teleport{
-  animation:teleport 1.4s var(--ease) forwards;
+/* TRANSITION */
+.fade{
+  animation:fadeOut 1.2s var(--ease) forwards;
 }
 
-@keyframes teleport{
+@keyframes fadeOut{
   to{
-    transform:scale(4);
     opacity:0;
-    filter:blur(25px);
+    transform:scale(1.6);
   }
 }
 </style>
@@ -155,9 +148,9 @@ svg{
 
 <body>
 
-<div class="space" id="space"></div>
+<div class="bg"></div>
 
-<div class="core-wrap" id="wrap">
+<div class="wrapper" id="wrap">
   <div class="core" id="core">
     <svg viewBox="0 0 24 24">
       <path d="M12 2v10"/>
@@ -170,18 +163,6 @@ svg{
 </div>
 
 <script>
-/* STARS */
-const space=document.getElementById("space");
-for(let i=0;i<70;i++){
-  const s=document.createElement("div");
-  s.className="star";
-  s.style.left=Math.random()*100+"vw";
-  s.style.top=Math.random()*100+"vh";
-  s.style.animationDuration=15+Math.random()*25+"s";
-  space.appendChild(s);
-}
-
-/* CLICK */
 const core=document.getElementById("core");
 const wrap=document.getElementById("wrap");
 let locked=false;
@@ -189,13 +170,13 @@ let locked=false;
 core.addEventListener("click",()=>{
   if(locked)return;
   locked=true;
-  wrap.classList.add("teleport");
+  wrap.classList.add("fade");
 
   setTimeout(()=>{
-    // 👉 ЗДЕСЬ ПЕРЕХІД У МАГАЗИН
+    // 👉 переход в магазин
     // window.location.href="shop.html";
-    console.log("TEQRA ENTER");
-  },1200);
+    console.log("ENTER TEQRA");
+  },1000);
 });
 </script>
 
