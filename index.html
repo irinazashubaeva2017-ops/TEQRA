@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>TEQRA Core</title>
+<title>TEQRA</title>
 
 <style>
 :root{
@@ -45,18 +45,24 @@ html,body{
   to{transform:translateY(-120vh);}
 }
 
-/* ===== CENTER ===== */
-.wrapper{
+/* ===== SCREENS ===== */
+.screen{
   position:absolute;
   inset:0;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  gap:22px;
+  transition:opacity 1.1s ease, transform 1.1s ease;
 }
 
-/* ===== CORE BUTTON ===== */
+#home{
+  opacity:0;
+  transform:scale(1.04);
+  pointer-events:none;
+}
+
+/* ===== CORE ===== */
 .core{
   position:relative;
   width:220px;
@@ -65,71 +71,94 @@ html,body{
   background:
     radial-gradient(circle at 30% 30%, rgba(255,255,255,.28), transparent 60%),
     var(--glass);
-  backdrop-filter:blur(34px);
-  -webkit-backdrop-filter:blur(34px);
+  backdrop-filter:blur(36px);
+  -webkit-backdrop-filter:blur(36px);
   border:1px solid var(--border);
-  box-shadow:
-    0 40px 90px rgba(0,0,0,.9),
-    inset 0 0 36px rgba(255,255,255,.1);
   display:flex;
   align-items:center;
   justify-content:center;
   cursor:pointer;
 
-  /* режим ожидания */
-  animation:idle 6s ease-in-out infinite;
+  /* ГЛАВНОЕ — ЖИВОЕ ДЫХАНИЕ */
+  animation:core-breath 3.2s ease-in-out infinite;
 }
 
-@keyframes idle{
-  0%,100%{
+/* внутреннее свечение */
+.core::before{
+  content:"";
+  position:absolute;
+  inset:14px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(140,210,255,.55), transparent 70%);
+  opacity:.35;
+  animation:inner-pulse 3.2s ease-in-out infinite;
+}
+
+/* внешний ореол */
+.core::after{
+  content:"";
+  position:absolute;
+  inset:-22px;
+  border-radius:50%;
+  border:1px solid rgba(140,210,255,.25);
+  opacity:.35;
+  animation:halo 3.2s ease-in-out infinite;
+}
+
+@keyframes core-breath{
+  0%{
     box-shadow:
-      0 40px 90px rgba(0,0,0,.9),
-      inset 0 0 36px rgba(255,255,255,.08);
+      0 30px 70px rgba(0,0,0,.9),
+      inset 0 0 30px rgba(255,255,255,.12);
   }
   50%{
     box-shadow:
-      0 40px 90px rgba(0,0,0,.9),
-      inset 0 0 52px rgba(140,210,255,.22);
+      0 40px 100px rgba(0,0,0,1),
+      inset 0 0 55px rgba(140,210,255,.35);
+  }
+  100%{
+    box-shadow:
+      0 30px 70px rgba(0,0,0,.9),
+      inset 0 0 30px rgba(255,255,255,.12);
   }
 }
 
-.core:active{
-  transform:scale(.95);
+@keyframes inner-pulse{
+  0%,100%{opacity:.25; transform:scale(1);}
+  50%{opacity:.55; transform:scale(1.06);}
 }
 
-/* ===== RING ===== */
-.ring{
-  position:absolute;
-  inset:-18px;
-  border-radius:50%;
-  border:1px solid rgba(140,210,255,.25);
-  opacity:.6;
-  animation:rotate 20s linear infinite;
-}
-@keyframes rotate{
-  from{transform:rotate(0);}
-  to{transform:rotate(360deg);}
+@keyframes halo{
+  0%,100%{opacity:.25; transform:scale(1);}
+  50%{opacity:.6; transform:scale(1.04);}
 }
 
-/* ===== POWER ICON ===== */
+/* power icon */
 .power{
   width:54px;
   height:54px;
-  filter:drop-shadow(0 0 16px var(--blue));
+  z-index:2;
+  filter:drop-shadow(0 0 18px var(--blue));
 }
 
-/* ===== RIPPLE ===== */
+/* click ripple */
 .ripple{
   position:absolute;
   inset:0;
   border-radius:50%;
-  background:radial-gradient(circle, rgba(140,210,255,.45), transparent 65%);
-  animation:ripple 1.2s ease forwards;
-  pointer-events:none;
+  background:radial-gradient(circle, rgba(140,210,255,.5), transparent 65%);
+  animation:ripple 1.1s ease forwards;
 }
 @keyframes ripple{
-  from{transform:scale(.6);opacity:.9;}
-  to{transform:scale(2.6);opacity:0;}
+  to{transform:scale(2.8);opacity:0;}
+}
+
+/* teleport */
+.teleport{
+  animation:teleport 1s ease forwards;
+}
+@keyframes teleport{
+  to{transform:scale(3);opacity:0;filter:blur(20px);}
 }
 
 /* ===== TEXT ===== */
@@ -137,70 +166,110 @@ html,body{
   font-size:11px;
   letter-spacing:.35em;
   opacity:.45;
+  margin-top:22px;
 }
 .action{
   font-size:13px;
   letter-spacing:.18em;
   opacity:.7;
+  margin-top:6px;
 }
 
-/* ===== TELEPORT ===== */
-.teleport{
-  animation:teleport 1.1s ease forwards;
+/* ===== HOME ===== */
+.header{
+  font-size:11px;
+  letter-spacing:.45em;
+  opacity:.6;
+  margin-bottom:40px;
 }
-@keyframes teleport{
-  to{
-    transform:scale(3);
-    opacity:0;
-    filter:blur(20px);
-  }
+
+.menu{
+  width:90%;
+  max-width:380px;
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+
+.card{
+  padding:22px;
+  border-radius:18px;
+  background:var(--glass);
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+  border:1px solid var(--border);
+  transition:transform .2s, background .2s;
+}
+.card:active{
+  transform:scale(.97);
+  background:rgba(140,210,255,.12);
+}
+.card span{
+  font-size:16px;
+  font-weight:300;
 }
 </style>
 </head>
 
 <body>
 
-<div class="wrapper" id="stage">
-  <div class="core" id="core">
-    <div class="ring"></div>
-    <svg class="power" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-      <path d="M12 2v10"/>
-      <path d="M5.5 6.5a8 8 0 1 0 13 0"/>
-    </svg>
-  </div>
-
-  <div class="label">TEQRA ECOSYSTEM</div>
-  <div class="action">touch to activate</div>
-</div>
-
 <script>
-// STARS
 for(let i=0;i<90;i++){
   const s=document.createElement("div");
   s.className="star";
   s.style.left=Math.random()*100+"vw";
   s.style.top=Math.random()*120+"vh";
   s.style.animationDuration=30+Math.random()*40+"s";
-  s.style.opacity=Math.random()*.25;
   document.body.appendChild(s);
 }
+</script>
 
-// INTERACTION
+<!-- CORE -->
+<div class="screen" id="coreScreen">
+  <div class="core" id="core">
+    <svg class="power" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+      <path d="M12 2v10"/>
+      <path d="M5.5 6.5a8 8 0 1 0 13 0"/>
+    </svg>
+  </div>
+  <div class="label">TEQRA ECOSYSTEM</div>
+  <div class="action">touch to activate</div>
+</div>
+
+<!-- HOME -->
+<div class="screen" id="home">
+  <div class="header">TEQRA OS v1.0</div>
+  <div class="menu">
+    <div class="card"><span>Laptops & Hardware</span></div>
+    <div class="card"><span>Pro Audio</span></div>
+    <div class="card"><span>System Settings</span></div>
+  </div>
+</div>
+
+<script>
 const core=document.getElementById("core");
-const stage=document.getElementById("stage");
-let locked=false;
+const coreScreen=document.getElementById("coreScreen");
+const home=document.getElementById("home");
+let done=false;
 
 core.addEventListener("click",()=>{
-  if(locked) return;
-  locked=true;
+  if(done) return;
+  done=true;
 
   const r=document.createElement("div");
   r.className="ripple";
   core.appendChild(r);
 
-  setTimeout(()=>stage.classList.add("teleport"),200);
+  coreScreen.classList.add("teleport");
+
+  setTimeout(()=>{
+    coreScreen.style.display="none";
+    home.style.opacity="1";
+    home.style.transform="scale(1)";
+    home.style.pointerEvents="auto";
+  },900);
 });
 </script>
 
 </body>
-</html>
+  </html>
