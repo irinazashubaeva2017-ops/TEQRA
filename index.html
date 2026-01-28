@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -30,7 +30,7 @@ html,body{
   color:white;
 }
 
-/* ===== STARS ===== */
+/* ===== ЗІРКИ ===== */
 .star{
   position:absolute;
   width:2px;
@@ -45,7 +45,7 @@ html,body{
   to{transform:translateY(-120vh);}
 }
 
-/* ===== SCREENS ===== */
+/* ===== ЕКРАНИ ===== */
 .screen{
   position:absolute;
   inset:0;
@@ -62,7 +62,7 @@ html,body{
   pointer-events:none;
 }
 
-/* ===== CORE ===== */
+/* ===== ЯДРО ===== */
 .core{
   position:relative;
   width:220px;
@@ -78,12 +78,9 @@ html,body{
   align-items:center;
   justify-content:center;
   cursor:pointer;
-
-  /* ГЛАВНОЕ — ЖИВОЕ ДЫХАНИЕ */
   animation:core-breath 3.2s ease-in-out infinite;
 }
 
-/* внутреннее свечение */
 .core::before{
   content:"";
   position:absolute;
@@ -94,7 +91,6 @@ html,body{
   animation:inner-pulse 3.2s ease-in-out infinite;
 }
 
-/* внешний ореол */
 .core::after{
   content:"";
   position:absolute;
@@ -107,19 +103,13 @@ html,body{
 
 @keyframes core-breath{
   0%{
-    box-shadow:
-      0 30px 70px rgba(0,0,0,.9),
-      inset 0 0 30px rgba(255,255,255,.12);
+    box-shadow:0 30px 70px rgba(0,0,0,.9), inset 0 0 30px rgba(255,255,255,.12);
   }
   50%{
-    box-shadow:
-      0 40px 100px rgba(0,0,0,1),
-      inset 0 0 55px rgba(140,210,255,.35);
+    box-shadow:0 40px 100px rgba(0,0,0,1), inset 0 0 55px rgba(140,210,255,.35);
   }
   100%{
-    box-shadow:
-      0 30px 70px rgba(0,0,0,.9),
-      inset 0 0 30px rgba(255,255,255,.12);
+    box-shadow:0 30px 70px rgba(0,0,0,.9), inset 0 0 30px rgba(255,255,255,.12);
   }
 }
 
@@ -133,7 +123,6 @@ html,body{
   50%{opacity:.6; transform:scale(1.04);}
 }
 
-/* power icon */
 .power{
   width:54px;
   height:54px;
@@ -141,7 +130,6 @@ html,body{
   filter:drop-shadow(0 0 18px var(--blue));
 }
 
-/* click ripple */
 .ripple{
   position:absolute;
   inset:0;
@@ -153,7 +141,6 @@ html,body{
   to{transform:scale(2.8);opacity:0;}
 }
 
-/* teleport */
 .teleport{
   animation:teleport 1s ease forwards;
 }
@@ -161,7 +148,7 @@ html,body{
   to{transform:scale(3);opacity:0;filter:blur(20px);}
 }
 
-/* ===== TEXT ===== */
+/* ===== ТЕКСТ ===== */
 .label{
   font-size:11px;
   letter-spacing:.35em;
@@ -175,12 +162,12 @@ html,body{
   margin-top:6px;
 }
 
-/* ===== HOME ===== */
+/* ===== ГОЛОВНЕ МЕНЮ ===== */
 .header{
   font-size:11px;
   letter-spacing:.45em;
   opacity:.6;
-  margin-bottom:40px;
+  margin-bottom:36px;
 }
 
 .menu{
@@ -200,13 +187,21 @@ html,body{
   border:1px solid var(--border);
   transition:transform .2s, background .2s;
 }
+
 .card:active{
   transform:scale(.97);
   background:rgba(140,210,255,.12);
 }
+
 .card span{
   font-size:16px;
   font-weight:300;
+}
+.card small{
+  display:block;
+  margin-top:6px;
+  font-size:12px;
+  opacity:.5;
 }
 </style>
 </head>
@@ -224,7 +219,7 @@ for(let i=0;i<90;i++){
 }
 </script>
 
-<!-- CORE -->
+<!-- ЯДРО -->
 <div class="screen" id="coreScreen">
   <div class="core" id="core">
     <svg class="power" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
@@ -232,17 +227,34 @@ for(let i=0;i<90;i++){
       <path d="M5.5 6.5a8 8 0 1 0 13 0"/>
     </svg>
   </div>
-  <div class="label">TEQRA ECOSYSTEM</div>
-  <div class="action">touch to activate</div>
+  <div class="label">ЕКОСИСТЕМА TEQRA</div>
+  <div class="action">торкніться для входу</div>
 </div>
 
-<!-- HOME -->
+<!-- ГОЛОВНИЙ ЕКРАН -->
 <div class="screen" id="home">
-  <div class="header">TEQRA OS v1.0</div>
+  <div class="header">TEQRA STORE</div>
+
   <div class="menu">
-    <div class="card"><span>Laptops & Hardware</span></div>
-    <div class="card"><span>Pro Audio</span></div>
-    <div class="card"><span>System Settings</span></div>
+    <div class="card">
+      <span>Пристрої</span>
+      <small>Ноутбуки · Компʼютери · Залізо</small>
+    </div>
+
+    <div class="card">
+      <span>Аудіо</span>
+      <small>Навушники · Професійний звук</small>
+    </div>
+
+    <div class="card">
+      <span>Аксесуари</span>
+      <small>Кабелі · Живлення · Доповнення</small>
+    </div>
+
+    <div class="card">
+      <span>Підтримка</span>
+      <small>Налаштування · Гарантія</small>
+    </div>
   </div>
 </div>
 
@@ -272,4 +284,4 @@ core.addEventListener("click",()=>{
 </script>
 
 </body>
-  </html>
+</html>
