@@ -3,191 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TEQRA | Portal</title>
+    <title>TEQRA | Core</title>
     <style>
         :root {
-            --space-black: #020406;
-            --core-light: rgba(180, 230, 255, 0.15);
-            --portal-edge: rgba(255, 255, 255, 0.1);
-            --text-color: rgba(255, 255, 255, 0.5);
-            --accent: #90d5ff;
-            --transit: cubic-bezier(0.2, 0, 0, 1);
+            --space-bg: #010204;
+            --accent-cyan: rgba(140, 210, 255, 0.6);
+            --core-inner: rgba(125, 211, 255, 0.05);
+            --glass-rim: rgba(255, 255, 255, 0.12);
+            --text-dim: rgba(255, 255, 255, 0.3);
+            --font-main: -apple-system, "SF Pro Display", "Inter", sans-serif;
+            --ease-premium: cubic-bezier(0.2, 0, 0, 1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             height: 100vh;
-            background-color: var(--space-black);
-            font-family: -apple-system, "SF Pro Display", "Inter", sans-serif;
+            background-color: var(--space-bg);
+            font-family: var(--font-main);
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            perspective: 1000px;
+            color: white;
         }
 
-        /* Глубокий космос с мягким градиентом */
+        /* Глубокое пространство */
         .universe {
             position: fixed;
             inset: 0;
-            background: radial-gradient(circle at 50% 50%, #08121c 0%, #020406 100%);
+            background: radial-gradient(circle at 50% 50%, #060d16 0%, #010204 100%);
             z-index: -2;
         }
 
-        /* Пыль в пространстве */
-        .dust-container {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: -1;
-        }
-
+        /* Частицы (Пыль пространства) */
         .dust {
             position: absolute;
             background: #fff;
             border-radius: 50%;
+            opacity: 0.1;
+            pointer-events: none;
             filter: blur(1px);
-            opacity: 0.15;
-            animation: drift linear infinite;
         }
 
-        @keyframes drift {
-            from { transform: translateY(10vh) translateX(0); }
-            to { transform: translateY(-110vh) translateX(20px); }
-        }
-
-        /* Сфера Сингулярности */
-        .portal-wrap {
+        /* Центральный объект: TEQRA CORE */
+        .core-stage {
             position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 60px;
-            transition: transform 2s var(--transit), opacity 2s var(--transit);
+            gap: 80px;
+            transition: opacity 2s var(--ease-premium), transform 2s var(--ease-premium);
         }
 
-        .core-sphere {
-            width: 240px;
-            height: 240px;
-            border-radius: 50%;
+        .core-container {
+            width: 280px;
+            height: 280px;
             position: relative;
             cursor: pointer;
-            
-            /* Эффект жидкого стекла */
-            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.05), transparent 60%);
-            backdrop-filter: blur(40px) saturate(120%);
-            -webkit-backdrop-filter: blur(40px) saturate(120%);
-            
-            border: 1px solid var(--portal-edge);
-            box-shadow: 
-                0 0 80px rgba(0,0,0,0.8),
-                inset 0 0 30px rgba(255,255,255,0.05),
-                inset -10px -10px 40px rgba(0,0,0,0.4);
-            
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.8s var(--transit);
         }
 
-        /* Внутренний свет */
-        .core-inner {
-            width: 40%;
-            height: 40%;
+        /* Жидкое стекло (Линза) */
+        .glass-lens {
+            position: absolute;
+            inset: 0;
             border-radius: 50%;
-            background: var(--core-light);
-            filter: blur(20px);
-            animation: pulse-core 6s ease-in-out infinite;
+            background: var(--core-inner);
+            backdrop-filter: blur(45px) saturate(140%);
+            -webkit-backdrop-filter: blur(45px) saturate(140%);
+            border: 1px solid var(--glass-rim);
+            
+            box-shadow: 
+                0 40px 100px rgba(0,0,0,0.8),
+                inset 0 0 40px rgba(255,255,255,0.03),
+                inset -20px -20px 60px rgba(0,0,0,0.5),
+                inset 10px 10px 30px rgba(255,255,255,0.05);
+            
+            transition: all 1.2s var(--ease-premium);
+            z-index: 2;
+        }
+
+        /* Внутреннее свечение (Core Energy) */
+        .energy-node {
+            width: 80px;
+            height: 80px;
+            background: var(--accent-cyan);
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.4;
+            animation: core-breathe 8s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        @keyframes core-breathe {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.6); opacity: 0.6; }
+        }
+
+        /* Тонкий индикатор синхронизации */
+        .sync-mark {
+            position: absolute;
+            width: 1px;
+            height: 20px;
+            background: white;
+            opacity: 0.2;
+            top: 20px;
+            transition: 0.8s var(--ease-premium);
+        }
+
+        /* Текст */
+        .meta-text {
+            text-align: center;
             pointer-events: none;
         }
 
-        @keyframes pulse-core {
-            0%, 100% { transform: scale(1); opacity: 0.3; }
-            50% { transform: scale(1.3); opacity: 0.6; }
-        }
-
-        /* Текст системы */
-        .info-panel {
-            text-align: center;
-            transition: opacity 1s var(--transit);
-        }
-
-        .system-name {
+        .system-label {
             font-size: 10px;
-            font-weight: 300;
-            letter-spacing: 0.8em;
-            color: var(--text-color);
+            letter-spacing: 0.9em;
             text-transform: uppercase;
-            margin-bottom: 15px;
+            color: var(--text-dim);
+            margin-bottom: 12px;
+            font-weight: 300;
         }
 
-        .status-msg {
-            font-size: 14px;
-            font-weight: 200;
-            color: var(--accent);
+        .action-label {
+            font-size: 13px;
             letter-spacing: 0.2em;
-            opacity: 0.8;
+            color: rgba(255,255,255,0.7);
+            font-weight: 200;
+            transition: opacity 1s;
         }
 
-        /* Эффект активации */
-        .activated .core-sphere {
-            transform: scale(0.9) rotateX(20deg);
-            background: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 150px var(--core-light);
-            border-color: var(--accent);
+        /* Интерактивные состояния */
+        .core-container:hover .glass-lens {
+            border-color: rgba(255,255,255,0.25);
+            transform: scale(1.02);
+            box-shadow: 0 50px 120px rgba(0,0,0,0.9), inset 0 0 50px rgba(255,255,255,0.1);
         }
 
-        .activated .core-inner {
-            background: var(--accent);
-            filter: blur(40px);
-            transform: scale(2.5);
-            opacity: 1;
+        .activated .glass-lens {
+            transform: scale(0.95);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 150px rgba(140, 210, 255, 0.2);
+            border-color: var(--accent-cyan);
         }
 
-        /* Волна при нажатии */
+        /* Волна активации */
         .ripple {
             position: absolute;
             inset: 0;
             border-radius: 50%;
-            border: 1px solid var(--accent);
+            border: 1px solid var(--accent-cyan);
             pointer-events: none;
-            animation: ripple-out 1.5s var(--transit) forwards;
+            animation: ripple-flow 2s var(--ease-premium) forwards;
         }
 
-        @keyframes ripple-out {
+        @keyframes ripple-flow {
             0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(3); opacity: 0; }
+            100% { transform: scale(2.5); opacity: 0; }
         }
 
-        /* Экран Dashboard (скрыт изначально) */
-        #dashboard {
-            position: fixed;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        /* Финальное поглощение */
+        .teleport {
+            transform: scale(4);
             opacity: 0;
-            pointer-events: none;
-            transition: opacity 3s var(--transit);
-            z-index: 100;
-        }
-
-        .glass-panel {
-            width: 85%;
-            max-width: 400px;
-            padding: 40px;
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(30px);
-            border-radius: 40px;
-            border: 1px solid var(--portal-edge);
-            text-align: center;
-            transform: translateY(20px);
-            transition: transform 2s var(--transit);
-        }
-
-        .entry-complete .glass-panel {
-            transform: translateY(0);
+            filter: blur(20px);
         }
 
     </style>
@@ -195,112 +178,102 @@
 <body>
 
     <div class="universe"></div>
-    <div class="dust-container" id="dust"></div>
 
-    <main id="activation-screen">
-        <div class="portal-wrap" id="portal-wrap">
-            <div class="core-sphere" id="core">
-                <div class="core-inner"></div>
-            </div>
-            
-            <div class="info-panel">
-                <h1 class="system-name">Teqra ecosystem</h1>
-                <p class="status-msg" id="status">Торкніться для синхронізації</p>
-            </div>
+    <main class="core-stage" id="stage">
+        <div class="core-container" id="core">
+            <div class="sync-mark"></div>
+            <div class="glass-lens"></div>
+            <div class="energy-node"></div>
+        </div>
+
+        <div class="meta-text">
+            <h1 class="system-label">Teqra Ecosystem</h1>
+            <p class="action-label" id="status">touch to synchronize</p>
         </div>
     </main>
 
-    <section id="dashboard">
-        <div class="glass-panel">
-            <h2 style="font-weight: 200; letter-spacing: 4px; margin-bottom: 20px;">ДОСТУП НАДАНО</h2>
-            <div style="width: 30px; height: 1px; background: var(--accent); margin: 0 auto 30px;"></div>
-            <p style="color: var(--text-color); font-size: 13px; line-height: 1.6; letter-spacing: 1px;">
-                Вітаємо у вашому цифровому середовищі.<br>Система готова до взаємодії.
-            </p>
-        </div>
-    </section>
-
     <script>
-        // Генерация космической пыли
-        const dustContainer = document.getElementById('dust');
-        for (let i = 0; i < 60; i++) {
-            const d = document.createElement('div');
-            d.className = 'dust';
-            const size = Math.random() * 2 + 1;
-            d.style.width = size + 'px';
-            d.style.height = size + 'px';
-            d.style.left = Math.random() * 100 + '%';
-            d.style.top = Math.random() * 100 + '%';
-            d.style.animationDuration = (Math.random() * 15 + 10) + 's';
-            d.style.opacity = Math.random() * 0.2;
-            dustContainer.appendChild(d);
+        // Создание мягкой космической пыли
+        const body = document.body;
+        for (let i = 0; i < 50; i++) {
+            const dust = document.createElement('div');
+            dust.className = 'dust';
+            const size = Math.random() * 2 + 0.5;
+            dust.style.width = size + 'px';
+            dust.style.height = size + 'px';
+            dust.style.left = Math.random() * 100 + 'vw';
+            dust.style.top = Math.random() * 100 + 'vh';
+            dust.style.animation = `drift ${Math.random() * 20 + 20}s linear infinite`;
+            body.appendChild(dust);
         }
 
         const core = document.getElementById('core');
-        const wrap = document.getElementById('portal-wrap');
+        const stage = document.getElementById('stage');
         const status = document.getElementById('status');
-        const dash = document.getElementById('dashboard');
-
         let isActivating = false;
 
-        // Звуковой движок TEQRA (Низкочастотный гул)
-        async function playStartupSound() {
-            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        // Web Audio API: Генерация премиального гула
+        async function playActivationSound() {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            const ctx = new AudioContext();
+            
             const osc = ctx.createOscillator();
             const gain = ctx.createGain();
-
+            
             osc.type = 'sine';
-            osc.frequency.setValueAtTime(40, ctx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(110, ctx.currentTime + 2.5);
-
+            osc.frequency.setValueAtTime(50, ctx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(80, ctx.currentTime + 2);
+            
             gain.gain.setValueAtTime(0, ctx.currentTime);
-            gain.gain.linearRampToValueAtTime(0.4, ctx.currentTime + 0.5);
-            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 3);
-
+            gain.gain.linearRampToValueAtTime(0.3, ctx.currentTime + 0.5);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 4);
+            
             osc.connect(gain);
             gain.connect(ctx.destination);
-
+            
             osc.start();
-            osc.stop(ctx.currentTime + 3);
+            osc.stop(ctx.currentTime + 4);
         }
 
         core.addEventListener('click', () => {
             if (isActivating) return;
             isActivating = true;
 
-            // Звук
-            playStartupSound().catch(() => {}); // Игнорируем блокировку браузера
+            playActivationSound().catch(() => {});
 
             // Визуальный отклик
-            wrap.classList.add('activated');
-            status.innerText = "Ідентифікація...";
-            status.style.opacity = "0.4";
+            stage.classList.add('activated');
+            status.style.opacity = '0';
 
             // Создание волны
-            const r = document.createElement('div');
-            r.className = 'ripple';
-            core.appendChild(r);
+            const ripple = document.createElement('div');
+            ripple.className = 'ripple';
+            core.appendChild(ripple);
 
-            // Фаза телепортации
+            // Поглощение
             setTimeout(() => {
-                wrap.style.opacity = "0";
-                wrap.style.transform = "scale(0.8) translateZ(-200px)";
-                
+                stage.classList.add('teleport');
                 setTimeout(() => {
-                    document.getElementById('activation-screen').style.display = 'none';
-                    dash.style.opacity = "1";
-                    dash.classList.add('entry-complete');
-                }, 1000);
-            }, 1800);
+                    // Здесь происходит переход в основную систему
+                    console.log("TEQRA Synchronized.");
+                }, 1500);
+            }, 1200);
         });
 
-        // Параллакс эффект для глубины
+        // Плавный параллакс ядра
         document.addEventListener('mousemove', (e) => {
             if (isActivating) return;
-            const x = (window.innerWidth / 2 - e.pageX) / 40;
-            const y = (window.innerHeight / 2 - e.pageY) / 40;
-            core.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+            const x = (window.innerWidth / 2 - e.pageX) / 50;
+            const y = (window.innerHeight / 2 - e.pageY) / 50;
+            core.style.transform = `rotateY(${x}deg) rotateX(${-y}deg) translateX(${x}px) translateY(${y}px)`;
         });
     </script>
+
+    <style>
+        @keyframes drift {
+            from { transform: translateY(0) translateX(0); }
+            to { transform: translateY(-100vh) translateX(20px); }
+        }
+    </style>
 </body>
 </html>
