@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>TEQRA</title>
+<title>TEQRA Store</title>
 
 <style>
 :root{
@@ -19,15 +19,13 @@
   box-sizing:border-box;
   -webkit-tap-highlight-color:transparent;
 }
-*:focus{outline:none;}
-
 html,body{
   width:100%;
   height:100%;
   background:#05070b;
   font-family:-apple-system,BlinkMacSystemFont,"Inter",sans-serif;
-  overflow:hidden;
   color:white;
+  overflow:hidden;
 }
 
 /* ===== BACKGROUND ===== */
@@ -42,13 +40,11 @@ body::before{
 /* ===== STARS ===== */
 .star{
   position:absolute;
-  width:2px;
-  height:2px;
+  width:2px;height:2px;
   background:white;
   opacity:.15;
   border-radius:50%;
   animation:drift linear infinite;
-  will-change:transform;
 }
 @keyframes drift{
   from{transform:translateY(0);}
@@ -63,125 +59,34 @@ body::before{
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  transition:opacity .7s ease, transform .7s ease;
-  will-change:opacity,transform;
-}
-
-#home{
   opacity:0;
   pointer-events:none;
+  transition:opacity .5s ease;
+}
+.screen.active{
+  opacity:1;
+  pointer-events:auto;
 }
 
-/* ===== CORE ===== */
-.core{
-  position:relative;
-  width:220px;
-  height:220px;
-  border-radius:50%;
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  will-change:transform,opacity;
-
-  background:
-    radial-gradient(circle at 30% 30%, rgba(255,255,255,.25), transparent 60%),
-    linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.35));
-  border:1px solid var(--border);
-  box-shadow:
-    0 30px 80px rgba(0,0,0,.85),
-    inset 0 0 30px rgba(255,255,255,.08);
-
-  animation:core-breath 3s ease-in-out infinite;
-}
-
-.core::before{
-  content:"";
-  position:absolute;
-  inset:18px;
-  border-radius:50%;
-  background:radial-gradient(circle, rgba(140,210,255,.5), transparent 70%);
-  opacity:.35;
-  animation:inner-pulse 3s ease-in-out infinite;
-}
-
-.core::after{
-  content:"";
-  position:absolute;
-  inset:-18px;
-  border-radius:50%;
-  border:1px solid rgba(140,210,255,.25);
-  opacity:.35;
-  animation:halo 3s ease-in-out infinite;
-}
-
-@keyframes core-breath{
-  0%,100%{
-    box-shadow:
-      0 30px 80px rgba(0,0,0,.85),
-      inset 0 0 30px rgba(255,255,255,.08);
-  }
-  50%{
-    box-shadow:
-      0 40px 110px rgba(0,0,0,.95),
-      inset 0 0 50px rgba(140,210,255,.35);
-  }
-}
-@keyframes inner-pulse{
-  0%,100%{opacity:.25;}
-  50%{opacity:.55;}
-}
-@keyframes halo{
-  0%,100%{opacity:.25;}
-  50%{opacity:.6;}
-}
-
-.power{
-  width:54px;
-  height:54px;
-  filter:drop-shadow(0 0 16px var(--blue));
-  z-index:2;
-}
-
-.ripple{
-  position:absolute;
-  inset:0;
-  border-radius:50%;
-  background:radial-gradient(circle, rgba(140,210,255,.45), transparent 65%);
-  animation:ripple .9s ease forwards;
-}
-@keyframes ripple{
-  to{transform:scale(2.4);opacity:0;}
-}
-
-.teleport{
-  opacity:0;
-  transform:scale(2.5);
-}
-
-/* ===== TEXT ===== */
-.label{
-  margin-top:22px;
-  font-size:11px;
-  letter-spacing:.35em;
-  opacity:.45;
-}
-.action{
-  margin-top:6px;
-  font-size:13px;
-  letter-spacing:.18em;
-  opacity:.7;
-}
-
-/* ===== HOME ===== */
+/* ===== COMMON UI ===== */
 .header{
   font-size:11px;
   letter-spacing:.45em;
   opacity:.6;
-  margin-bottom:32px;
+  margin-bottom:28px;
 }
 
-/* ===== MENU ===== */
+.btn{
+  padding:16px;
+  border-radius:16px;
+  background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.35));
+  border:1px solid var(--border);
+  color:white;
+  text-align:center;
+  letter-spacing:.08em;
+}
+
+/* ===== HOME ===== */
 .menu{
   width:90%;
   max-width:380px;
@@ -189,39 +94,50 @@ body::before{
   flex-direction:column;
   gap:16px;
 }
-
 .card{
   padding:22px;
   border-radius:18px;
   background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.35));
   border:1px solid var(--border);
-  opacity:0;
-  transform:translateY(14px);
-  transition:
-    opacity .45s ease,
-    transform .45s ease,
-    background .15s ease;
-}
-
-.card.show{
-  opacity:1;
-  transform:translateY(0);
-}
-
-.card:active{
-  transform:scale(.97);
-  background:rgba(140,210,255,.12);
-}
-
-.card span{
-  font-size:16px;
-  font-weight:300;
 }
 .card small{
   display:block;
   margin-top:6px;
-  font-size:12px;
   opacity:.5;
+}
+
+/* ===== CATALOG ===== */
+.catalog{
+  width:90%;
+  max-width:380px;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+.product{
+  padding:18px;
+  border-radius:16px;
+  border:1px solid var(--border);
+}
+.product small{opacity:.5}
+
+/* ===== PRODUCT PAGE ===== */
+.product-card{
+  width:90%;
+  max-width:380px;
+  text-align:center;
+}
+.price{
+  margin:20px 0;
+  font-size:18px;
+  letter-spacing:.1em;
+}
+
+/* ===== CART ===== */
+.cart{
+  width:90%;
+  max-width:380px;
+  text-align:center;
 }
 </style>
 </head>
@@ -229,8 +145,7 @@ body::before{
 <body>
 
 <script>
-/* STARS */
-for(let i=0;i<80;i++){
+for(let i=0;i<70;i++){
   const s=document.createElement("div");
   s.className="star";
   s.style.left=Math.random()*100+"vw";
@@ -240,57 +155,53 @@ for(let i=0;i<80;i++){
 }
 </script>
 
-<!-- CORE -->
-<div class="screen" id="coreScreen">
-  <div class="core" id="core">
-    <svg class="power" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-      <path d="M12 2v10"/>
-      <path d="M5.5 6.5a8 8 0 1 0 13 0"/>
-    </svg>
+<!-- HOME -->
+<div class="screen active" id="home">
+  <div class="header">TEQRA STORE</div>
+  <div class="menu">
+    <div class="card" onclick="go('catalog')">
+      <span>Пристрої</span>
+      <small>Ноутбуки · Залізо</small>
+    </div>
   </div>
-  <div class="label">ЕКОСИСТЕМА TEQRA</div>
-  <div class="action">торкніться для входу</div>
 </div>
 
-<!-- HOME -->
-<div class="screen" id="home">
-  <div class="header">TEQRA STORE</div>
+<!-- CATALOG -->
+<div class="screen" id="catalog">
+  <div class="header">ПРИСТРОЇ</div>
+  <div class="catalog">
+    <div class="product" onclick="go('product')">
+      <span>TEQRA Notebook One</span>
+      <small>14” · SSD · Premium</small>
+    </div>
+  </div>
+</div>
 
-  <div class="menu">
-    <div class="card"><span>Пристрої</span><small>Ноутбуки · Компʼютери · Залізо</small></div>
-    <div class="card"><span>Аудіо</span><small>Навушники · Професійний звук</small></div>
-    <div class="card"><span>Аксесуари</span><small>Кабелі · Живлення · Доповнення</small></div>
-    <div class="card"><span>Підтримка</span><small>Гарантія · Налаштування</small></div>
+<!-- PRODUCT -->
+<div class="screen" id="product">
+  <div class="header">TEQRA NOTEBOOK</div>
+  <div class="product-card">
+    <p>Преміальний ноутбук для роботи та творчості</p>
+    <div class="price">39 999 ₴</div>
+    <div class="btn" onclick="go('cart')">Додати до кошика</div>
+  </div>
+</div>
+
+<!-- CART -->
+<div class="screen" id="cart">
+  <div class="header">КОШИК</div>
+  <div class="cart">
+    <p>TEQRA Notebook One</p>
+    <div class="price">39 999 ₴</div>
+    <div class="btn">Оформити замовлення</div>
   </div>
 </div>
 
 <script>
-const core = document.getElementById("core");
-const coreScreen = document.getElementById("coreScreen");
-const home = document.getElementById("home");
-const cards = document.querySelectorAll(".card");
-let done=false;
-
-core.addEventListener("click",()=>{
-  if(done) return;
-  done=true;
-
-  const r=document.createElement("div");
-  r.className="ripple";
-  core.appendChild(r);
-
-  coreScreen.classList.add("teleport");
-
-  setTimeout(()=>{
-    coreScreen.style.display="none";
-    home.style.opacity="1";
-    home.style.pointerEvents="auto";
-
-    cards.forEach((card,i)=>{
-      setTimeout(()=>card.classList.add("show"), i*120);
-    });
-  },600);
-});
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
 </script>
 
 </body>
