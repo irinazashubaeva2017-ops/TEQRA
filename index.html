@@ -2,295 +2,201 @@
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>TEQRA</title>
 
 <style>
 :root{
-  --bg:#05070b;
-  --bg2:#0b1426;
-  --blue:#8ccfff;
-  --glass:rgba(255,255,255,.08);
-  --border:rgba(255,255,255,.18);
-  --text:#eaf1ff;
+  --bg:#02040a;
+  --accent:140,210,255;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter",sans-serif;
 }
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
-}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 
 html,body{
   width:100%;
   height:100%;
   background:var(--bg);
-  font-family:-apple-system,BlinkMacSystemFont,"Inter",system-ui,sans-serif;
-  color:var(--text);
   overflow:hidden;
 }
 
-/* ===== BACKGROUND ===== */
-body::before{
-  content:"";
+body{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+}
+
+/* BACKGROUND */
+.space{
   position:fixed;
   inset:0;
   background:
-    radial-gradient(circle at 50% 35%, #122044 0%, #05070b 70%);
+    radial-gradient(circle at 50% 40%, #0b1524 0%, #02040a 70%);
   z-index:-2;
 }
 
-/* ===== PARTICLES ===== */
+/* STARS */
 .star{
   position:absolute;
-  width:2px;
-  height:2px;
-  background:white;
-  opacity:.18;
+  width:1px;
+  height:1px;
+  background:rgba(255,255,255,.35);
   border-radius:50%;
-  animation:float linear infinite;
-}
-@keyframes float{
-  from{transform:translateY(120vh);}
-  to{transform:translateY(-140vh);}
+  animation:float 20s linear infinite;
 }
 
-/* ===== SCREENS ===== */
-.screen{
-  position:absolute;
-  inset:0;
+@keyframes float{
+  from{transform:translateY(0)}
+  to{transform:translateY(-120vh)}
+}
+
+/* CORE */
+.core-wrap{
   display:flex;
   flex-direction:column;
   align-items:center;
-  justify-content:center;
-  opacity:0;
-  pointer-events:none;
-  transition:opacity .5s ease;
-}
-.screen.active{
-  opacity:1;
-  pointer-events:auto;
+  gap:28px;
 }
 
-/* ===== CORE BUTTON ===== */
 .core{
-  width:210px;
-  height:210px;
+  width:240px;
+  height:240px;
   border-radius:50%;
   position:relative;
   display:flex;
   align-items:center;
   justify-content:center;
-  background:
-    radial-gradient(circle at 30% 30%, rgba(255,255,255,.35), transparent 60%),
-    linear-gradient(180deg, rgba(255,255,255,.12), rgba(0,0,0,.45));
-  border:1px solid var(--border);
-  box-shadow:
-    0 30px 90px rgba(0,0,0,.9),
-    inset 0 0 35px rgba(255,255,255,.12);
   cursor:pointer;
+  background:
+    radial-gradient(circle at 28% 22%,
+      rgba(255,255,255,.45),
+      rgba(255,255,255,.18) 20%,
+      rgba(255,255,255,.06) 34%,
+      transparent 60%),
+    linear-gradient(180deg,
+      rgba(255,255,255,.08),
+      rgba(0,0,0,.55));
+  backdrop-filter:blur(30px) saturate(140%);
+  border:1px solid rgba(255,255,255,.18);
+  box-shadow:
+    0 0 40px rgba(var(--accent),.25),
+    inset 0 0 30px rgba(255,255,255,.12);
+  transition:transform .6s var(--ease), box-shadow .6s var(--ease);
 }
 
-.core::before{
+/* IDLE BREATHING */
+.core::after{
   content:"";
   position:absolute;
-  inset:18px;
+  inset:-18px;
   border-radius:50%;
-  background:radial-gradient(circle, rgba(140,210,255,.45), transparent 70%);
-  opacity:.45;
+  background:radial-gradient(circle,
+    rgba(var(--accent),.35),
+    transparent 65%);
+  opacity:.35;
+  animation:breath 4.5s ease-in-out infinite;
 }
 
-.power{
+@keyframes breath{
+  0%,100%{transform:scale(.92);opacity:.25}
+  50%{transform:scale(1);opacity:.55}
+}
+
+/* POWER ICON */
+svg{
   width:52px;
   height:52px;
-  filter:drop-shadow(0 0 14px var(--blue));
-  z-index:2;
+  stroke:#fff;
+  stroke-width:2.2;
+  fill:none;
+  filter:
+    drop-shadow(0 0 6px rgba(var(--accent),.6))
+    drop-shadow(0 0 18px rgba(var(--accent),.35));
 }
 
-/* ripple */
-.ripple{
-  position:absolute;
-  inset:0;
-  border-radius:50%;
-  background:radial-gradient(circle, rgba(140,210,255,.45), transparent 65%);
-  animation:ripple .8s ease forwards;
-}
-@keyframes ripple{
-  to{transform:scale(2.6);opacity:0;}
-}
-
-/* ===== TEXT ===== */
-.label{
-  margin-top:22px;
+/* TEXT */
+.title{
   font-size:11px;
-  letter-spacing:.35em;
+  letter-spacing:.45em;
   opacity:.45;
 }
-.action{
-  margin-top:6px;
+
+.sub{
   font-size:13px;
   letter-spacing:.18em;
-  opacity:.7;
+  opacity:.8;
 }
 
-/* ===== HOME (STORE) ===== */
-.home-wrap{
-  width:92%;
-  max-width:420px;
-  background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.03));
-  border:1px solid var(--border);
-  border-radius:24px;
-  padding:26px 22px;
+/* PRESS */
+.core:active{
+  transform:scale(.94);
+  box-shadow:
+    0 0 90px rgba(var(--accent),.55),
+    inset 0 0 40px rgba(255,255,255,.18);
 }
 
-.title{
-  font-size:18px;
-  margin-bottom:8px;
-}
-.subtitle{
-  font-size:14px;
-  line-height:1.45;
-  opacity:.85;
+/* TELEPORT */
+.teleport{
+  animation:teleport 1.4s var(--ease) forwards;
 }
 
-.trust{
-  margin-top:16px;
-  font-size:13px;
-  line-height:1.45;
-  opacity:.75;
-}
-
-.main-btn{
-  margin-top:20px;
-  padding:16px;
-  border-radius:16px;
-  background:rgba(140,210,255,.18);
-  text-align:center;
-  font-size:14px;
-  letter-spacing:.08em;
-}
-
-/* ===== CATALOG ===== */
-.list{
-  width:92%;
-  max-width:420px;
-  display:flex;
-  flex-direction:column;
-  gap:16px;
-}
-
-.card{
-  padding:20px;
-  border-radius:18px;
-  background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(0,0,0,.35));
-  border:1px solid var(--border);
-}
-
-.card small{
-  display:block;
-  margin-top:6px;
-  font-size:12px;
-  opacity:.65;
-}
-
-.warn{
-  margin-top:6px;
-  font-size:12px;
-  color:#ffb4b4;
+@keyframes teleport{
+  to{
+    transform:scale(4);
+    opacity:0;
+    filter:blur(25px);
+  }
 }
 </style>
 </head>
 
 <body>
 
+<div class="space" id="space"></div>
+
+<div class="core-wrap" id="wrap">
+  <div class="core" id="core">
+    <svg viewBox="0 0 24 24">
+      <path d="M12 2v10"/>
+      <path d="M6.5 6.5a7 7 0 1 0 11 0"/>
+    </svg>
+  </div>
+
+  <div class="title">ЕКОСИСТЕМА TEQRA</div>
+  <div class="sub">торкніться для входу</div>
+</div>
+
 <script>
-/* particles */
-for(let i=0;i<80;i++){
+/* STARS */
+const space=document.getElementById("space");
+for(let i=0;i<70;i++){
   const s=document.createElement("div");
   s.className="star";
   s.style.left=Math.random()*100+"vw";
-  s.style.top=Math.random()*120+"vh";
-  s.style.animationDuration=35+Math.random()*40+"s";
-  document.body.appendChild(s);
-}
-</script>
-
-<!-- CORE SCREEN -->
-<div class="screen active" id="coreScreen">
-  <div class="core" id="core">
-    <svg class="power" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-      <path d="M12 2v10"/>
-      <path d="M5.5 6.5a8 8 0 1 0 13 0"/>
-    </svg>
-  </div>
-  <div class="label">ЕКОСИСТЕМА TEQRA</div>
-  <div class="action">торкніться для входу</div>
-</div>
-
-<!-- HOME -->
-<div class="screen" id="home">
-  <div class="home-wrap">
-    <div class="title">TEQRA — чесна техніка</div>
-    <div class="subtitle">
-      Гаджети для щоденного життя.<br>
-      Без перебільшень і маркетингової магії.
-    </div>
-
-    <div class="trust">
-      • перевірені моделі<br>
-      • чесні плюси та мінуси<br>
-      • зрозумілий вибір
-    </div>
-
-    <div class="main-btn" onclick="go('catalog')">
-      Переглянути перевірені пристрої
-    </div>
-  </div>
-</div>
-
-<!-- CATALOG -->
-<div class="screen" id="catalog">
-  <div class="list">
-    <div class="card">
-      <b>Бездротові навушники InPods 12</b>
-      <small>Зручні для дзвінків та музики щодня</small>
-      <div class="warn">❗ Базова модель, не для меломанів</div>
-    </div>
-  </div>
-</div>
-
-<script>
-/* navigation */
-function go(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+  s.style.top=Math.random()*100+"vh";
+  s.style.animationDuration=15+Math.random()*25+"s";
+  space.appendChild(s);
 }
 
-/* CORE BREATHING (JS, не отключается) */
-const core=document.getElementById('core');
-let start=null;
-function breathe(t){
-  if(!start) start=t;
-  const p=(t-start)/1000;
-  const scale=1+Math.sin(p*1.5)*0.025;
-  const glow=0.3+Math.sin(p*1.5)*0.2;
-  core.style.transform=`scale(${scale})`;
-  core.style.boxShadow=`0 0 ${40+glow*60}px rgba(140,210,255,${glow})`;
-  requestAnimationFrame(breathe);
-}
-requestAnimationFrame(breathe);
+/* CLICK */
+const core=document.getElementById("core");
+const wrap=document.getElementById("wrap");
+let locked=false;
 
-/* click */
-let entered=false;
-core.onclick=()=>{
-  if(entered) return;
-  entered=true;
-  const r=document.createElement("div");
-  r.className="ripple";
-  core.appendChild(r);
-  setTimeout(()=>go('home'),450);
-};
+core.addEventListener("click",()=>{
+  if(locked)return;
+  locked=true;
+  wrap.classList.add("teleport");
+
+  setTimeout(()=>{
+    // 👉 ЗДЕСЬ ПЕРЕХІД У МАГАЗИН
+    // window.location.href="shop.html";
+    console.log("TEQRA ENTER");
+  },1200);
+});
 </script>
 
 </body>
