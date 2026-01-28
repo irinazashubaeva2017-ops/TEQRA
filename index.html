@@ -1,279 +1,201 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TEQRA | Core</title>
-    <style>
-        :root {
-            --space-bg: #010204;
-            --accent-cyan: rgba(140, 210, 255, 0.6);
-            --core-inner: rgba(125, 211, 255, 0.05);
-            --glass-rim: rgba(255, 255, 255, 0.12);
-            --text-dim: rgba(255, 255, 255, 0.3);
-            --font-main: -apple-system, "SF Pro Display", "Inter", sans-serif;
-            --ease-premium: cubic-bezier(0.2, 0, 0, 1);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>TEQRA Core</title>
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+<style>
+:root{
+  --bg:#02040a;
+  --glass:rgba(255,255,255,.08);
+  --glass-border:rgba(255,255,255,.25);
+  --accent:#7dd3ff;
+  --accent-soft:rgba(125,211,255,.25);
+  --text-dim:rgba(255,255,255,.45);
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
 
-        body {
-            height: 100vh;
-            background-color: var(--space-bg);
-            font-family: var(--font-main);
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-        }
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  height:100vh;
+  background:
+    radial-gradient(circle at 50% 40%, #0b1b2f 0%, #02040a 70%);
+  overflow:hidden;
+  font-family:-apple-system,Inter,system-ui,sans-serif;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+}
 
-        /* Глубокое пространство */
-        .universe {
-            position: fixed;
-            inset: 0;
-            background: radial-gradient(circle at 50% 50%, #060d16 0%, #010204 100%);
-            z-index: -2;
-        }
+/* ===== SPACE DUST ===== */
+.dust{
+  position:absolute;
+  width:2px;height:2px;
+  background:white;
+  border-radius:50%;
+  opacity:.15;
+  animation:float 30s linear infinite;
+}
+@keyframes float{
+  from{transform:translateY(100vh)}
+  to{transform:translateY(-120vh)}
+}
 
-        /* Частицы (Пыль пространства) */
-        .dust {
-            position: absolute;
-            background: #fff;
-            border-radius: 50%;
-            opacity: 0.1;
-            pointer-events: none;
-            filter: blur(1px);
-        }
+/* ===== CORE ===== */
+.stage{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:64px;
+  transition:opacity 1.6s var(--ease), filter 1.6s var(--ease);
+}
 
-        /* Центральный объект: TEQRA CORE */
-        .core-stage {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 80px;
-            transition: opacity 2s var(--ease-premium), transform 2s var(--ease-premium);
-        }
+.core{
+  width:300px;
+  height:300px;
+  position:relative;
+  border-radius:50%;
+  cursor:pointer;
+}
 
-        .core-container {
-            width: 280px;
-            height: 280px;
-            position: relative;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+/* glass body */
+.core::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,.35), transparent 40%),
+    radial-gradient(circle at 70% 70%, rgba(0,0,0,.4), transparent 50%),
+    var(--glass);
+  backdrop-filter:blur(30px) saturate(160%);
+  border:1px solid var(--glass-border);
+  box-shadow:
+    0 40px 120px rgba(0,0,0,.85),
+    inset 0 0 40px rgba(255,255,255,.12);
+  transition:all 1.2s var(--ease);
+}
 
-        /* Жидкое стекло (Линза) */
-        .glass-lens {
-            position: absolute;
-            inset: 0;
-            border-radius: 50%;
-            background: var(--core-inner);
-            backdrop-filter: blur(45px) saturate(140%);
-            -webkit-backdrop-filter: blur(45px) saturate(140%);
-            border: 1px solid var(--glass-rim);
-            
-            box-shadow: 
-                0 40px 100px rgba(0,0,0,0.8),
-                inset 0 0 40px rgba(255,255,255,0.03),
-                inset -20px -20px 60px rgba(0,0,0,0.5),
-                inset 10px 10px 30px rgba(255,255,255,0.05);
-            
-            transition: all 1.2s var(--ease-premium);
-            z-index: 2;
-        }
+/* inner glow */
+.core::after{
+  content:"";
+  position:absolute;
+  inset:25%;
+  border-radius:50%;
+  background:radial-gradient(circle, var(--accent), transparent 70%);
+  opacity:.25;
+  filter:blur(25px);
+  animation:breathe 6s ease-in-out infinite;
+}
 
-        /* Внутреннее свечение (Core Energy) */
-        .energy-node {
-            width: 80px;
-            height: 80px;
-            background: var(--accent-cyan);
-            border-radius: 50%;
-            filter: blur(40px);
-            opacity: 0.4;
-            animation: core-breathe 8s ease-in-out infinite;
-            z-index: 1;
-        }
+@keyframes breathe{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.15)}
+}
 
-        @keyframes core-breathe {
-            0%, 100% { transform: scale(1); opacity: 0.3; }
-            50% { transform: scale(1.6); opacity: 0.6; }
-        }
+/* wave */
+.wave{
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(255,255,255,.45), transparent 60%);
+  opacity:0;
+  animation:wave 1.4s var(--ease) forwards;
+}
+@keyframes wave{
+  0%{transform:scale(.6);opacity:.6}
+  100%{transform:scale(1.6);opacity:0}
+}
 
-        /* Тонкий индикатор синхронизации */
-        .sync-mark {
-            position: absolute;
-            width: 1px;
-            height: 20px;
-            background: white;
-            opacity: 0.2;
-            top: 20px;
-            transition: 0.8s var(--ease-premium);
-        }
+/* labels */
+.meta{
+  text-align:center;
+}
+.meta h1{
+  font-size:11px;
+  letter-spacing:.6em;
+  color:var(--text-dim);
+  font-weight:300;
+}
+.meta p{
+  margin-top:10px;
+  font-size:13px;
+  letter-spacing:.25em;
+  opacity:.7;
+}
 
-        /* Текст */
-        .meta-text {
-            text-align: center;
-            pointer-events: none;
-        }
+/* teleport */
+.teleport{
+  filter:blur(30px) brightness(2);
+  opacity:0;
+}
 
-        .system-label {
-            font-size: 10px;
-            letter-spacing: 0.9em;
-            text-transform: uppercase;
-            color: var(--text-dim);
-            margin-bottom: 12px;
-            font-weight: 300;
-        }
-
-        .action-label {
-            font-size: 13px;
-            letter-spacing: 0.2em;
-            color: rgba(255,255,255,0.7);
-            font-weight: 200;
-            transition: opacity 1s;
-        }
-
-        /* Интерактивные состояния */
-        .core-container:hover .glass-lens {
-            border-color: rgba(255,255,255,0.25);
-            transform: scale(1.02);
-            box-shadow: 0 50px 120px rgba(0,0,0,0.9), inset 0 0 50px rgba(255,255,255,0.1);
-        }
-
-        .activated .glass-lens {
-            transform: scale(0.95);
-            background: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 0 150px rgba(140, 210, 255, 0.2);
-            border-color: var(--accent-cyan);
-        }
-
-        /* Волна активации */
-        .ripple {
-            position: absolute;
-            inset: 0;
-            border-radius: 50%;
-            border: 1px solid var(--accent-cyan);
-            pointer-events: none;
-            animation: ripple-flow 2s var(--ease-premium) forwards;
-        }
-
-        @keyframes ripple-flow {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(2.5); opacity: 0; }
-        }
-
-        /* Финальное поглощение */
-        .teleport {
-            transform: scale(4);
-            opacity: 0;
-            filter: blur(20px);
-        }
-
-    </style>
+/* ===== FLOATING DUST ===== */
+for-dust{}
+</style>
 </head>
+
 <body>
 
-    <div class="universe"></div>
+<script>
+for(let i=0;i<50;i++){
+  const d=document.createElement('div');
+  d.className='dust';
+  d.style.left=Math.random()*100+'vw';
+  d.style.animationDuration=20+Math.random()*30+'s';
+  d.style.opacity=.05+Math.random()*.2;
+  document.body.appendChild(d);
+}
+</script>
 
-    <main class="core-stage" id="stage">
-        <div class="core-container" id="core">
-            <div class="sync-mark"></div>
-            <div class="glass-lens"></div>
-            <div class="energy-node"></div>
-        </div>
+<div class="stage" id="stage">
+  <div class="core" id="core"></div>
+  <div class="meta">
+    <h1>TEQRA ECOSYSTEM</h1>
+    <p id="label">touch to synchronize</p>
+  </div>
+</div>
 
-        <div class="meta-text">
-            <h1 class="system-label">Teqra Ecosystem</h1>
-            <p class="action-label" id="status">touch to synchronize</p>
-        </div>
-    </main>
+<script>
+const core=document.getElementById('core');
+const stage=document.getElementById('stage');
+const label=document.getElementById('label');
+let active=false;
 
-    <script>
-        // Создание мягкой космической пыли
-        const body = document.body;
-        for (let i = 0; i < 50; i++) {
-            const dust = document.createElement('div');
-            dust.className = 'dust';
-            const size = Math.random() * 2 + 0.5;
-            dust.style.width = size + 'px';
-            dust.style.height = size + 'px';
-            dust.style.left = Math.random() * 100 + 'vw';
-            dust.style.top = Math.random() * 100 + 'vh';
-            dust.style.animation = `drift ${Math.random() * 20 + 20}s linear infinite`;
-            body.appendChild(dust);
-        }
+/* soft system sound */
+function sound(){
+  const ctx=new (window.AudioContext||window.webkitAudioContext)();
+  const osc=ctx.createOscillator();
+  const gain=ctx.createGain();
+  osc.type='sine';
+  osc.frequency.value=220;
+  gain.gain.value=0;
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start();
+  gain.gain.linearRampToValueAtTime(.15,ctx.currentTime+.15);
+  gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+1.2);
+  osc.stop(ctx.currentTime+1.3);
+}
 
-        const core = document.getElementById('core');
-        const stage = document.getElementById('stage');
-        const status = document.getElementById('status');
-        let isActivating = false;
+core.onclick=()=>{
+  if(active)return;
+  active=true;
+  sound();
 
-        // Web Audio API: Генерация премиального гула
-        async function playActivationSound() {
-            const AudioContext = window.AudioContext || window.webkitAudioContext;
-            const ctx = new AudioContext();
-            
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(50, ctx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(80, ctx.currentTime + 2);
-            
-            gain.gain.setValueAtTime(0, ctx.currentTime);
-            gain.gain.linearRampToValueAtTime(0.3, ctx.currentTime + 0.5);
-            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 4);
-            
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-            
-            osc.start();
-            osc.stop(ctx.currentTime + 4);
-        }
+  const w=document.createElement('div');
+  w.className='wave';
+  core.appendChild(w);
 
-        core.addEventListener('click', () => {
-            if (isActivating) return;
-            isActivating = true;
+  label.style.opacity=0;
 
-            playActivationSound().catch(() => {});
+  setTimeout(()=>{
+    stage.classList.add('teleport');
+  },900);
+};
+</script>
 
-            // Визуальный отклик
-            stage.classList.add('activated');
-            status.style.opacity = '0';
-
-            // Создание волны
-            const ripple = document.createElement('div');
-            ripple.className = 'ripple';
-            core.appendChild(ripple);
-
-            // Поглощение
-            setTimeout(() => {
-                stage.classList.add('teleport');
-                setTimeout(() => {
-                    // Здесь происходит переход в основную систему
-                    console.log("TEQRA Synchronized.");
-                }, 1500);
-            }, 1200);
-        });
-
-        // Плавный параллакс ядра
-        document.addEventListener('mousemove', (e) => {
-            if (isActivating) return;
-            const x = (window.innerWidth / 2 - e.pageX) / 50;
-            const y = (window.innerHeight / 2 - e.pageY) / 50;
-            core.style.transform = `rotateY(${x}deg) rotateX(${-y}deg) translateX(${x}px) translateY(${y}px)`;
-        });
-    </script>
-
-    <style>
-        @keyframes drift {
-            from { transform: translateY(0) translateX(0); }
-            to { transform: translateY(-100vh) translateX(20px); }
-        }
-    </style>
 </body>
 </html>
