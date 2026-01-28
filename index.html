@@ -3,15 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>TEQRA — чесна техніка</title>
+<title>TEQRA</title>
 
 <style>
 :root{
   --bg:#05070b;
+  --bg2:#0b1426;
   --blue:#8ccfff;
-  --glass:rgba(255,255,255,.06);
+  --glass:rgba(255,255,255,.08);
   --border:rgba(255,255,255,.18);
-  --light:#0e1626;
+  --text:#eaf1ff;
 }
 
 *{
@@ -20,25 +21,42 @@
   box-sizing:border-box;
   -webkit-tap-highlight-color:transparent;
 }
+
 html,body{
   width:100%;
   height:100%;
-  background:#05070b;
-  font-family:-apple-system,BlinkMacSystemFont,"Inter",sans-serif;
-  color:white;
+  background:var(--bg);
+  font-family:-apple-system,BlinkMacSystemFont,"Inter",system-ui,sans-serif;
+  color:var(--text);
   overflow:hidden;
 }
 
-/* BACKGROUND */
+/* ===== BACKGROUND ===== */
 body::before{
   content:"";
   position:fixed;
   inset:0;
-  background:radial-gradient(circle at 50% 30%, #0b1a2c, #05070b 70%);
+  background:
+    radial-gradient(circle at 50% 35%, #122044 0%, #05070b 70%);
   z-index:-2;
 }
 
-/* SCREENS */
+/* ===== PARTICLES ===== */
+.star{
+  position:absolute;
+  width:2px;
+  height:2px;
+  background:white;
+  opacity:.18;
+  border-radius:50%;
+  animation:float linear infinite;
+}
+@keyframes float{
+  from{transform:translateY(120vh);}
+  to{transform:translateY(-140vh);}
+}
+
+/* ===== SCREENS ===== */
 .screen{
   position:absolute;
   inset:0;
@@ -55,41 +73,54 @@ body::before{
   pointer-events:auto;
 }
 
-/* CORE */
+/* ===== CORE BUTTON ===== */
 .core{
-  width:200px;
-  height:200px;
+  width:210px;
+  height:210px;
   border-radius:50%;
-  cursor:pointer;
+  position:relative;
   display:flex;
   align-items:center;
   justify-content:center;
   background:
-    radial-gradient(circle at 30% 30%, rgba(255,255,255,.3), transparent 60%),
-    linear-gradient(180deg, rgba(255,255,255,.08), rgba(0,0,0,.4));
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,.35), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.12), rgba(0,0,0,.45));
   border:1px solid var(--border);
-  box-shadow:0 30px 80px rgba(0,0,0,.9), inset 0 0 30px rgba(255,255,255,.1);
-  animation:pulse 3s ease-in-out infinite;
-  position:relative;
+  box-shadow:
+    0 30px 90px rgba(0,0,0,.9),
+    inset 0 0 35px rgba(255,255,255,.12);
+  cursor:pointer;
 }
-@keyframes pulse{
-  50%{box-shadow:0 40px 110px rgba(0,0,0,1), inset 0 0 50px rgba(140,210,255,.35);}
-}
+
 .core::before{
   content:"";
   position:absolute;
   inset:18px;
   border-radius:50%;
   background:radial-gradient(circle, rgba(140,210,255,.45), transparent 70%);
-  opacity:.4;
-}
-.power{
-  width:50px;
-  height:50px;
-  filter:drop-shadow(0 0 14px var(--blue));
+  opacity:.45;
 }
 
-/* TEXT */
+.power{
+  width:52px;
+  height:52px;
+  filter:drop-shadow(0 0 14px var(--blue));
+  z-index:2;
+}
+
+/* ripple */
+.ripple{
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(140,210,255,.45), transparent 65%);
+  animation:ripple .8s ease forwards;
+}
+@keyframes ripple{
+  to{transform:scale(2.6);opacity:0;}
+}
+
+/* ===== TEXT ===== */
 .label{
   margin-top:22px;
   font-size:11px;
@@ -103,45 +134,44 @@ body::before{
   opacity:.7;
 }
 
-/* HOME — ВІТРИНА */
+/* ===== HOME (STORE) ===== */
 .home-wrap{
   width:92%;
   max-width:420px;
-  background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
+  background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.03));
   border:1px solid var(--border);
-  border-radius:22px;
-  padding:28px 22px;
+  border-radius:24px;
+  padding:26px 22px;
 }
 
 .title{
   font-size:18px;
-  letter-spacing:.04em;
-  margin-bottom:10px;
+  margin-bottom:8px;
 }
 .subtitle{
   font-size:14px;
-  opacity:.8;
-  line-height:1.4;
+  line-height:1.45;
+  opacity:.85;
 }
 
 .trust{
-  margin-top:18px;
+  margin-top:16px;
   font-size:13px;
   line-height:1.45;
   opacity:.75;
 }
 
 .main-btn{
-  margin-top:22px;
+  margin-top:20px;
   padding:16px;
   border-radius:16px;
-  background:rgba(140,210,255,.15);
+  background:rgba(140,210,255,.18);
   text-align:center;
   font-size:14px;
   letter-spacing:.08em;
 }
 
-/* CATALOG */
+/* ===== CATALOG ===== */
 .list{
   width:92%;
   max-width:420px;
@@ -149,20 +179,23 @@ body::before{
   flex-direction:column;
   gap:16px;
 }
+
 .card{
   padding:20px;
   border-radius:18px;
-  background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(0,0,0,.35));
+  background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(0,0,0,.35));
   border:1px solid var(--border);
 }
+
 .card small{
   display:block;
-  margin-top:8px;
+  margin-top:6px;
   font-size:12px;
-  opacity:.6;
+  opacity:.65;
 }
+
 .warn{
-  margin-top:8px;
+  margin-top:6px;
   font-size:12px;
   color:#ffb4b4;
 }
@@ -171,9 +204,21 @@ body::before{
 
 <body>
 
-<!-- CORE -->
+<script>
+/* particles */
+for(let i=0;i<80;i++){
+  const s=document.createElement("div");
+  s.className="star";
+  s.style.left=Math.random()*100+"vw";
+  s.style.top=Math.random()*120+"vh";
+  s.style.animationDuration=35+Math.random()*40+"s";
+  document.body.appendChild(s);
+}
+</script>
+
+<!-- CORE SCREEN -->
 <div class="screen active" id="coreScreen">
-  <div class="core" onclick="go('home')">
+  <div class="core" id="core">
     <svg class="power" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
       <path d="M12 2v10"/>
       <path d="M5.5 6.5a8 8 0 1 0 13 0"/>
@@ -188,14 +233,14 @@ body::before{
   <div class="home-wrap">
     <div class="title">TEQRA — чесна техніка</div>
     <div class="subtitle">
-      Ми не продаємо все підряд.<br>
-      Ми пояснюємо, що підійде саме вам.
+      Гаджети для щоденного життя.<br>
+      Без перебільшень і маркетингової магії.
     </div>
 
     <div class="trust">
-      • лише перевірені пристрої<br>
+      • перевірені моделі<br>
       • чесні плюси та мінуси<br>
-      • без маркетингових перебільшень
+      • зрозумілий вибір
     </div>
 
     <div class="main-btn" onclick="go('catalog')">
@@ -207,42 +252,45 @@ body::before{
 <!-- CATALOG -->
 <div class="screen" id="catalog">
   <div class="list">
-    <div class="card" onclick="go('product')">
-      <b>TEQRA Notebook One</b>
-      <small>Обрали за стабільність і тиху роботу</small>
-      <div class="warn">❗ Не підходить для ігор</div>
-    </div>
-  </div>
-</div>
-
-<!-- PRODUCT -->
-<div class="screen" id="product">
-  <div class="list">
     <div class="card">
-      <b>TEQRA Notebook One</b>
-      <small>Для роботи, навчання та спокійної щоденної роботи</small>
-      <div class="warn">❗ Не для важких ігор та 3D</div>
+      <b>Бездротові навушники InPods 12</b>
+      <small>Зручні для дзвінків та музики щодня</small>
+      <div class="warn">❗ Базова модель, не для меломанів</div>
     </div>
-    <div class="card" onclick="go('cart')">Додати до кошика — 39 999 ₴</div>
-  </div>
-</div>
-
-<!-- CART -->
-<div class="screen" id="cart">
-  <div class="list">
-    <div class="card">
-      TEQRA Notebook One
-      <small>39 999 ₴</small>
-    </div>
-    <div class="card">Оформити замовлення</div>
   </div>
 </div>
 
 <script>
+/* navigation */
 function go(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
+
+/* CORE BREATHING (JS, не отключается) */
+const core=document.getElementById('core');
+let start=null;
+function breathe(t){
+  if(!start) start=t;
+  const p=(t-start)/1000;
+  const scale=1+Math.sin(p*1.5)*0.025;
+  const glow=0.3+Math.sin(p*1.5)*0.2;
+  core.style.transform=`scale(${scale})`;
+  core.style.boxShadow=`0 0 ${40+glow*60}px rgba(140,210,255,${glow})`;
+  requestAnimationFrame(breathe);
+}
+requestAnimationFrame(breathe);
+
+/* click */
+let entered=false;
+core.onclick=()=>{
+  if(entered) return;
+  entered=true;
+  const r=document.createElement("div");
+  r.className="ripple";
+  core.appendChild(r);
+  setTimeout(()=>go('home'),450);
+};
 </script>
 
 </body>
