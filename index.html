@@ -35,8 +35,7 @@ body::before{
   content:"";
   position:fixed;
   inset:0;
-  background:
-    radial-gradient(circle at 50% 40%, #0b1a2c, #05070b 70%);
+  background:radial-gradient(circle at 50% 40%, #0b1a2c, #05070b 70%);
   z-index:-2;
 }
 
@@ -64,8 +63,8 @@ body::before{
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  transition:opacity .8s ease, transform .8s ease;
-  will-change:transform,opacity;
+  transition:opacity .7s ease, transform .7s ease;
+  will-change:opacity,transform;
 }
 
 #home{
@@ -85,7 +84,6 @@ body::before{
   justify-content:center;
   will-change:transform,opacity;
 
-  /* FAKE GLASS (NO BLUR) */
   background:
     radial-gradient(circle at 30% 30%, rgba(255,255,255,.25), transparent 60%),
     linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.35));
@@ -97,7 +95,6 @@ body::before{
   animation:core-breath 3s ease-in-out infinite;
 }
 
-/* INNER GLOW */
 .core::before{
   content:"";
   position:absolute;
@@ -106,10 +103,8 @@ body::before{
   background:radial-gradient(circle, rgba(140,210,255,.5), transparent 70%);
   opacity:.35;
   animation:inner-pulse 3s ease-in-out infinite;
-  pointer-events:none;
 }
 
-/* OUTER HALO */
 .core::after{
   content:"";
   position:absolute;
@@ -118,7 +113,6 @@ body::before{
   border:1px solid rgba(140,210,255,.25);
   opacity:.35;
   animation:halo 3s ease-in-out infinite;
-  pointer-events:none;
 }
 
 @keyframes core-breath{
@@ -142,7 +136,6 @@ body::before{
   50%{opacity:.6;}
 }
 
-/* POWER ICON */
 .power{
   width:54px;
   height:54px;
@@ -150,7 +143,6 @@ body::before{
   z-index:2;
 }
 
-/* RIPPLE */
 .ripple{
   position:absolute;
   inset:0;
@@ -162,13 +154,12 @@ body::before{
   to{transform:scale(2.4);opacity:0;}
 }
 
-/* TELEPORT */
 .teleport{
   opacity:0;
   transform:scale(2.5);
 }
 
-/* TEXT */
+/* ===== TEXT ===== */
 .label{
   margin-top:22px;
   font-size:11px;
@@ -190,6 +181,7 @@ body::before{
   margin-bottom:32px;
 }
 
+/* ===== MENU ===== */
 .menu{
   width:90%;
   max-width:380px;
@@ -201,15 +193,26 @@ body::before{
 .card{
   padding:22px;
   border-radius:18px;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.35));
+  background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.35));
   border:1px solid var(--border);
-  transition:transform .15s ease, background .15s ease;
+  opacity:0;
+  transform:translateY(14px);
+  transition:
+    opacity .45s ease,
+    transform .45s ease,
+    background .15s ease;
 }
+
+.card.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
 .card:active{
   transform:scale(.97);
   background:rgba(140,210,255,.12);
 }
+
 .card span{
   font-size:16px;
   font-weight:300;
@@ -252,30 +255,20 @@ for(let i=0;i<80;i++){
 <!-- HOME -->
 <div class="screen" id="home">
   <div class="header">TEQRA STORE</div>
+
   <div class="menu">
-    <div class="card">
-      <span>Пристрої</span>
-      <small>Ноутбуки · Компʼютери · Залізо</small>
-    </div>
-    <div class="card">
-      <span>Аудіо</span>
-      <small>Навушники · Професійний звук</small>
-    </div>
-    <div class="card">
-      <span>Аксесуари</span>
-      <small>Кабелі · Живлення · Доповнення</small>
-    </div>
-    <div class="card">
-      <span>Підтримка</span>
-      <small>Гарантія · Налаштування</small>
-    </div>
+    <div class="card"><span>Пристрої</span><small>Ноутбуки · Компʼютери · Залізо</small></div>
+    <div class="card"><span>Аудіо</span><small>Навушники · Професійний звук</small></div>
+    <div class="card"><span>Аксесуари</span><small>Кабелі · Живлення · Доповнення</small></div>
+    <div class="card"><span>Підтримка</span><small>Гарантія · Налаштування</small></div>
   </div>
 </div>
 
 <script>
-const core=document.getElementById("core");
-const coreScreen=document.getElementById("coreScreen");
-const home=document.getElementById("home");
+const core = document.getElementById("core");
+const coreScreen = document.getElementById("coreScreen");
+const home = document.getElementById("home");
+const cards = document.querySelectorAll(".card");
 let done=false;
 
 core.addEventListener("click",()=>{
@@ -292,7 +285,11 @@ core.addEventListener("click",()=>{
     coreScreen.style.display="none";
     home.style.opacity="1";
     home.style.pointerEvents="auto";
-  },700);
+
+    cards.forEach((card,i)=>{
+      setTimeout(()=>card.classList.add("show"), i*120);
+    });
+  },600);
 });
 </script>
 
