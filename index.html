@@ -10,7 +10,6 @@
       --bg: #070b14;
       --panel: #0e1626;
       --accent: #4da3ff;
-      --accent-soft: rgba(77,163,255,0.2);
       --text: #e9f1ff;
       --muted: #9bb0d0;
       --radius: 18px;
@@ -36,9 +35,7 @@
       letter-spacing: 6px;
     }
 
-    .logo span {
-      color: var(--accent);
-    }
+    .logo span { color: var(--accent); }
 
     .subtitle {
       margin-top: 8px;
@@ -50,7 +47,7 @@
       display: flex;
       gap: 10px;
       overflow-x: auto;
-      padding: 16px 16px 6px;
+      padding: 16px;
     }
 
     .cat {
@@ -59,15 +56,13 @@
       background: var(--panel);
       color: var(--muted);
       font-size: 13px;
-      white-space: nowrap;
       cursor: pointer;
-      border: 1px solid transparent;
+      white-space: nowrap;
     }
 
     .cat.active {
       color: var(--text);
-      border-color: var(--accent);
-      background: linear-gradient(180deg, var(--panel), #0b1322);
+      border: 1px solid var(--accent);
     }
 
     main {
@@ -81,7 +76,6 @@
       background: linear-gradient(180deg, #0f1c33, #0a1222);
       border-radius: var(--radius);
       padding: 16px;
-      border: 1px solid rgba(255,255,255,0.05);
       display: flex;
       flex-direction: column;
       gap: 12px;
@@ -90,7 +84,7 @@
     .image {
       height: 120px;
       border-radius: 12px;
-      background: radial-gradient(circle at top, #2a3f6f, #0b1325);
+      background: #0b1325;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -98,14 +92,13 @@
     }
 
     .title {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 600;
     }
 
     .desc {
       font-size: 13px;
       color: var(--muted);
-      line-height: 1.4;
       flex-grow: 1;
     }
 
@@ -120,21 +113,8 @@
       border-radius: 12px;
       border: none;
       background: linear-gradient(180deg, #5fb0ff, #3b82f6);
-      color: #001226;
       font-weight: 600;
       cursor: pointer;
-    }
-
-    button:active {
-      transform: scale(0.98);
-    }
-
-    footer {
-      padding: 24px;
-      text-align: center;
-      font-size: 12px;
-      color: var(--muted);
-      opacity: 0.6;
     }
   </style>
 </head>
@@ -142,55 +122,55 @@
 
 <header>
   <div class="logo">TE<span>Q</span>RA</div>
-  <div class="subtitle">Каталог техніки • майбутнє вже тут</div>
+  <div class="subtitle">Інтернет-магазин техніки</div>
 </header>
 
 <div class="categories">
   <div class="cat active" onclick="filter('all')">Усе</div>
-  <div class="cat" onclick="filter('modules')">Модулі</div>
-  <div class="cat" onclick="filter('devices')">Пристрої</div>
-  <div class="cat" onclick="filter('systems')">Системи</div>
+  <div class="cat" onclick="filter('headphones')">Навушники</div>
+  <div class="cat" onclick="filter('laptops')">Ноутбуки</div>
+  <div class="cat" onclick="filter('mice')">Миші</div>
+  <div class="cat" onclick="filter('accessories')">Аксесуари</div>
 </div>
 
 <main id="catalog"></main>
 
-<footer>
-  TEQRA © майбутня система
-</footer>
-
 <script>
   const products = [
     {
-      id: 1,
-      title: "Модуль 001",
-      desc: "Базовий технологічний компонент нового покоління.",
+      title: "Бездротові навушники Pro X",
+      desc: "Чистий звук, шумозаглушення, до 30 годин роботи.",
       price: "— ₴",
-      category: "modules",
-      icon: "⚙️"
+      category: "headphones",
+      icon: "🎧"
     },
     {
-      id: 2,
-      title: "Модуль 002",
-      desc: "Покращений енергетичний вузол з адаптивною архітектурою.",
+      title: "Ігрові навушники Core",
+      desc: "Обʼємний звук, мікрофон, RGB підсвітка.",
       price: "— ₴",
-      category: "modules",
-      icon: "🔩"
+      category: "headphones",
+      icon: "🎮"
     },
     {
-      id: 3,
-      title: "Пристрій A-Core",
-      desc: "Інтелектуальний пристрій для стабілізації систем.",
+      title: "Ноутбук TEQRA Air 15",
+      desc: "15.6”, SSD, ідеальний для роботи та навчання.",
       price: "— ₴",
-      category: "devices",
-      icon: "📦"
+      category: "laptops",
+      icon: "💻"
     },
     {
-      id: 4,
-      title: "Система Nexus",
-      desc: "Комплексне рішення для керування інфраструктурою.",
+      title: "Бездротова миша Swift",
+      desc: "Точний сенсор, ергономічна форма.",
       price: "— ₴",
-      category: "systems",
-      icon: "🧠"
+      category: "mice",
+      icon: "🖱"
+    },
+    {
+      title: "USB-C хаб 6-в-1",
+      desc: "HDMI, USB, зарядка — усе в одному.",
+      price: "— ₴",
+      category: "accessories",
+      icon: "🔌"
     }
   ];
 
@@ -206,7 +186,7 @@
         <div class="title">${p.title}</div>
         <div class="desc">${p.desc}</div>
         <div class="price">${p.price}</div>
-        <button onclick="order('${p.title}')">Замовити</button>
+        <button onclick="alert('Замовлення: ${p.title}')">Замовити</button>
       `;
       catalog.appendChild(el);
     });
@@ -215,13 +195,7 @@
   function filter(cat) {
     document.querySelectorAll(".cat").forEach(c => c.classList.remove("active"));
     event.target.classList.add("active");
-
-    if (cat === "all") render(products);
-    else render(products.filter(p => p.category === cat));
-  }
-
-  function order(name) {
-    alert("Запит на замовлення: " + name + "\n(потім підключимо Telegram)");
+    render(cat === "all" ? products : products.filter(p => p.category === cat));
   }
 
   render(products);
