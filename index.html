@@ -3,261 +3,276 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TEQRA Store</title>
+<title>TEQRA STORE</title>
 
 <style>
 :root{
-  --bg:#0b0b0f;
-  --card:#15151c;
-  --accent:#6cf3c5;
-  --text:#eaeaea;
-  --muted:#9a9a9a;
+  --bg:#0b0d10;
+  --panel:#12151b;
+  --line:rgba(255,255,255,.06);
+  --text:#eaeaf0;
+  --muted:#8b8f98;
+  --accent:#c8ff4d;
 }
 
-*{box-sizing:border-box;margin:0;padding:0}
+*{margin:0;padding:0;box-sizing:border-box}
 
 body{
-  background:var(--bg);
+  background:radial-gradient(1200px 600px at top, #151922, #0b0d10);
   color:var(--text);
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  font-family:-apple-system,BlinkMacSystemFont,"Inter","Segoe UI",sans-serif;
+  overflow-x:hidden;
 }
 
+/* ===== HEADER ===== */
 header{
-  padding:16px;
-  text-align:center;
-  font-size:22px;
-  font-weight:600;
-  letter-spacing:2px;
-}
-
-nav{
-  display:flex;
-  gap:8px;
-  padding:12px;
-  overflow-x:auto;
-}
-
-nav button{
-  background:var(--card);
-  color:var(--text);
-  border:1px solid #222;
-  padding:10px 14px;
-  border-radius:10px;
-  cursor:pointer;
-  white-space:nowrap;
-}
-
-nav button.active{
-  border-color:var(--accent);
-  color:var(--accent);
-}
-
-.products{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
-  gap:12px;
-  padding:12px;
-}
-
-.product{
-  background:var(--card);
-  border-radius:14px;
-  padding:12px;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
-
-.product img{
-  width:100%;
-  border-radius:10px;
-  background:#000;
-}
-
-.product h3{
-  font-size:15px;
-}
-
-.price{
-  color:var(--accent);
-  font-weight:600;
-}
-
-.product button{
-  margin-top:auto;
-  background:transparent;
-  border:1px solid var(--accent);
-  color:var(--accent);
-  padding:8px;
-  border-radius:10px;
-  cursor:pointer;
-}
-
-.cart{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  background:#0f0f14;
-  border-top:1px solid #222;
-  padding:12px;
-}
-
-.cart-summary{
+  position:sticky;
+  top:0;
+  z-index:10;
+  background:rgba(11,13,16,.85);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+  padding:18px 20px;
   display:flex;
   justify-content:space-between;
   align-items:center;
 }
 
-.cart button{
-  background:var(--accent);
-  color:#000;
-  border:none;
-  padding:10px 14px;
-  border-radius:10px;
-  font-weight:600;
+header h1{
+  font-size:16px;
+  letter-spacing:.2em;
+  font-weight:500;
+}
+
+.cart-btn{
+  border:1px solid var(--accent);
+  color:var(--accent);
+  padding:10px 16px;
+  border-radius:999px;
+  background:transparent;
   cursor:pointer;
 }
 
-.modal{
+/* ===== CATEGORIES ===== */
+.categories{
+  display:flex;
+  gap:12px;
+  padding:20px;
+  overflow-x:auto;
+}
+
+.categories button{
+  background:transparent;
+  border:1px solid var(--line);
+  color:var(--muted);
+  padding:10px 18px;
+  border-radius:999px;
+  cursor:pointer;
+  white-space:nowrap;
+}
+
+.categories button.active{
+  border-color:var(--accent);
+  color:var(--accent);
+}
+
+/* ===== GRID ===== */
+.grid{
+  padding:20px;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  gap:20px;
+}
+
+/* ===== PRODUCT CARD ===== */
+.product{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  transition:.35s;
+}
+
+.product:hover{
+  transform:translateY(-4px);
+  border-color:var(--accent);
+  box-shadow:0 20px 40px rgba(0,0,0,.4);
+}
+
+.product img{
+  width:100%;
+  border-radius:14px;
+  background:#000;
+}
+
+.product h3{
+  font-size:15px;
+  font-weight:500;
+}
+
+.product .muted{
+  font-size:13px;
+  color:var(--muted);
+}
+
+.price{
+  font-size:18px;
+  color:var(--accent);
+}
+
+.product button{
+  margin-top:auto;
+  border:1px solid var(--accent);
+  background:transparent;
+  color:var(--accent);
+  padding:12px;
+  border-radius:12px;
+  cursor:pointer;
+}
+
+.product button:hover{
+  background:var(--accent);
+  color:#000;
+}
+
+/* ===== CART ===== */
+.cart{
   position:fixed;
   inset:0;
   background:rgba(0,0,0,.6);
   display:none;
-  align-items:center;
   justify-content:center;
+  align-items:center;
 }
 
-.modal.active{display:flex}
+.cart.active{display:flex}
 
-.modal-content{
-  background:var(--card);
-  padding:16px;
-  border-radius:14px;
+.cart-panel{
+  background:var(--panel);
+  border:1px solid var(--line);
   width:90%;
-  max-width:400px;
+  max-width:420px;
+  border-radius:20px;
+  padding:20px;
 }
 
-.modal-content h2{
-  margin-bottom:12px;
-}
-
-.modal-content input,
-.modal-content textarea{
-  width:100%;
+.cart-panel h2{
+  font-size:16px;
+  letter-spacing:.15em;
   margin-bottom:10px;
-  padding:10px;
-  border-radius:8px;
-  border:none;
 }
 
-.actions{
+.cart-item{
   display:flex;
-  gap:8px;
+  justify-content:space-between;
+  font-size:14px;
+  margin:10px 0;
 }
 
-.actions a,
-.actions button{
-  flex:1;
-  text-align:center;
-  padding:10px;
-  border-radius:10px;
-  border:none;
-  font-weight:600;
-}
-
-.actions a{
-  background:#222;
-  color:var(--text);
-  text-decoration:none;
-}
-
-.actions button{
+.cart-panel button{
+  width:100%;
+  margin-top:16px;
+  padding:14px;
+  border-radius:14px;
+  border:1px solid var(--accent);
   background:var(--accent);
   color:#000;
+  cursor:pointer;
+}
+
+/* ===== FORM ===== */
+input,textarea{
+  width:100%;
+  background:#0b0d10;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:12px;
+  color:var(--text);
+  margin-top:10px;
 }
 </style>
 </head>
 
 <body>
 
-<header>TEQRA STORE</header>
+<header>
+  <h1>TEQRA STORE</h1>
+  <button class="cart-btn" onclick="toggleCart()">Кошик (<span id="count">0</span>)</button>
+</header>
 
-<nav>
-  <button class="active" onclick="filter('all')">Усе</button>
-  <button onclick="filter('headphones')">Навушники</button>
-  <button onclick="filter('laptops')">Ноутбуки</button>
-  <button onclick="filter('mice')">Миші</button>
-</nav>
-
-<div class="products" id="products"></div>
-
-<div class="cart">
-  <div class="cart-summary">
-    <div>У кошику: <span id="count">0</span></div>
-    <button onclick="openOrder()">Оформити</button>
-  </div>
+<div class="categories">
+  <button class="active" onclick="filter('all')">Все</button>
+  <button onclick="filter('laptop')">Ноутбуки</button>
+  <button onclick="filter('audio')">Навушники</button>
+  <button onclick="filter('mouse')">Миші</button>
 </div>
 
-<div class="modal" id="order">
-  <div class="modal-content">
-    <h2>Замовлення</h2>
+<div class="grid" id="grid"></div>
+
+<!-- CART -->
+<div class="cart" id="cart">
+  <div class="cart-panel">
+    <h2>ЗАМОВЛЕННЯ</h2>
+    <div id="cartItems"></div>
+
     <input placeholder="Імʼя">
     <input placeholder="Телефон">
-    <textarea placeholder="Місто, доставка"></textarea>
-    <div class="actions">
-      <a href="https://t.me/Rina_Jacksonn">Написати продавцю</a>
-      <button onclick="closeOrder()">Готово</button>
-    </div>
+    <textarea placeholder="Адреса доставки"></textarea>
+
+    <button onclick="sendOrder()">Надіслати замовлення</button>
+    <button onclick="toggleCart()" style="margin-top:10px;background:transparent;color:var(--accent)">Закрити</button>
   </div>
 </div>
 
 <script>
-const items=[
- {id:1,cat:'headphones',name:'Навушники TEQRA Air',price:349,img:'https://via.placeholder.com/300'},
- {id:2,cat:'headphones',name:'Навушники TEQRA Pro',price:399,img:'https://via.placeholder.com/300'},
- {id:3,cat:'laptops',name:'Ноутбук Lenovo',price:17999,img:'https://via.placeholder.com/300'},
- {id:4,cat:'mice',name:'Миша Gaming',price:499,img:'https://via.placeholder.com/300'}
+const products=[
+  {id:1,name:"MacBook Pro M1",price:45000,cat:"laptop"},
+  {id:2,name:"ASUS ROG 15",price:52000,cat:"laptop"},
+  {id:3,name:"Sony WH-1000XM5",price:12000,cat:"audio"},
+  {id:4,name:"AirPods Pro",price:9500,cat:"audio"},
+  {id:5,name:"Logitech MX Master",price:4200,cat:"mouse"}
 ];
 
-let cart=0;
-let current='all';
+let cart=[];
+const grid=document.getElementById("grid");
 
-function render(){
- const box=document.getElementById('products');
- box.innerHTML='';
- items.filter(i=>current==='all'||i.cat===current)
- .forEach(i=>{
-   box.innerHTML+=`
-   <div class="product">
-     <img src="${i.img}">
-     <h3>${i.name}</h3>
-     <div class="price">${i.price} ₴</div>
-     <button onclick="add()">У кошик</button>
-   </div>`;
- });
+function render(list){
+  grid.innerHTML="";
+  list.forEach(p=>{
+    grid.innerHTML+=`
+      <div class="product">
+        <img src="https://via.placeholder.com/400x260">
+        <h3>${p.name}</h3>
+        <div class="price">${p.price} грн</div>
+        <button onclick="add(${p.id})">Додати</button>
+      </div>`;
+  });
+}
+render(products);
+
+function filter(cat){
+  document.querySelectorAll(".categories button").forEach(b=>b.classList.remove("active"));
+  event.target.classList.add("active");
+  render(cat==="all"?products:products.filter(p=>p.cat===cat));
 }
 
-function add(){
- cart++;
- document.getElementById('count').textContent=cart;
+function add(id){
+  cart.push(products.find(p=>p.id===id));
+  document.getElementById("count").textContent=cart.length;
 }
 
-function filter(c){
- current=c;
- document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
- event.target.classList.add('active');
- render();
+function toggleCart(){
+  document.getElementById("cart").classList.toggle("active");
+  document.getElementById("cartItems").innerHTML=
+    cart.map(i=>`<div class="cart-item"><span>${i.name}</span><span>${i.price}</span></div>`).join("");
 }
 
-function openOrder(){
- document.getElementById('order').classList.add('active');
+function sendOrder(){
+  alert("Замовлення сформовано. Далі підʼєднаємо Telegram бота.");
 }
-function closeOrder(){
- document.getElementById('order').classList.remove('active');
-}
-
-render();
 </script>
 
 </body>
