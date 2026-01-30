@@ -1,222 +1,175 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>TEQRA — Каталог</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TEQRA Catalog</title>
 
-<style>
-:root{
-  --bg:#05060a;
-  --panel:#0b0f18;
-  --accent:#4da3ff;
-  --text:#eaeef7;
-  --muted:#7a86a8;
-}
-*{box-sizing:border-box}
-body{
-  margin:0;
-  background:radial-gradient(circle at top,#0b1225,#05060a 60%);
-  color:var(--text);
-  font-family:Inter,system-ui,Segoe UI,Roboto,sans-serif;
-}
-header{
-  padding:20px;
-  text-align:center;
-  font-size:26px;
-  letter-spacing:2px;
-}
-header span{color:var(--accent)}
-main{
-  max-width:1100px;
-  margin:auto;
-  padding:20px;
-}
-.toolbar{
-  display:flex;
-  gap:10px;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:20px;
-}
-button{
-  background:linear-gradient(135deg,#4da3ff,#6fd1ff);
-  color:#000;
-  border:none;
-  padding:10px 16px;
-  border-radius:10px;
-  font-weight:600;
-  cursor:pointer;
-}
-button.secondary{
-  background:transparent;
-  color:var(--accent);
-  border:1px solid var(--accent);
-}
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-  gap:16px;
-}
-.card{
-  background:linear-gradient(180deg,#0e1528,#0a0f1d);
-  border-radius:14px;
-  padding:16px;
-  box-shadow:0 0 0 1px rgba(255,255,255,.05);
-}
-.card h3{margin:0 0 6px}
-.card p{margin:0;color:var(--muted);font-size:14px}
-.card strong{display:block;margin-top:8px}
-.admin-panel{
-  display:none;
-  background:var(--panel);
-  padding:16px;
-  border-radius:14px;
-  margin-bottom:20px;
-}
-.admin-panel input, .admin-panel textarea{
-  width:100%;
-  margin-bottom:10px;
-  padding:8px;
-  background:#05060a;
-  border:1px solid #1d2a4d;
-  color:var(--text);
-  border-radius:8px;
-}
-.modal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.7);
-  display:none;
-  justify-content:center;
-  align-items:center;
-}
-.modal .box{
-  background:var(--panel);
-  padding:20px;
-  border-radius:16px;
-  width:90%;
-  max-width:420px;
-}
-input,textarea{
-  width:100%;
-  padding:10px;
-  margin-bottom:10px;
-  border-radius:8px;
-  border:1px solid #24345f;
-  background:#05060a;
-  color:var(--text);
-}
-</style>
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --panel: #111824;
+      --accent: #4da3ff;
+      --accent-soft: #1e3a5f;
+      --text: #e6edf3;
+      --muted: #8b949e;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      background: radial-gradient(circle at top, #0f172a, #020617);
+      color: var(--text);
+    }
+
+    header {
+      padding: 32px 20px 24px;
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 36px;
+      letter-spacing: 6px;
+      font-weight: 600;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .subtitle {
+      margin-top: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: linear-gradient(180deg, var(--panel), #0a0f1a);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.04);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 0 0 1px rgba(77,163,255,0.4),
+                  0 20px 40px rgba(0,0,0,0.6);
+    }
+
+    .image {
+      height: 160px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #1e293b, #020617);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+
+    .title {
+      font-size: 18px;
+      margin-bottom: 6px;
+    }
+
+    .desc {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .price {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+
+    .btn {
+      display: inline-block;
+      width: 100%;
+      padding: 12px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent), #2563eb);
+      color: #fff;
+      text-align: center;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+  </style>
 </head>
-
 <body>
 
-<header>TE<span>Q</span>RA</header>
+<header>
+  <div class="logo">TE<span>Q</span>RA</div>
+  <div class="subtitle">Каталог техніки • майбутнє вже тут</div>
+</header>
 
 <main>
+  <div class="grid">
 
-<div class="toolbar">
-  <div>Каталог техніки</div>
-  <button class="secondary" onclick="enterAdmin()">Адмін</button>
-</div>
+    <div class="card">
+      <div class="image">⚙️</div>
+      <div class="title">Модуль 001</div>
+      <div class="desc">Технологічний компонент нового покоління</div>
+      <div class="price">— ₴</div>
+      <button class="btn">Детальніше</button>
+    </div>
 
-<div class="admin-panel" id="adminPanel">
-  <h3>Додати товар</h3>
-  <input id="name" placeholder="Назва"/>
-  <textarea id="desc" placeholder="Опис"></textarea>
-  <input id="price" placeholder="Ціна"/>
-  <button onclick="addProduct()">Додати</button>
-</div>
+    <div class="card">
+      <div class="image">🔋</div>
+      <div class="title">Енергоблок X</div>
+      <div class="desc">Автономне джерело живлення</div>
+      <div class="price">— ₴</div>
+      <button class="btn">Детальніше</button>
+    </div>
 
-<div class="grid" id="products"></div>
+    <div class="card">
+      <div class="image">🧠</div>
+      <div class="title">AI Core</div>
+      <div class="desc">Обчислювальний модуль штучного інтелекту</div>
+      <div class="price">— ₴</div>
+      <button class="btn">Детальніше</button>
+    </div>
 
+    <div class="card">
+      <div class="image">📡</div>
+      <div class="title">Resonance Node</div>
+      <div class="desc">Комунікаційний вузол системи</div>
+      <div class="price">— ₴</div>
+      <button class="btn">Детальніше</button>
+    </div>
+
+  </div>
 </main>
 
-<div class="modal" id="orderModal">
-  <div class="box">
-    <h3>Оформлення замовлення</h3>
-    <input id="custName" placeholder="Імʼя"/>
-    <input id="custPhone" placeholder="Телефон"/>
-    <textarea id="custAddr" placeholder="Адреса доставки"></textarea>
-    <button onclick="sendOrder()">Надіслати</button>
-  </div>
-</div>
-
-<script>
-// ===== CONFIG =====
-const BOT_TOKEN = "ВСТАВ_СЮДИ_BOT_TOKEN";
-const ADMIN_CHAT_ID = "ВСТАВ_СЮДИ_TG_ID";
-const ADMIN_CODE = "teqra-admin";
-
-// ===== DATA =====
-let products = JSON.parse(localStorage.getItem("products")||"[]");
-let currentProduct = null;
-
-// ===== RENDER =====
-function render(){
-  const wrap=document.getElementById("products");
-  wrap.innerHTML="";
-  products.forEach((p,i)=>{
-    const d=document.createElement("div");
-    d.className="card";
-    d.innerHTML=`
-      <h3>${p.name}</h3>
-      <p>${p.desc}</p>
-      <strong>${p.price}</strong>
-      <button onclick="order(${i})">Замовити</button>
-    `;
-    wrap.appendChild(d);
-  });
-}
-render();
-
-// ===== ADMIN =====
-function enterAdmin(){
-  const code=prompt("Код доступу:");
-  if(code===ADMIN_CODE){
-    document.getElementById("adminPanel").style.display="block";
-  }else alert("Невірний код");
-}
-function addProduct(){
-  products.push({
-    name:name.value,
-    desc:desc.value,
-    price:price.value
-  });
-  localStorage.setItem("products",JSON.stringify(products));
-  name.value=desc.value=price.value="";
-  render();
-}
-
-// ===== ORDER =====
-function order(i){
-  currentProduct=products[i];
-  document.getElementById("orderModal").style.display="flex";
-}
-function sendOrder(){
-  const text=
-`🛒 НОВЕ ЗАМОВЛЕННЯ TEQRA
-Товар: ${currentProduct.name}
-Ціна: ${currentProduct.price}
-
-Імʼя: ${custName.value}
-Телефон: ${custPhone.value}
-Адреса: ${custAddr.value}`;
-  
-  fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({
-      chat_id:ADMIN_CHAT_ID,
-      text
-    })
-  });
-
-  alert("Замовлення надіслано");
-  document.getElementById("orderModal").style.display="none";
-}
-</script>
+<footer>
+  © TEQRA System • автономний каталог
+</footer>
 
 </body>
 </html>
