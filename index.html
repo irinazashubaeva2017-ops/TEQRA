@@ -3,151 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TEQRA | Магазин</title>
+    <title>TEQRA | Premium Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background: #05070a; color: white; font-family: sans-serif; }
-        .cyber-card { background: #0f172a; border: 1px solid #1e293b; border-radius: 20px; overflow: hidden; }
-        .input-field { background: #1e293b; border: 1px solid #334155; padding: 12px; border-radius: 12px; width: 100%; color: white; }
+        body { background: #05070a; color: #e2e8f0; font-family: -apple-system, system-ui, sans-serif; }
+        .cyber-card { background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(0, 240, 255, 0.1); border-radius: 24px; backdrop-filter: blur(10px); }
+        .input-active { background: #111827; border: 1px solid #374151; border-radius: 14px; transition: 0.3s; }
+        .input-active:focus { border-color: #06b6d4; box-shadow: 0 0 15px rgba(6, 182, 212, 0.2); outline: none; }
+        .btn-glow { background: linear-gradient(90deg, #06b6d4, #3b82f6); box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3); transition: 0.3s; }
+        .btn-glow:active { transform: scale(0.96); opacity: 0.9; }
         .hidden { display: none !important; }
-        .loader { border: 3px solid #f3f3f3; border-top: 3px solid #06b6d4; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        /* Анімація завантаження */
+        .spinner { width: 24px; height: 24px; border: 3px solid rgba(255,255,255,0.2); border-top-color: #06b6d4; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <nav class="p-4 border-b border-white/5 flex justify-between items-center sticky top-0 bg-[#05070a]/80 backdrop-blur-md z-50">
-        <div class="text-xl font-black text-cyan-400 tracking-tighter" id="btn-home">TEQRA</div>
-        <div class="flex gap-4 items-center">
-            <button id="btn-cart" class="text-sm font-bold uppercase text-gray-400">Кошик <span id="cart-count" class="text-cyan-400">0</span></button>
-            <button id="btn-admin-login" class="text-xl">⚡</button>
+    <nav class="p-4 flex justify-between items-center sticky top-0 bg-[#05070a]/90 backdrop-blur-lg z-50 border-b border-white/5">
+        <div class="text-2xl font-black text-cyan-400 tracking-tighter" id="go-home">TEQRA</div>
+        <div class="flex items-center gap-5">
+            <div id="go-cart" class="relative cursor-pointer opacity-80 hover:opacity-100">
+                <span class="text-xs font-bold uppercase tracking-widest">Кошик</span>
+                <span id="cart-badge" class="ml-1 text-cyan-400 font-black">0</span>
+            </div>
+            <button id="admin-trigger" class="text-xl grayscale hover:grayscale-0">⚡</button>
         </div>
     </nav>
 
-    <main class="p-4 max-w-4xl mx-auto">
-        <section id="view-catalog">
-            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
-            <div id="empty-msg" class="hidden text-center py-20 opacity-50">Товари в розробці...</div>
+    <main class="p-4 max-w-2xl mx-auto">
+        <section id="view-catalog" class="space-y-6">
+            <div id="product-list" class="grid grid-cols-1 gap-6"></div>
+            <div id="empty-state" class="hidden text-center py-24 opacity-30">
+                <p class="text-lg">Товари в розробці...</p>
+            </div>
         </section>
 
-        <section id="view-admin" class="hidden space-y-4">
-            <h2 class="text-2xl font-bold text-cyan-400 mb-6">Новий товар</h2>
-            <input type="text" id="add-model" placeholder="Назва (н-р: Dell Latitude)" class="input-field">
-            <input type="number" id="add-price" placeholder="Ціна (грн)" class="input-field">
-            <textarea id="add-specs" placeholder="Опис (RAM, CPU, SSD...)" class="input-field h-24"></textarea>
-            
-            <div class="p-4 border-2 border-dashed border-slate-700 rounded-xl text-center">
-                <input type="file" id="add-file" accept="image/*" class="hidden">
-                <label for="add-file" id="file-label" class="cursor-pointer block">Натисніть, щоб обрати фото</label>
-            </div>
+        <section id="view-admin" class="hidden animate-in fade-in duration-300">
+            <div class="cyber-card p-6 space-y-5">
+                <h2 class="text-xl font-bold text-cyan-400 uppercase tracking-widest">Новий товар</h2>
+                
+                <input type="text" id="in-model" placeholder="Назва (н-р: Dell Latitude 5410)" class="w-full p-4 input-active text-white">
+                <input type="number" id="in-price" placeholder="Ціна (грн)" class="w-full p-4 input-active text-white">
+                <textarea id="in-specs" placeholder="Опис (Процесор, ОЗП, Стан...)" class="w-full p-4 input-active text-white h-32"></textarea>
+                
+                <div class="relative border-2 border-dashed border-gray-700 rounded-2xl p-8 text-center hover:border-cyan-500/50 transition">
+                    <input type="file" id="in-file" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer">
+                    <div id="file-preview" class="text-sm text-gray-400">
+                        <p id="file-name">Натисніть, щоб обрати фото</p>
+                    </div>
+                </div>
 
-            <button id="btn-save-product" class="w-full bg-cyan-600 p-4 rounded-xl font-bold uppercase tracking-widest">Додати в каталог</button>
-            <button id="btn-admin-close" class="w-full text-gray-500 py-2">Назад до магазину</button>
+                <button id="btn-publish" class="w-full p-5 btn-glow rounded-2xl font-black uppercase tracking-widest text-white">Опублікувати</button>
+                <button id="btn-exit-admin" class="w-full py-3 text-gray-500 font-medium">Скасувати</button>
+            </div>
         </section>
     </main>
 
-    <div id="loading-overlay" class="fixed inset-0 bg-black/80 hidden flex flex-col items-center justify-center z-[100]">
-        <div class="loader mb-4"></div>
-        <p class="text-cyan-400 font-bold uppercase tracking-widest">Завантаження на сервер...</p>
+    <div id="load-screen" class="fixed inset-0 bg-black/90 z-[100] hidden flex flex-col items-center justify-center">
+        <div class="spinner mb-4"></div>
+        <p class="text-cyan-400 font-bold animate-pulse uppercase text-xs tracking-widest">Обробка та завантаження...</p>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
+        // Твої дані
         const firebaseConfig = {
             apiKey: "AIzaSyCuYjKFAsKbdu_PLI4OkxiW6Wz-Yhq_q44",
             databaseURL: "https://catalog-b9cc2-default-rtdb.europe-west1.firebasedatabase.app",
             projectId: "catalog-b9cc2",
             storageBucket: "catalog-b9cc2.firebasestorage.app"
         };
+        const IMGBB_API = "70bb1de10d70f62410bc55ddd2a4fd0e";
+
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
-
-        const IMGBB_API = "70bb1de10d70f62410bc55ddd2a4fd0e";
         let isAdmin = false;
 
-        // Навігація
-        const showView = (id) => {
-            ['view-catalog', 'view-admin'].forEach(v => document.getElementById(v).classList.add('hidden'));
-            document.getElementById(id).classList.remove('hidden');
+        const nav = (view) => {
+            document.getElementById('view-catalog').classList.add('hidden');
+            document.getElementById('view-admin').classList.add('hidden');
+            document.getElementById('view-' + view).classList.remove('hidden');
+            window.scrollTo(0,0);
         };
 
-        document.getElementById('btn-admin-login').onclick = () => {
-            if(prompt("Код доступу:") === "teqra2026") { isAdmin = true; showView('view-admin'); }
+        // Вхід в адмінку
+        document.getElementById('admin-trigger').onclick = () => {
+            if(prompt("Код TEQRA:") === "teqra2026") { isAdmin = true; nav('admin'); }
         };
-        document.getElementById('btn-admin-close').onclick = () => showView('view-catalog');
-        document.getElementById('btn-home').onclick = () => showView('view-catalog');
+        document.getElementById('btn-exit-admin').onclick = () => nav('catalog');
+        document.getElementById('go-home').onclick = () => nav('catalog');
 
-        // Відображення товарів
-        onValue(ref(db, "products"), (snap) => {
-            const grid = document.getElementById('product-grid');
-            const data = snap.val();
-            grid.innerHTML = "";
-            
-            if(!data) { document.getElementById('empty-msg').classList.remove('hidden'); return; }
-            document.getElementById('empty-msg').classList.add('hidden');
+        // Функція стиснення фото (Fix для iPhone)
+        const compressImage = (file) => {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const MAX_WIDTH = 1200;
+                        let width = img.width;
+                        let height = img.height;
 
-            Object.entries(data).forEach(([id, item]) => {
-                const card = document.createElement('div');
-                card.className = "cyber-card p-4 flex flex-col";
-                card.innerHTML = `
-                    <img src="${item.image}" class="w-full h-48 object-cover rounded-xl mb-4">
-                    <h3 class="text-xl font-bold">${item.model}</h3>
-                    <p class="text-sm text-gray-400 flex-1 mt-2">${item.specs}</p>
-                    <div class="flex justify-between items-center mt-6">
-                        <span class="text-2xl font-black text-cyan-400">${item.price} ₴</span>
-                        <button class="bg-cyan-600 px-6 py-2 rounded-lg font-bold">КУПИТИ</button>
-                    </div>
-                    ${isAdmin ? `<button onclick="deleteProd('${id}')" class="mt-4 text-xs text-red-500 opacity-50 uppercase">Видалити товар</button>` : ''}
-                `;
-                grid.appendChild(card);
+                        if (width > MAX_WIDTH) {
+                            height *= MAX_WIDTH / width;
+                            width = MAX_WIDTH;
+                        }
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        canvas.toBlob((blob) => resolve(blob), 'image/jpeg', 0.8);
+                    };
+                };
             });
-        });
+        };
 
-        // Глобальна функція видалення
-        window.deleteProd = (id) => { if(confirm("Видалити товар?")) remove(ref(db, `products/${id}`)); };
+        // Публікація товару
+        document.getElementById('btn-publish').onclick = async () => {
+            const fileInput = document.getElementById('in-file');
+            const model = document.getElementById('in-model').value;
+            const price = document.getElementById('in-price').value;
+            const specs = document.getElementById('in-specs').value;
 
-        // Додавання товару (ImgBB + Firebase)
-        document.getElementById('btn-save-product').onclick = async () => {
-            const file = document.getElementById('add-file').files[0];
-            const model = document.getElementById('add-model').value;
-            const price = document.getElementById('add-price').value;
-            const specs = document.getElementById('add-specs').value;
+            if(!fileInput.files[0] || !model || !price) return alert("Заповни всі поля!");
 
-            if(!file || !model || !price) return alert("Заповни все!");
-
-            document.getElementById('loading-overlay').classList.remove('hidden');
+            document.getElementById('load-screen').classList.remove('hidden');
 
             try {
+                // 1. Стискаємо фото
+                const compressedBlob = await compressImage(fileInput.files[0]);
+                
+                // 2. Відправляємо на ImgBB
                 const formData = new FormData();
-                formData.append("image", file);
+                formData.append("image", compressedBlob, "product.jpg");
                 
                 const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API}`, {
                     method: "POST",
                     body: formData
                 });
-                
-                const imgResult = await res.json();
-                
-                if(imgResult.success) {
+                const imgData = await res.json();
+
+                if(imgData.success) {
+                    // 3. Зберігаємо в Firebase
                     await push(ref(db, "products"), {
-                        model, price, specs, image: imgResult.data.url
+                        model, price, specs, image: imgData.data.url, date: Date.now()
                     });
-                    showView('view-catalog');
-                    alert("Готово!");
+                    nav('catalog');
+                    alert("Товар додано!");
                 } else {
-                    throw new Error("ImgBB Error");
+                    throw new Error("ImgBB error");
                 }
             } catch (e) {
-                alert("Помилка завантаження. Спробуй інше фото.");
+                console.error(e);
+                alert("Помилка завантаження. Спробуй інше фото або перевір зв'язок.");
             } finally {
-                document.getElementById('loading-overlay').classList.add('hidden');
+                document.getElementById('load-screen').classList.add('hidden');
             }
         };
 
-        document.getElementById('add-file').onchange = (e) => {
-            document.getElementById('file-label').innerText = e.target.files[0].name;
+        // Реалтайм оновлення списку
+        onValue(ref(db, "products"), (snap) => {
+            const list = document.getElementById('product-list');
+            const data = snap.val();
+            list.innerHTML = "";
+            
+            if(!data) { document.getElementById('empty-state').classList.remove('hidden'); return; }
+            document.getElementById('empty-state').classList.add('hidden');
+
+            Object.entries(data).reverse().forEach(([id, item]) => {
+                const div = document.createElement('div');
+                div.className = "cyber-card p-4 space-y-4";
+                div.innerHTML = `
+                    <div class="h-64 rounded-2xl overflow-hidden bg-black">
+                        <img src="${item.image}" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold">${item.model}</h3>
+                        <p class="text-gray-400 text-sm mt-1 whitespace-pre-wrap">${item.specs}</p>
+                    </div>
+                    <div class="flex justify-between items-center pt-2">
+                        <span class="text-2xl font-black text-cyan-400">${item.price} ₴</span>
+                        <button class="px-8 py-3 btn-glow rounded-xl font-bold text-sm">КУПИТИ</button>
+                    </div>
+                    ${isAdmin ? `<button onclick="window.delProd('${id}')" class="w-full py-2 mt-2 text-[10px] text-red-500/50 uppercase font-bold border border-red-500/20 rounded-lg">Видалити товар</button>` : ''}
+                `;
+                list.appendChild(div);
+            });
+        });
+
+        window.delProd = (id) => { if(confirm("Видалити?")) remove(ref(db, `products/${id}`)); };
+        document.getElementById('in-file').onchange = (e) => {
+            document.getElementById('file-name').innerText = e.target.files[0].name;
         };
     </script>
 </body>
